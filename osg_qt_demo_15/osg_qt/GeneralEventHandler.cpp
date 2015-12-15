@@ -84,4 +84,5 @@ void GeneralEventHandler::setCurrentScene(osg::Switch* swt, int index){
 
 void GeneralEventHandler::setDBMap(list<map<string, string>*>* dbmap){
 	this->dbMap = dbmap;
+	cout<<dbMap->front()->at("µÁ—π")<<endl;
 }
