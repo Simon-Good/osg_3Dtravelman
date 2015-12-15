@@ -53,6 +53,10 @@ void TextPanel::updateContent(string cont){
 	delete wtext;
 }
 
+void TextPanel::updateContent(map<string,string>* dbmap){
+
+}
+
 //void TextPanel::updateTime(string stime){
 //	timeString = stime + "\n";
 //}

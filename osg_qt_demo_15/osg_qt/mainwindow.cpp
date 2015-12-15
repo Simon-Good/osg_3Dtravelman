@@ -169,8 +169,8 @@ void MainWindow::createDockWindow(){
      customerList->addItems(QStringList()
              << ">高港闸站"
              << ">送水闸"
-			 << ">泵站一层"
-			 << ">泵站二层"
+			 << ">泵房"
+			 << ">连轴层"
 			 << ">调度闸"
 			 << ">节制闸");
 	 customerList->setCurrentRow(0);
