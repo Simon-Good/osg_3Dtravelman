@@ -277,10 +277,10 @@ void MainWindow::changeModel(QListWidgetItem* item){
 			textInfoAct->setChecked(false);
 		}
 	}
-	if(textInfoAct->isChecked() == true)
-		cout<<"change model and textinfo is checked"<<endl;
-	else
-		cout<<"change model and textinfo is unchecked"<<endl;
+	//if(textInfoAct->isChecked() == true)
+	//	cout<<"change model and textinfo is checked"<<endl;
+	//else
+	//	cout<<"change model and textinfo is unchecked"<<endl;
 	if(cs->isVisible())
 		updateCameraSetting(cc);
 }
