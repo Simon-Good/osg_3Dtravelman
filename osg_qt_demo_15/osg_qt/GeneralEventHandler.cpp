@@ -25,7 +25,8 @@ bool GeneralEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 			if(curSwt->getValueList().size() > 1){
 				osg::Switch::ValueList vl = curSwt->getValueList();
 				TextPanel* tp;
-				
+				//sql command execute here//
+				//split sql result into map<field,value> form//
 				for(int i = 1; i< vl.size(); i++){
 					rawtime = time(NULL);
 					struct tm* ucttime = localtime(&rawtime);

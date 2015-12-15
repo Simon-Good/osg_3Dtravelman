@@ -23,7 +23,7 @@ public:
 	void infoEnable(bool enable);
 	void setCurrentScene(osg::Switch*, int);
 protected:
-	GeneralEventHandler(){curSwt = NULL;}
+	GeneralEventHandler():curSwtIndex(0),frameCount(0){curSwt = NULL;}
 	~GeneralEventHandler(){}
 	bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
 	
@@ -36,6 +36,7 @@ private:
 	static bool infoenable;
 	osg::Switch* curSwt;
 	int curSwtIndex;
+	int frameCount;
 	char* timestr;
 	time_t rawtime;
 };
