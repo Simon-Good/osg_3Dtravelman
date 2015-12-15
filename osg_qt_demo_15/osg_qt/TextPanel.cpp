@@ -54,7 +54,22 @@ void TextPanel::updateContent(string cont){
 }
 
 void TextPanel::updateContent(map<string,string>* dbmap){
-
+	string contentString = "";
+	for(map<string, string>::iterator it = dbmap->begin();
+		it != dbmap->end();
+		it++)
+	{
+		contentString += it->first + ":"+ it->second + "\t";
+		it++;
+		if(it == dbmap->end())
+			break;
+		contentString += it->first + ":"+ it->second + "\n";
+	}
+	int requiredSize = mbstowcs(NULL, contentString.c_str(), 0);
+	wchar_t * wtext = new wchar_t[requiredSize+1];
+	mbstowcs(wtext , contentString.c_str(), requiredSize+1);
+	content->setText(wtext);
+	delete wtext;
 }
 
 //void TextPanel::updateTime(string stime){
