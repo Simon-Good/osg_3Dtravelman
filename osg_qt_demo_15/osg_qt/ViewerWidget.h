@@ -33,7 +33,7 @@ public:
 
 	vector<RangeNode>* getKeepOutBorder(int modelindex);
 	vector<RangeNode>* getKeepInBorder(int modelindex);
-	list <map<string, string>*>* generateDBMap(int index);
+	vector<map<string, string>*>* generateDBMap(int index);
 
 	virtual void paintEvent(QPaintEvent* event);
 	//virtual bool winEvent(MSG * message, long * result);
