@@ -13,6 +13,7 @@ public:
 	TextPanel(void);
 	~TextPanel(void);
 	void updateContent(string str);
+	void updateContent(map<string, string>* m);
 	//void updateTime(string stime);
 	void setupProperties(osgText::Text& textObject,osgText::Font* font,float size,const osg::Vec3& pos );
 	void addYZContent(string str, const osg::Vec3& pos, float widht, float height, string fontpath = "simhei.ttf");

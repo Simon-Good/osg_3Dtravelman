@@ -267,39 +267,55 @@ vector<RangeNode>* ViewerWidget::getKeepOutBorder(int modelindex){
 	return ret;
 }
 
-list<map<string, string>*>* ViewerWidget::generateDBMap(int index){
+vector<map<string, string>*>* ViewerWidget::generateDBMap(int index){
 	map<string, string>* retMap;
-	list<map<string, string>*>* retLst = new list<map<string, string>*>();
+	vector<map<string, string>*>* retVec = new vector<map<string, string>*>();
 	if(index == 0){
 		retMap = new map<string, string>();
 		retMap->insert(pair<string, string>("电压","dianya0"));
-		retLst->push_back(retMap);
+		retVec->push_back(retMap);
 	}else if(index == 1){
 		retMap = new map<string, string>();
 		retMap->insert(pair<string, string>("电压","dianya1"));
-		retLst->push_back(retMap);
+		retVec->push_back(retMap);
 	}else if(index == 2){
 		for(int i = 0; i< 9; i++){
 			retMap = new map<string, string>();
-			retMap->insert(pair<string, string>("电压","dianya2"));
+			retMap->insert(pair<string, string>("电压",""));
 			retMap->insert(pair<string, string>("电流",""));
 			retMap->insert(pair<string, string>("有功功率",""));
-			retLst->push_back(retMap);
+			retMap->insert(pair<string, string>("无功功率",""));
+			retMap->insert(pair<string, string>("励磁电流",""));
+			retMap->insert(pair<string, string>("励磁电压",""));
+			retMap->insert(pair<string, string>("主机转速",""));
+			retMap->insert(pair<string, string>("定子温度",""));
+			retMap->insert(pair<string, string>("上导温度",""));
+			retMap->insert(pair<string, string>("下导温度",""));
+			retMap->insert(pair<string, string>("上油缸温度",""));
+			retMap->insert(pair<string, string>("下油缸温度",""));
+			retMap->insert(pair<string, string>("推力瓦温度",""));
+			retMap->insert(pair<string, string>("排涝", ""));
+			retMap->insert(pair<string, string>("灌溉", ""));
+			retMap->insert(pair<string, string>("叶片角度",""));
+			retMap->insert(pair<string, string>("闸上水位",""));
+			retMap->insert(pair<string, string>("调度区水位",""));
+			retMap->insert(pair<string, string>("闸下水位", ""));
+			retVec->push_back(retMap);
 		}
 	}else if(index == 3){
 		retMap = new map<string, string>();
 		retMap->insert(pair<string, string>("电压","dianya3"));
-		retLst->push_back(retMap);
+		retVec->push_back(retMap);
 	}else if(index == 4){
 		retMap = new map<string, string>();
 		retMap->insert(pair<string, string>("电压","dianya4"));
-		retLst->push_back(retMap);
+		retVec->push_back(retMap);
 	}else if(index == 5){
 		retMap = new map<string, string>();
 		retMap->insert(pair<string, string>("电压","dianya5"));
-		retLst->push_back(retMap);
+		retVec->push_back(retMap);
 	}
-	return retLst;
+	return retVec;
 }
 
 void ViewerWidget::paintEvent(QPaintEvent* event){
