@@ -84,7 +84,7 @@ void ViewerWidget::loadModels(int size){
 	osg::ref_ptr<osg::Switch> underswt = new osg::Switch();
 	node = osgDB::readNodeFile(string(MODELBASE)+"0.ive");
 	underswt->addChild(node, true);
-	GeneralEventHandler::Instance(this)->setCurrentScene(underswt);
+	GeneralEventHandler::Instance(this)->setCurrentScene(underswt ,0);
 	CameraContext cc;
 	cc.m_fMoveSpeed = 50.0f;
 	cc.m_vPosition = osg::Vec3(40315.8f, -78755.8f, 900.0f);
@@ -267,9 +267,9 @@ vector<RangeNode>* ViewerWidget::getKeepOutBorder(int modelindex){
 	return ret;
 }
 
-map<string, string>* ViewerWidget::generateDBMap(int index){
+list<map<string, string>*>* ViewerWidget::generateDBMap(int index){
 	map<string, string>* retMap;
-	list<map<string, string>*> 
+	//list<map<string, string>*> 
 	if(index == 0){
 	}else if(index == 1){
 	}else if(index == 2){
@@ -281,7 +281,7 @@ map<string, string>* ViewerWidget::generateDBMap(int index){
 	}else if(index == 4){
 	}else if(index == 5){
 	}
-	return retMap;
+	return NULL;
 }
 
 void ViewerWidget::paintEvent(QPaintEvent* event){

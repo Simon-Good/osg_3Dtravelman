@@ -92,6 +92,9 @@
     <ClCompile Include="TextPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="dbHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="osg_qt.ui">
@@ -148,6 +151,9 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="TextPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dbHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
