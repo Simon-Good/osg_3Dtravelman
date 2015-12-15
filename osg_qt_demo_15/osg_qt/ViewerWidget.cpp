@@ -72,7 +72,7 @@ void ViewerWidget::reloadModel(int index){
 			break;
 	cameraContextList[mark] = TravelManipulator::Instance()->getCameraContext();
 	swt->setSingleChildOn(index);
-	
+	GeneralEventHandler::Instance(this)->setDBMap(generateDBMap(index));
 	GeneralEventHandler::Instance(this)->setCurrentScene(swt->getChild(index)->asSwitch(), index);
 	TravelManipulator::Instance()->setCameraContext(cameraContextList[index]);
 }
@@ -265,6 +265,23 @@ vector<RangeNode>* ViewerWidget::getKeepOutBorder(int modelindex){
 		ret->push_back(RangeNode(7, osg::Vec4(-67.3615, 71.5234, 1202.85, 1703.84)));
 	}
 	return ret;
+}
+
+map<string, string>* ViewerWidget::generateDBMap(int index){
+	map<string, string>* retMap;
+	list<map<string, string>*> 
+	if(index == 0){
+	}else if(index == 1){
+	}else if(index == 2){
+		retMap = new map<string, string>();
+		retMap->insert(pair<string, string>("电压",""));
+		retMap->insert(pair<string, string>("电流",""));
+		retMap->insert(pair<string, string>("有功功率",""));
+	}else if(index == 3){
+	}else if(index == 4){
+	}else if(index == 5){
+	}
+	return retMap;
 }
 
 void ViewerWidget::paintEvent(QPaintEvent* event){

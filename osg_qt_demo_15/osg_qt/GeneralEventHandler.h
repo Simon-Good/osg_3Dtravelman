@@ -9,6 +9,7 @@
 #include <QWidget>
 #include <QObject>
 #include <string>
+#include <map>
 #include <time.h>
 #include <iostream>
 #include "TextPanel.h"
@@ -22,6 +23,7 @@ public:
 	static GeneralEventHandler* Instance(QWidget* parent = 0);
 	void infoEnable(bool enable);
 	void setCurrentScene(osg::Switch*, int);
+	void setDBMap(list<map<string, string>*>* dbmap);
 protected:
 	GeneralEventHandler():curSwtIndex(0),frameCount(0){curSwt = NULL;}
 	~GeneralEventHandler(){}
@@ -35,6 +37,7 @@ private:
 	static QWidget* mparent;
 	static bool infoenable;
 	osg::Switch* curSwt;
+	list<map<string, string>*>* dbMap;
 	int curSwtIndex;
 	int frameCount;
 	char* timestr;

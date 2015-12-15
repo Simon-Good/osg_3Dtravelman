@@ -23,21 +23,22 @@ bool GeneralEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 		case osgGA::GUIEventAdapter::FRAME:
 		{
 			if(curSwt->getValueList().size() > 1){
-				osg::Switch::ValueList vl = curSwt->getValueList();
+				//osg::Switch::ValueList vl = curSwt->getValueList();
+				int numchildren = curSwt->getNumChildren();
 				TextPanel* tp;
 				//sql command execute here//
 				//split sql result into map<field,value> form//
-				for(int i = 1; i< vl.size(); i++){
-					rawtime = time(NULL);
-					struct tm* ucttime = localtime(&rawtime);
-					timestr = asctime(ucttime);
-					string stime = string(timestr);
-					size_t p = stime.rfind(" ");
-					stime = stime.substr(0, p);
-					p = stime.rfind(" ");
-					stime = stime.substr(p, stime.length());
+				for(int i = 1; i< numchildren; i++){
+					//rawtime = time(NULL);
+					//struct tm* ucttime = localtime(&rawtime);
+					//timestr = asctime(ucttime);
+					//string stime = string(timestr);
+					//size_t p = stime.rfind(" ");
+					//stime = stime.substr(0, p);
+					//p = stime.rfind(" ");
+					//stime = stime.substr(p, stime.length());
 					tp = dynamic_cast<TextPanel*>(curSwt->getChild(i));
-					tp->updateContent(stime + "\n");
+					//tp->updateContent(stime + "\n");
 				}
 			}
 		}
@@ -79,4 +80,8 @@ void GeneralEventHandler::infoEnable(bool enable){
 void GeneralEventHandler::setCurrentScene(osg::Switch* swt, int index){
 	curSwt = swt;
 	curSwtIndex = index;
+}
+
+void GeneralEventHandler::setDBMap(list<map<string, string>*>* dbmap){
+	this->dbMap = dbmap;
 }
