@@ -365,19 +365,13 @@ void MainWindow::showPos(osg::Vec3 pos, float radius){
 	int index = -1;
 	if(vec->size() > 0){
 		for(itr = vec->begin(); itr != vec->end(); itr++){
-			//cout<<"clicked radius:"<<radius<<endl;
-			//cout<<"box radius:"<<caculateRadius(itr->range)<<endl;
 			if( (itr->range.x() < pos.x()&& pos.x() < itr->range.y())&&
 				(itr->range.z() < pos.y()&& pos.y() < itr->range.w())&&
 				(radius <= caculateRadius(itr->range))){
 					index = itr->index;
-					//
-					//cout<<"rangexmin:"<<itr->range.x()<<" posx:"<<pos.x()<<" rangexmax:"<<itr->range.y()<<endl;
-					//cout<<"rangeymin:"<<itr->range.z()<<" posy:"<<pos.y()<<" rangeymax:"<<itr->range.w()<<endl;
 					break;
 			}
 		}
-		cout<<"--------------------"<<endl;
 		if(index != -1 && doshow == true){
 			QString content;
 			QString title;
