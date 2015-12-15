@@ -59,7 +59,7 @@ void TextPanel::updateContent(map<string,string>* dbmap){
 		it != dbmap->end();
 		it++)
 	{
-		contentString += it->first + ":"+ it->second + "\t";
+		contentString += it->first + ":"+ it->second + "        ";
 		it++;
 		if(it == dbmap->end())
 			break;

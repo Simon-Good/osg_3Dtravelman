@@ -22,24 +22,15 @@ bool GeneralEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 	switch(ea.getEventType()){
 		case osgGA::GUIEventAdapter::FRAME:
 		{
-			if(curSwt->getValueList().size() > 1){
-				//osg::Switch::ValueList vl = curSwt->getValueList();
-				int numchildren = curSwt->getNumChildren();
-				TextPanel* tp;
-				//sql command execute here//
-				//split sql result into map<field,value> form//
-				//setTempData(dbMap);
-				for(int i = 1; i< numchildren; i++){
-					//rawtime = time(NULL);
-					//struct tm* ucttime = localtime(&rawtime);
-					//timestr = asctime(ucttime);
-					//string stime = string(timestr);
-					//size_t p = stime.rfind(" ");
-					//stime = stime.substr(0, p);
-					//p = stime.rfind(" ");
-					//stime = stime.substr(p, stime.length());
-					tp = dynamic_cast<TextPanel*>(curSwt->getChild(i));
-					tp->updateContent(dbMap->at(i-1));
+			frameCount++;
+			if(frameCount % 30 == 0){
+				if(curSwt->getValueList().size() > 1){
+					int numchildren = curSwt->getNumChildren();
+					TextPanel* tp;
+					for(int i = 1; i< numchildren; i++){
+						tp = dynamic_cast<TextPanel*>(curSwt->getChild(i));
+						tp->updateContent(dbMap->at(i-1));
+					}
 				}
 			}
 		}

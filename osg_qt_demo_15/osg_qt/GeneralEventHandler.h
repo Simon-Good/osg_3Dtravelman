@@ -40,7 +40,7 @@ private:
 	osg::Switch* curSwt;
 	vector<map<string, string>*>* dbMap;
 	int curSwtIndex;
-	int frameCount;
+	unsigned int frameCount;
 	char* timestr;
 	time_t rawtime;
 };
