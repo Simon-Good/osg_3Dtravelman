@@ -84,7 +84,7 @@ void ViewerWidget::loadModels(int size){
 	osg::ref_ptr<osg::Switch> underswt = new osg::Switch();
 	node = osgDB::readNodeFile(string(MODELBASE)+"0.ive");
 	underswt->addChild(node, true);
-	GeneralEventHandler::Instance(this)->setCurrentScene(underswt);
+	GeneralEventHandler::Instance(this)->setCurrentScene(underswt, 0);
 	CameraContext cc;
 	cc.m_fMoveSpeed = 50.0f;
 	cc.m_vPosition = osg::Vec3(40315.8f, -78755.8f, 900.0f);
@@ -99,7 +99,7 @@ void ViewerWidget::loadModels(int size){
 	cc.m_fAngle = 0.5f;
 	cameraContextList[0] = cc;
 	TravelManipulator::Instance()->setCameraContext(cameraContextList[0]);
-
+	GeneralEventHandler::Instance(this)->setDBMap(generateDBMap(0));
 	//LightContext lc;
 	//swt->insertChild(0, node, true);
 	swt->insertChild(0, underswt, true);
@@ -267,21 +267,39 @@ vector<RangeNode>* ViewerWidget::getKeepOutBorder(int modelindex){
 	return ret;
 }
 
-map<string, string>* ViewerWidget::generateDBMap(int index){
+list<map<string, string>*>* ViewerWidget::generateDBMap(int index){
 	map<string, string>* retMap;
-	list<map<string, string>*> 
+	list<map<string, string>*>* retLst = new list<map<string, string>*>();
 	if(index == 0){
-	}else if(index == 1){
-	}else if(index == 2){
 		retMap = new map<string, string>();
-		retMap->insert(pair<string, string>("电压",""));
-		retMap->insert(pair<string, string>("电流",""));
-		retMap->insert(pair<string, string>("有功功率",""));
+		retMap->insert(pair<string, string>("电压","dianya0"));
+		retLst->push_back(retMap);
+	}else if(index == 1){
+		retMap = new map<string, string>();
+		retMap->insert(pair<string, string>("电压","dianya1"));
+		retLst->push_back(retMap);
+	}else if(index == 2){
+		for(int i = 0; i< 9; i++){
+			retMap = new map<string, string>();
+			retMap->insert(pair<string, string>("电压","dianya2"));
+			retMap->insert(pair<string, string>("电流",""));
+			retMap->insert(pair<string, string>("有功功率",""));
+			retLst->push_back(retMap);
+		}
 	}else if(index == 3){
+		retMap = new map<string, string>();
+		retMap->insert(pair<string, string>("电压","dianya3"));
+		retLst->push_back(retMap);
 	}else if(index == 4){
+		retMap = new map<string, string>();
+		retMap->insert(pair<string, string>("电压","dianya4"));
+		retLst->push_back(retMap);
 	}else if(index == 5){
+		retMap = new map<string, string>();
+		retMap->insert(pair<string, string>("电压","dianya5"));
+		retLst->push_back(retMap);
 	}
-	return retMap;
+	return retLst;
 }
 
 void ViewerWidget::paintEvent(QPaintEvent* event){
