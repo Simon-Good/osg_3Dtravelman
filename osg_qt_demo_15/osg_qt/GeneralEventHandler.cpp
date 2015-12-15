@@ -75,6 +75,7 @@ void GeneralEventHandler::infoEnable(bool enable){
 	infoenable = enable;
 }
 
-void GeneralEventHandler::setCurrentScene(osg::Switch* swt){
+void GeneralEventHandler::setCurrentScene(osg::Switch* swt, int index){
 	curSwt = swt;
+	curSwtIndex = index;
 }

@@ -21,7 +21,7 @@ class GeneralEventHandler :public QObject, public osgGA::GUIEventHandler
 public:
 	static GeneralEventHandler* Instance(QWidget* parent = 0);
 	void infoEnable(bool enable);
-	void setCurrentScene(osg::Switch*);
+	void setCurrentScene(osg::Switch*, int);
 protected:
 	GeneralEventHandler(){curSwt = NULL;}
 	~GeneralEventHandler(){}
@@ -35,6 +35,7 @@ private:
 	static QWidget* mparent;
 	static bool infoenable;
 	osg::Switch* curSwt;
+	int curSwtIndex;
 	char* timestr;
 	time_t rawtime;
 };

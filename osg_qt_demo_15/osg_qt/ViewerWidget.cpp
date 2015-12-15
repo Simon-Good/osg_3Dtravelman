@@ -73,7 +73,7 @@ void ViewerWidget::reloadModel(int index){
 	cameraContextList[mark] = TravelManipulator::Instance()->getCameraContext();
 	swt->setSingleChildOn(index);
 	
-	GeneralEventHandler::Instance(this)->setCurrentScene(swt->getChild(index)->asSwitch());
+	GeneralEventHandler::Instance(this)->setCurrentScene(swt->getChild(index)->asSwitch(), index);
 	TravelManipulator::Instance()->setCameraContext(cameraContextList[index]);
 }
 
