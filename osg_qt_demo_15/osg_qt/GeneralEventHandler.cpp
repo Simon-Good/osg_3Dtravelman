@@ -1,5 +1,5 @@
 #include "GeneralEventHandler.h"
-
+#include "dbHandler.h"
 
 GeneralEventHandler* GeneralEventHandler::instance = 0;
 QWidget* GeneralEventHandler::mparent = 0;
@@ -29,6 +29,7 @@ bool GeneralEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 				//sql command execute here//
 				//split sql result into map<field,value> form//
 				//setTempData(dbMap);
+				dbHandler::Get_dbH_Instance()->get_dbMessage(curSwtIndex,dbMap);
 				for(int i = 1; i< numchildren; i++){
 					//rawtime = time(NULL);
 					//struct tm* ucttime = localtime(&rawtime);

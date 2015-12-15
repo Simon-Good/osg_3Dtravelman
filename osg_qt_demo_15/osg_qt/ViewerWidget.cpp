@@ -144,7 +144,7 @@ void ViewerWidget::loadModleThread(int modelnum){
 				textnode->setDataVariance(osg::Object::DYNAMIC);
 				float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
 				float ypos = (-1)*(keypoint.z() + abs(keypoint.w()-keypoint.z())/2)+50;
-				textnode->addYZContent(namehead + "\n", osg::Vec3(xpos, ypos, 200.0), 300, 100);
+				textnode->addYZContent(namehead + "\n", osg::Vec3(xpos, ypos, 200.0), 300, 135);
 				textnode->setName(namehead);
 				threadSwt->insertChild(i+1, textnode, true);
 			}
