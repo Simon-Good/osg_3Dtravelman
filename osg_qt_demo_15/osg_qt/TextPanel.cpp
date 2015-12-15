@@ -37,7 +37,7 @@ void TextPanel::addYZContent(string str, const osg::Vec3& leftupCorner, float wi
 	geode->addDrawable(geom.get());
 
 	font = osgText::readFontFile(fontpath);
-	setupProperties(*content, font, 20.0f, leftupCorner + osg::Vec3(1.0f, 0.0f, 0.0f));
+	setupProperties(*content, font, 12.0f, leftupCorner + osg::Vec3(1.0f, 0.0f, 0.0f));//20
 
 	updateContent(str);
 	geode->addDrawable(content.get());
