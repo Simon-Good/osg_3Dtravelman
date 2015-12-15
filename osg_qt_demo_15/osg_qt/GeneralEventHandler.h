@@ -9,6 +9,7 @@
 #include <QWidget>
 #include <QObject>
 #include <string>
+#include <map>
 #include <time.h>
 #include <iostream>
 #include "TextPanel.h"
@@ -21,9 +22,10 @@ class GeneralEventHandler :public QObject, public osgGA::GUIEventHandler
 public:
 	static GeneralEventHandler* Instance(QWidget* parent = 0);
 	void infoEnable(bool enable);
-	void setCurrentScene(osg::Switch*);
+	void setCurrentScene(osg::Switch*, int);
+	void setDBMap(list<map<string, string>*>* dbmap);
 protected:
-	GeneralEventHandler(){curSwt = NULL;}
+	GeneralEventHandler():curSwtIndex(0),frameCount(0){curSwt = NULL;}
 	~GeneralEventHandler(){}
 	bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
 	
@@ -35,6 +37,9 @@ private:
 	static QWidget* mparent;
 	static bool infoenable;
 	osg::Switch* curSwt;
+	list<map<string, string>*>* dbMap;
+	int curSwtIndex;
+	int frameCount;
 	char* timestr;
 	time_t rawtime;
 };
