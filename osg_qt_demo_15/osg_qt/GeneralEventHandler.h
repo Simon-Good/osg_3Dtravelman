@@ -28,7 +28,7 @@ protected:
 	bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
 	
 signals:
-	void selectedPosition(osg::Vec3 pos);
+	void selectedPosition(osg::Vec3 pos, float radius);
 	void resetDoshow();
 private:
 	static GeneralEventHandler* instance;

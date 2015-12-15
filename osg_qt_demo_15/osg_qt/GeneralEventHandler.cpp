@@ -51,15 +51,19 @@ bool GeneralEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 					osg::NodePath& nodepath = intersection.nodePath;
 					osg::ref_ptr<osg::Node> node=  (nodepath.size() >= 3)?dynamic_cast<osg::Node*>(nodepath[nodepath.size()-4]):0;
 					if(node!= 0)
-						emit selectedPosition(node->getBound().center());
+						emit selectedPosition(node->getBound().center(), node->getBound().radius());
 					
 					node=  (nodepath.size() >= 2)?dynamic_cast<osg::Node*>(nodepath[nodepath.size()-3]):0;
 					if(node!= 0)
-						emit selectedPosition(node->getBound().center());
+						emit selectedPosition(node->getBound().center(), node->getBound().radius());
 
 					node=  (nodepath.size() >= 1)?dynamic_cast<osg::Node*>(nodepath[nodepath.size()-2]):0;
 					if(node!= 0)
-						emit selectedPosition(node->getBound().center());
+						emit selectedPosition(node->getBound().center(), node->getBound().radius());
+					//osg::BoundingSphere bnd = node->getBound();
+					//cout<<"bounding center:"<<bnd.center().x()<<" "<<bnd.center().y()<<" "<<bnd.center().z()<<endl;
+					//cout<<"bounding radius:"<<bnd.radius()<<endl;
+					//cout<<"bounding radius sqrt:"<<sqrt(bnd.radius())/2.0<<endl;
 				}
 				emit resetDoshow();
 			}

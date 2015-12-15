@@ -44,7 +44,7 @@ MainWindow::MainWindow(WelcomePage* wp, QWidget *parent)
 	wp->setValue(85);
 	setCentralWidget(viewWidget);
 	connect(viewWidget, SIGNAL(modelLoadFinished()), this, SLOT(enableItems()));
-	connect(GeneralEventHandler::Instance(), SIGNAL(selectedPosition(osg::Vec3)), this, SLOT(showPos(osg::Vec3)));
+	connect(GeneralEventHandler::Instance(), SIGNAL(selectedPosition(osg::Vec3, float)), this, SLOT(showPos(osg::Vec3, float)));
 	connect(GeneralEventHandler::Instance(), SIGNAL(resetDoshow()), this, SLOT(resetDoshowFlag()));
 	wp->setValue(95);
 	currentItem = customerList->currentItem();
@@ -359,18 +359,25 @@ void MainWindow::setCameraLowMode(){
 	TravelManipulator::Instance()->setCameraContext(cc);
 }
 
-void MainWindow::showPos(osg::Vec3 pos){
+void MainWindow::showPos(osg::Vec3 pos, float radius){
 	vector<RangeNode>::iterator itr;
 	vector<RangeNode>* vec = TravelManipulator::Instance()->keepOutBorder;
 	int index = -1;
 	if(vec->size() > 0){
 		for(itr = vec->begin(); itr != vec->end(); itr++){
+			cout<<"clicked radius:"<<radius<<endl;
+			cout<<"box radius:"<<caculateRadius(itr->range)<<endl;
 			if( (itr->range.x() < pos.x()&& pos.x() < itr->range.y())&&
-				(itr->range.z() < pos.y()&& pos.y() < itr->range.w())){
+				(itr->range.z() < pos.y()&& pos.y() < itr->range.w())&&
+				(radius <= caculateRadius(itr->range))){
 					index = itr->index;
+					
+					cout<<"rangexmin:"<<itr->range.x()<<" posx:"<<pos.x()<<" rangexmax:"<<itr->range.y()<<endl;
+					cout<<"rangeymin:"<<itr->range.z()<<" posy:"<<pos.y()<<" rangeymax:"<<itr->range.w()<<endl;
 					break;
 			}
 		}
+		cout<<"--------------------"<<endl;
 		if(index != -1 && doshow == true){
 			QString content;
 			QString title;
@@ -465,6 +472,10 @@ void MainWindow::showPos(osg::Vec3 pos){
 
 void MainWindow::resetDoshowFlag(){
 	doshow = true;
+}
+
+float MainWindow::caculateRadius(osg::Vec4& points){
+	return sqrt(pow((double)(points.w() - points.z()), 2.0) + pow((double)(points.y() - points.x()), 2.0));
 }
 
 void MainWindow::enableItems(){

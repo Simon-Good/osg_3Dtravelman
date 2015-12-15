@@ -48,6 +48,7 @@ public:
 	void createToolBar();
 	void updateCameraSetting(const CameraContext &cc);
 	virtual bool winEvent(MSG * message, long * result);
+	float caculateRadius(osg::Vec4& points);
 public slots:
 	void open_peng();
 	void about();
@@ -56,7 +57,7 @@ public slots:
 	void showCameraSettingDialog();
 	void setCameraLowMode();
 	void setCameraFlyMode();
-	void showPos(osg::Vec3 pos);
+	void showPos(osg::Vec3 pos, float radius);
 	void enableItems();
 	void toolbarSwitch();
 	void resetDoshowFlag();
