@@ -267,15 +267,10 @@ vector<RangeNode>* ViewerWidget::getKeepOutBorder(int modelindex){
 	return ret;
 }
 
-<<<<<<< HEAD
-list<map<string, string>*>* ViewerWidget::generateDBMap(int index){
-	map<string, string>* retMap;
-	//list<map<string, string>*> 
-=======
 vector<map<string, string>*>* ViewerWidget::generateDBMap(int index){
 	map<string, string>* retMap;
 	vector<map<string, string>*>* retVec = new vector<map<string, string>*>();
->>>>>>> dev
+
 	if(index == 0){
 		retMap = new map<string, string>();
 		retMap->insert(pair<string, string>("µÁ—π","dianya0"));
@@ -321,11 +316,9 @@ vector<map<string, string>*>* ViewerWidget::generateDBMap(int index){
 		retMap->insert(pair<string, string>("µÁ—π","dianya5"));
 		retVec->push_back(retMap);
 	}
-<<<<<<< HEAD
-	return NULL;
-=======
+
 	return retVec;
->>>>>>> dev
+
 }
 
 void ViewerWidget::paintEvent(QPaintEvent* event){

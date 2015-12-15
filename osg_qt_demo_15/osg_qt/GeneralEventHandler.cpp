@@ -28,7 +28,7 @@ bool GeneralEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 				TextPanel* tp;
 				//sql command execute here//
 				//split sql result into map<field,value> form//
-				setTempData(dbMap);
+				//setTempData(dbMap);
 				for(int i = 1; i< numchildren; i++){
 					//rawtime = time(NULL);
 					//struct tm* ucttime = localtime(&rawtime);
