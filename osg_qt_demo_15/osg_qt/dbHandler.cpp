@@ -92,7 +92,7 @@ void dbHandler::get_dbMessage(int index,vector<map<string,string>*>* v_map)
 			v_map->at(i)->at("上导温度")=_bstr_t(pRs->GetCollect("SDWD1"))+"℃";
 			v_map->at(i)->at("下导温度")=_bstr_t(pRs->GetCollect("SDWD3"))+"℃";
 			v_map->at(i)->at("上油缸温度")=_bstr_t(pRs->GetCollect("SYGWD"))+"℃";
-			v_map->at(i)->at("下油缸温度")=_bstr_t(pRs->GetCollect("XYGWD")+"℃";
+			v_map->at(i)->at("下油缸温度")=_bstr_t(pRs->GetCollect("XYGWD"))+"℃";
 			v_map->at(i)->at("推力瓦温度")=_bstr_t(pRs->GetCollect("TLWWD1"))+"℃";
 		}
 		i++;

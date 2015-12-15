@@ -39,7 +39,7 @@ bool GeneralEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 					//p = stime.rfind(" ");
 					//stime = stime.substr(p, stime.length());
 					tp = dynamic_cast<TextPanel*>(curSwt->getChild(i));
-					tp->updateContent(dbMap->at(i));
+					tp->updateContent(dbMap->at(i-1));
 				}
 			}
 		}
@@ -85,8 +85,8 @@ void GeneralEventHandler::setCurrentScene(osg::Switch* swt, int index){
 
 void GeneralEventHandler::setDBMap(vector<map<string, string>*>* dbmap){
 	if(dbMap != NULL){
-		for(int i = 0; i< dbmap->size(); i++){
-			delete dbmap->at(i);
+		for(int i = 0; i< dbMap->size(); i++){
+			delete dbMap->at(i);
 		}
 		delete dbMap;
 	}

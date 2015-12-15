@@ -318,7 +318,6 @@ vector<map<string, string>*>* ViewerWidget::generateDBMap(int index){
 	}
 
 	return retVec;
-
 }
 
 void ViewerWidget::paintEvent(QPaintEvent* event){
