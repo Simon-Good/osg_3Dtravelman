@@ -2,7 +2,6 @@
 #include <QTextCodec>
 #include <QWaitCondition>
 #include <locale.h>
-#include "dbHandler.h"
 #include "mainwindow.h"
 #include "CameraSetting.h"
 #include "WelcomePage.h"
@@ -18,7 +17,6 @@ int main(int argc, char** argv){
 	QTextCodec::setCodecForCStrings(codec);
 
 	setlocale(LC_ALL, ".936");
-	dbHandler::Get_dbH_Instance();
 	WelcomePage* wp = new WelcomePage();
 	MainWindow *mwd = new MainWindow(wp);
 	wp->setValue(100);

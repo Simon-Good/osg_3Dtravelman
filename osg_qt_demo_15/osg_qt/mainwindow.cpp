@@ -28,6 +28,7 @@ MainWindow::MainWindow(WelcomePage* wp, QWidget *parent)
 	wp->setValue(5);
 	setGeometry(100, 100, 800, 600);
 	setWindowTitle(tr("高港闸站工程三维可视化综合管理与决策系统"));
+	dbHandler::Get_dbH_Instance();
 	wp->setValue(15);
 	createAction();
 	createMenu();

@@ -75,7 +75,6 @@ void ViewerWidget::reloadModel(int index){
 	GeneralEventHandler::Instance(this)->setDBMap(generateDBMap(index));
 	GeneralEventHandler::Instance(this)->setCurrentScene(swt->getChild(index)->asSwitch(), index);
 	TravelManipulator::Instance()->setCameraContext(cameraContextList[index]);
-	cout<<"reload finished"<<endl;
 }
 
 void ViewerWidget::loadModels(int size){
@@ -144,11 +143,13 @@ void ViewerWidget::loadModleThread(int modelnum){
 				textnode = new TextPanel();
 				textnode->setDataVariance(osg::Object::DYNAMIC);
 				float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
-				float ypos = (-1)*(keypoint.z() + abs(keypoint.w()-keypoint.z())/2)+50;
-				if(i< 9)
+				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2;
+				if(i< 9){
+					ypos = (-1)*ypos+50;
 					textnode->addYZContent(osg::Vec3(xpos, ypos, 200.0), 300, 135);
-				else if(i >= 9 && i< 18){
-					textnode->addYZContent(osg::Vec3(xpos, ypos, 200.0), 300, 135, true);
+				}else if(i >= 9 && i< 18){
+					ypos = ypos - 550;
+					textnode->addYZContent(osg::Vec3(xpos, ypos, 200.0), 150, 100, true);
 				}
 				textnode->setName(namehead);
 				threadSwt->insertChild(i+1, textnode, true);
