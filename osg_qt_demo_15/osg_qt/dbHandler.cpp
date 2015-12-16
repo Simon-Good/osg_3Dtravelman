@@ -45,9 +45,7 @@ dbHandler::dbHandler(){
 string dbHandler::get_dbMessage(string message,string table,string restrict)
 {
 	//string cmd="Select "+message+" from "+table+" where ID ="+restrict;
-	cout<<"in db getMessage"<<endl;
 	if(pConn != NULL){
-		cout<<"in db getMessage pConn not NULL"<<endl;
 		string cmd="Select * from v_T_RT_UNT_R";
 		_bstr_t bstring=cmd.c_str();//ÀàÐÍ×ª»»
 	
@@ -55,10 +53,8 @@ string dbHandler::get_dbMessage(string message,string table,string restrict)
 		string a;
 
 		a=_bstr_t(pRs->GetCollect("Name"));
-		cout<<"db return from not null"<<endl;
 		return a;
 	}else{
-		cout<<"db return from null"<<endl;
 		return "";
 	}
 }
