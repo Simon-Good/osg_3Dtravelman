@@ -106,19 +106,15 @@ bool dbHandler::get_dbMessage(int index,vector<map<string,string>*>* v_map)
 				v_map->at(i)->at("下油缸温度")=_bstr_t(pRs->GetCollect("XYGWD"))+"℃";
 				v_map->at(i)->at("推力瓦温度")=_bstr_t(pRs->GetCollect("TLWWD1"))+"℃";
 				string KG="KG"+to_string((long long)(i+1));
-				cout<<KG;
+				//cout<<KG;
 
 				_bstr_t kg=KG.c_str();
-				v_map->at(i)->at(("闸门高度"))=_bstr_t(pRs2->GetCollect(kg))+"m";
+				v_map->at(i+9)->at(("闸门高度"))=_bstr_t(pRs2->GetCollect(kg))+"m";
+				//cout<<v_map->at(i+9)->at("闸门高度")<<endl;
 			}
 			i++;
 			pRs->MoveNext();
 		}
-
-
-
-
-
 		return true;
 	}else{
 		return false;

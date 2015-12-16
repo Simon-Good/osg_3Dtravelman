@@ -138,7 +138,6 @@ void ViewerWidget::loadModleThread(int modelnum){
 			string namehead = "INFO_#";
 			osg::Vec4 keypoint;
 			for(int i = 0; i< 18; i++){
-				namehead = namehead + to_string((long long)i);
 				keypoint = cc.keepout->at(i).range;
 				textnode = new TextPanel();
 				textnode->setDataVariance(osg::Object::DYNAMIC);
@@ -148,10 +147,10 @@ void ViewerWidget::loadModleThread(int modelnum){
 					ypos = (-1)*ypos+50;
 					textnode->addYZContent(osg::Vec3(xpos, ypos, 200.0), 300, 135);
 				}else if(i >= 9 && i< 18){
-					ypos = ypos - 550;
-					textnode->addYZContent(osg::Vec3(xpos, ypos, 200.0), 150, 100, true);
+					ypos = ypos - 500;
+					textnode->addYZContent(osg::Vec3(xpos, ypos, 150.0), 90, 50, true);
 				}
-				textnode->setName(namehead);
+				textnode->setName(namehead + to_string((long long)i));
 				threadSwt->insertChild(i+1, textnode, true);
 			}
 
