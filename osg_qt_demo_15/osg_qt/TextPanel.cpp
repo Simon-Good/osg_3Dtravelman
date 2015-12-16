@@ -10,6 +10,8 @@ TextPanel::TextPanel(void):osg::MatrixTransform()
 	this->addChild(geode);
 	timeString = "";
 	textString = "床前明月光；\n疑是地上霜；\n举头望明月；\n低头思故乡；\n";
+	width = 1.0;
+	height = 1.0;
 }
 
 
@@ -17,9 +19,12 @@ TextPanel::~TextPanel(void)
 {
 }
 
-void TextPanel::addYZContent(const osg::Vec3& leftupCorner, float width, float height, bool minus, string fontpath){
+void TextPanel::addYZContent(const osg::Vec3& leftupCorner, float wid, float hit, bool minus, string fontpath){
 	osg::ref_ptr<osg::Geometry> geom = new osg::Geometry();
 	osg::Vec3Array* nodeList = new osg::Vec3Array();
+
+	width = wid;
+	height = hit;
 	nodeList->push_back(leftupCorner);
 	nodeList->push_back(leftupCorner + osg::Vec3(0.0f, width, 0.0f));
 	nodeList->push_back(leftupCorner + osg::Vec3(0.0f, width, height));
