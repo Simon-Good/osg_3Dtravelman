@@ -75,6 +75,7 @@ void ViewerWidget::reloadModel(int index){
 	GeneralEventHandler::Instance(this)->setDBMap(generateDBMap(index));
 	GeneralEventHandler::Instance(this)->setCurrentScene(swt->getChild(index)->asSwitch(), index);
 	TravelManipulator::Instance()->setCameraContext(cameraContextList[index]);
+	cout<<"reload finished"<<endl;
 }
 
 void ViewerWidget::loadModels(int size){
@@ -86,7 +87,7 @@ void ViewerWidget::loadModels(int size){
 	underswt->addChild(node, true);
 	GeneralEventHandler::Instance(this)->setCurrentScene(underswt, 0);
 	CameraContext cc;
-	cc.m_fMoveSpeed = 50.0f;
+	cc.m_fMoveSpeed = 150.0f;
 	cc.m_vPosition = osg::Vec3(40315.8f, -78755.8f, 900.0f);
 	cc.m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.33946);
 	cc.max_height = 2500;
@@ -122,13 +123,13 @@ void ViewerWidget::loadModleThread(int modelnum){
 		cc.keepout  = getKeepOutBorder(i);
 		cc.keepin = getKeepInBorder(i);
 		if(i == 1){
-			cc.m_fMoveSpeed = 15.0f;
+			cc.m_fMoveSpeed = 35.0f;
 			cc.m_vPosition = osg::Vec3(380, -7272.73f, -30.0f);
 			cc.m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.26486f);
 			cc.max_height = 200;
 			cc.min_height = -80;
 		}else if(i == 2){//泵站一层
-			cc.m_fMoveSpeed = 5.0f;
+			cc.m_fMoveSpeed = 35.0f;
 			cc.m_vPosition = osg::Vec3(-174.813f, -1986.09f, 180.0f);
 			cc.m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.329f);
 			cc.max_height = 1000;
@@ -137,33 +138,37 @@ void ViewerWidget::loadModleThread(int modelnum){
 
 			string namehead = "INFO_#";
 			osg::Vec4 keypoint;
-			for(int i = 0; i< 9; i++){
+			for(int i = 0; i< 18; i++){
 				namehead = namehead + to_string((long long)i);
 				keypoint = cc.keepout->at(i).range;
 				textnode = new TextPanel();
 				textnode->setDataVariance(osg::Object::DYNAMIC);
 				float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
 				float ypos = (-1)*(keypoint.z() + abs(keypoint.w()-keypoint.z())/2)+50;
-				textnode->addYZContent(namehead + "\n", osg::Vec3(xpos, ypos, 200.0), 300, 135);
+				if(i< 9)
+					textnode->addYZContent(osg::Vec3(xpos, ypos, 200.0), 300, 135);
+				else if(i >= 9 && i< 18){
+					textnode->addYZContent(osg::Vec3(xpos, ypos, 200.0), 300, 135, true);
+				}
 				textnode->setName(namehead);
 				threadSwt->insertChild(i+1, textnode, true);
 			}
 
 		}else if(i == 3){
-			cc.m_fMoveSpeed = 5.0f;
+			cc.m_fMoveSpeed = 35.0f;
 			cc.m_vPosition = osg::Vec3(-324.813f, -1086.09f, -240.0f);
 			cc.m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.329f);
 			cc.max_height = -90;
 			cc.min_height = -350;
 			//cc.light_Position = osg::Vec4(-500, -3557, -240, 0.0);
 		}else if(i == 4){
-			cc.m_fMoveSpeed = 5.0f;
+			cc.m_fMoveSpeed = 35.0f;
 			cc.m_vPosition = osg::Vec3(40.813f, -550.09f, -30.0f);
 			cc.m_vRotation = osg::Vec3(1.5407,0.0f,0.0f);
 			cc.max_height = 70;
 			cc.min_height = 0;
 		}else if(i == 5){
-			cc.m_fMoveSpeed = 2.0f;
+			cc.m_fMoveSpeed = 20.0f;
 			cc.m_vPosition = osg::Vec3(83.3197, -1841.9, 0.0f);
 			cc.m_vRotation = osg::Vec3(1.5407,0.0f,0.0f);
 			cc.max_height = 70;
@@ -280,7 +285,7 @@ vector<map<string, string>*>* ViewerWidget::generateDBMap(int index){
 		retMap->insert(pair<string, string>("电压","dianya1"));
 		retVec->push_back(retMap);
 	}else if(index == 2){
-		for(int i = 0; i< 9; i++){
+		for(int i = 0; i< 18; i++){
 			retMap = new map<string, string>();
 			retMap->insert(pair<string, string>("电压",""));
 			retMap->insert(pair<string, string>("电流",""));

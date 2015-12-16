@@ -17,7 +17,7 @@ TextPanel::~TextPanel(void)
 {
 }
 
-void TextPanel::addYZContent(string str, const osg::Vec3& leftupCorner, float width, float height, string fontpath){
+void TextPanel::addYZContent(const osg::Vec3& leftupCorner, float width, float height, bool minus, string fontpath){
 	osg::ref_ptr<osg::Geometry> geom = new osg::Geometry();
 	osg::Vec3Array* nodeList = new osg::Vec3Array();
 	nodeList->push_back(leftupCorner);
@@ -39,9 +39,11 @@ void TextPanel::addYZContent(string str, const osg::Vec3& leftupCorner, float wi
 	font = osgText::readFontFile(fontpath);
 	setupProperties(*content, font, 12.0f, leftupCorner + osg::Vec3(1.0f, 0.0f, 0.0f));//20
 
-	updateContent(str);
-	geode->addDrawable(content.get());
-	this->setMatrix(osg::Matrix::rotate(3.141592657, osg::Vec3(0, 0, 1)));
+	//updateContent(str);
+	if(minus == false){
+		geode->addDrawable(content.get());
+		this->setMatrix(osg::Matrix::rotate(3.141592657, osg::Vec3(0, 0, 1)));
+	}
 }
 
 void TextPanel::updateContent(string cont){

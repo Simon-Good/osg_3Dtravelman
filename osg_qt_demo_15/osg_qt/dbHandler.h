@@ -18,7 +18,7 @@ public:
 	string  get_dbMessage(string message,string table,string restrict);
 	static dbHandler *Get_dbH_Instance();
 	string get_dbMessage(string);
-	void get_dbMessage(int index,vector<map<string,string>*>*);
+	bool get_dbMessage(int index,vector<map<string,string>*>*);
 public:
 	_RecordsetPtr pRs;
 	_ConnectionPtr pConn;

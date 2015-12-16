@@ -25,12 +25,16 @@ bool GeneralEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 			frameCount++;
 			if(frameCount % 30 == 0){
 				if(curSwt->getValueList().size() > 1){
+					cout<<"curswt frame"<<endl;
 					int numchildren = curSwt->getNumChildren();
 					TextPanel* tp;
-					dbHandler::Get_dbH_Instance()->get_dbMessage(curSwtIndex,dbMap);
-					for(int i = 1; i< numchildren; i++){
-						tp = dynamic_cast<TextPanel*>(curSwt->getChild(i));
-						tp->updateContent(dbMap->at(i-1));
+					cout<<"curswt frame1"<<endl;
+					if(dbHandler::Get_dbH_Instance()->get_dbMessage(curSwtIndex,dbMap)==true){
+						cout<<"curswt frame2"<<endl;
+						for(int i = 1; i< numchildren; i++){
+							tp = dynamic_cast<TextPanel*>(curSwt->getChild(i));
+							tp->updateContent(dbMap->at(i-1));
+						}
 					}
 				}
 			}
@@ -73,6 +77,7 @@ void GeneralEventHandler::infoEnable(bool enable){
 void GeneralEventHandler::setCurrentScene(osg::Switch* swt, int index){
 	curSwt = swt;
 	curSwtIndex = index;
+	cout<<curSwt->getNumChildren()<<endl;
 }
 
 void GeneralEventHandler::setDBMap(vector<map<string, string>*>* dbmap){
