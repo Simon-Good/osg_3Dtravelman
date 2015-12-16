@@ -24,7 +24,7 @@ public:
 	void infoEnable(bool enable);
 	void setCurrentScene(osg::Switch*, int);
 	void setDBMap(vector<map<string, string>*>* dbmap);
-	void setTempData(vector<map<string, string>*>* dbmap);
+	//void setTempData(vector<map<string, string>*>* dbmap);
 protected:
 	GeneralEventHandler():curSwtIndex(0),frameCount(0){curSwt = NULL;dbMap = NULL;}
 	~GeneralEventHandler(){}
