@@ -85,7 +85,6 @@ void GeneralEventHandler::setDBMap(vector<map<string, string>*>* dbmap){
 	}
 	this->dbMap = dbmap;
 }
-
 //void GeneralEventHandler::setTempData(vector<map<string, string>*>* dbmap){
 //	for(int i = 0; i< dbmap->size(); i++){
 //		dbmap->at(i)->at("µÁ—π") = "DY";

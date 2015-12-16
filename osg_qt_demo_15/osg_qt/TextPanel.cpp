@@ -42,13 +42,12 @@ void TextPanel::addYZContent(const osg::Vec3& leftupCorner, float wid, float hit
 	geode->addDrawable(geom.get());
 
 	font = osgText::readFontFile(fontpath);
-	setupProperties(*content, font, 12.0f, leftupCorner + osg::Vec3(1.0f, 0.0f, 0.0f));//20
+	setupProperties(*content, font, 12.0f, leftupCorner + osg::Vec3(1.0f, 0.0f, height-5));//5 margin to up border
 
 	//updateContent(str);
-	if(minus == false){
-		geode->addDrawable(content.get());
+	geode->addDrawable(content.get());
+	if(minus == false)
 		this->setMatrix(osg::Matrix::rotate(3.141592657, osg::Vec3(0, 0, 1)));
-	}
 }
 
 void TextPanel::updateContent(string cont){
@@ -62,15 +61,21 @@ void TextPanel::updateContent(string cont){
 
 void TextPanel::updateContent(map<string,string>* dbmap){
 	string contentString = "";
+	int count = dbmap->size();
 	for(map<string, string>::iterator it = dbmap->begin();
 		it != dbmap->end();
 		it++)
 	{
-		contentString += it->first + ":"+ it->second + "        ";
-		it++;
-		if(it == dbmap->end())
-			break;
-		contentString += it->first + ":"+ it->second + "\n";
+		if(count == 2){
+			contentString += it->first + ":"+ it->second + "\n";
+		}else{
+			contentString += it->first + ":"+ it->second + "        ";
+			it++;
+			if(it == dbmap->end())
+				break;
+			contentString += it->first + ":"+ it->second + "\n";
+		}
+
 	}
 	int requiredSize = mbstowcs(NULL, contentString.c_str(), 0);
 	wchar_t * wtext = new wchar_t[requiredSize+1];
@@ -89,7 +94,8 @@ void TextPanel::setupProperties(osgText::Text& textObject,osgText::Font* font,fl
 	textObject.setCharacterSize(size);//字体大小
 	textObject.setPosition(pos);
 	textObject.setColor(osg::Vec4(0.8, 1.0, 0.9, 1.0));
-	textObject.setAlignment(osgText::Text::LEFT_BOTTOM);//文字显示方向
+	//textObject.setAlignment(osgText::Text::LEFT_BOTTOM);//文字显示方向
+	textObject.setAlignment(osgText::Text::LEFT_TOP);
 	textObject.setAxisAlignment(osgText::Text::SCREEN);//获取文字对称成方式正对屏幕方向
 	textObject.setAutoRotateToScreen(true);//跟随视角不断变化，但离物体越远，文字越小，和现实当中像类似
     textObject.setAxisAlignment(osgText::Text::YZ_PLANE);//获取文字对称成方式
