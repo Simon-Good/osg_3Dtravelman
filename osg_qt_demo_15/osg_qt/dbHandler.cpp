@@ -84,8 +84,12 @@ bool dbHandler::get_dbMessage(int index,vector<map<string,string>*>* v_map)
 	if(pConn != NULL){
 		string cmd="select * from v_T_RT_UNT_R_1";
 		_bstr_t bstring=cmd.c_str();//类型转换
+
+		string cmd2="select * from V_T_RT_YS_R1";
+		_bstr_t bstring2=cmd2.c_str();
 		//map<string,string> *m;
 		pRs=pConn->Execute(bstring,0,adCmdText);
+		pRs2=pConn->Execute(bstring2,0,adCmdText);
 		int i=0;
 		while(!pRs->EndOfFile)
 		{
@@ -105,10 +109,18 @@ bool dbHandler::get_dbMessage(int index,vector<map<string,string>*>* v_map)
 				v_map->at(i)->at("上油缸温度")=_bstr_t(pRs->GetCollect("SYGWD"))+"℃";
 				v_map->at(i)->at("下油缸温度")=_bstr_t(pRs->GetCollect("XYGWD"))+"℃";
 				v_map->at(i)->at("推力瓦温度")=_bstr_t(pRs->GetCollect("TLWWD1"))+"℃";
+				string KG="KG"+i+1;
+				_bstr_t kg=KG.c_str();
+				v_map->at(i)->at(("闸门高度"))=_bstr_t(pRs2->GetCollect(kg))+"m";
 			}
 			i++;
 			pRs->MoveNext();
 		}
+
+
+
+
+
 		return true;
 	}else{
 		return false;
