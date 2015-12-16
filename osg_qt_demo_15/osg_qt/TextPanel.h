@@ -23,4 +23,6 @@ private:
 	osg::ref_ptr<osgText::Font> font;
 	string textString; 
 	string timeString;
+	float width;
+	float height;
 };

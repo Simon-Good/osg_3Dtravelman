@@ -307,6 +307,7 @@ vector<map<string, string>*>* ViewerWidget::generateDBMap(int index){
 			retMap->insert(pair<string, string>("闸上水位",""));
 			retMap->insert(pair<string, string>("调度区水位",""));
 			retMap->insert(pair<string, string>("闸下水位", ""));
+			retMap->insert(pair<string, string>("闸门高度", ""));
 			retVec->push_back(retMap);
 		}
 	}else if(index == 3){
