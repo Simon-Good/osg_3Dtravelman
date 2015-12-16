@@ -86,26 +86,26 @@ void GeneralEventHandler::setDBMap(vector<map<string, string>*>* dbmap){
 	this->dbMap = dbmap;
 }
 
-void GeneralEventHandler::setTempData(vector<map<string, string>*>* dbmap){
-	for(int i = 0; i< dbmap->size(); i++){
-		dbmap->at(i)->at("电压") = "DY";
-		dbmap->at(i)->at("电流") = "DL";
-		dbmap->at(i)->at("有功功率") = "YGGL";
-		dbmap->at(i)->at("无功功率") = "WGGL";
-		dbmap->at(i)->at("励磁电流") = "LCDL";
-		dbmap->at(i)->at("励磁电压") = "LCDY";
-		dbmap->at(i)->at	("主机转速") = "ZJZS";
-		dbmap->at(i)->at	("定子温度") = "DZWD";
-		dbmap->at(i)->at	("上导温度") = "SDWD";
-		dbmap->at(i)->at	("下导温度") = "XDWD";
-		dbmap->at(i)->at	("上油缸温度") = "SYGWD";
-		dbmap->at(i)->at	("下油缸温度") = "XYGWD";
-		dbmap->at(i)->at	("推力瓦温度") = "TLWWD";
-		dbmap->at(i)->at	("排涝") = "PL";
-		dbmap->at(i)->at	("灌溉") = "GG";
-		dbmap->at(i)->at	("叶片角度") = "YPJD";
-		dbmap->at(i)->at	("闸上水位") = "ZSSW";
-		dbmap->at(i)->at	("调度区水位") = "DDQSW";
-		dbmap->at(i)->at	("闸下水位") = "ZXSW";
-	}
-}
+//void GeneralEventHandler::setTempData(vector<map<string, string>*>* dbmap){
+//	for(int i = 0; i< dbmap->size(); i++){
+//		dbmap->at(i)->at("电压") = "DY";
+//		dbmap->at(i)->at("电流") = "DL";
+//		dbmap->at(i)->at("有功功率") = "YGGL";
+//		dbmap->at(i)->at("无功功率") = "WGGL";
+//		dbmap->at(i)->at("励磁电流") = "LCDL";
+//		dbmap->at(i)->at("励磁电压") = "LCDY";
+//		dbmap->at(i)->at	("主机转速") = "ZJZS";
+//		dbmap->at(i)->at	("定子温度") = "DZWD";
+//		dbmap->at(i)->at	("上导温度") = "SDWD";
+//		dbmap->at(i)->at	("下导温度") = "XDWD";
+//		dbmap->at(i)->at	("上油缸温度") = "SYGWD";
+//		dbmap->at(i)->at	("下油缸温度") = "XYGWD";
+//		dbmap->at(i)->at	("推力瓦温度") = "TLWWD";
+//		dbmap->at(i)->at	("排涝") = "PL";
+//		dbmap->at(i)->at	("灌溉") = "GG";
+//		dbmap->at(i)->at	("叶片角度") = "YPJD";
+//		dbmap->at(i)->at	("闸上水位") = "ZSSW";
+//		dbmap->at(i)->at	("调度区水位") = "DDQSW";
+//		dbmap->at(i)->at	("闸下水位") = "ZXSW";
+//	}
+//}

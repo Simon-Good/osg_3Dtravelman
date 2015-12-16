@@ -21,6 +21,7 @@ public:
 	bool get_dbMessage(int index,vector<map<string,string>*>*);
 public:
 	_RecordsetPtr pRs;
+	_RecordsetPtr pRs2;
 	_ConnectionPtr pConn;
 private:
 	static dbHandler *dbH_Instance;
