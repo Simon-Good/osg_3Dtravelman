@@ -144,7 +144,7 @@ void ViewerWidget::loadModleThread(int modelnum){
 				textnode->setDataVariance(osg::Object::DYNAMIC);
 				float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
 				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2;
-				if(i< 9){
+				if(i >= 0 && i< 9){
 					ypos = (-1)*ypos+50;
 					textnode->addYZContent(osg::Vec3(xpos, ypos, 200.0), 300, 135);
 				}else if(i >= 9 && i< 18){
@@ -276,7 +276,6 @@ vector<RangeNode>* ViewerWidget::getKeepOutBorder(int modelindex){
 vector<map<string, string>*>* ViewerWidget::generateDBMap(int index){
 	map<string, string>* retMap;
 	vector<map<string, string>*>* retVec = new vector<map<string, string>*>();
-
 	if(index == 0){
 		retMap = new map<string, string>();
 		retMap->insert(pair<string, string>("电压","dianya0"));
@@ -286,28 +285,35 @@ vector<map<string, string>*>* ViewerWidget::generateDBMap(int index){
 		retMap->insert(pair<string, string>("电压","dianya1"));
 		retVec->push_back(retMap);
 	}else if(index == 2){
-		for(int i = 0; i< 18; i++){
+		for(int i = 0; i< 18; i++){//dianji1 juanyangji1 dianji2 juanyangji2... dianji9 juanyangji9 
 			retMap = new map<string, string>();
-			retMap->insert(pair<string, string>("电压",""));
-			retMap->insert(pair<string, string>("电流",""));
-			retMap->insert(pair<string, string>("有功功率",""));
-			retMap->insert(pair<string, string>("无功功率",""));
-			retMap->insert(pair<string, string>("励磁电流",""));
-			retMap->insert(pair<string, string>("励磁电压",""));
-			retMap->insert(pair<string, string>("主机转速",""));
-			retMap->insert(pair<string, string>("定子温度",""));
-			retMap->insert(pair<string, string>("上导温度",""));
-			retMap->insert(pair<string, string>("下导温度",""));
-			retMap->insert(pair<string, string>("上油缸温度",""));
-			retMap->insert(pair<string, string>("下油缸温度",""));
-			retMap->insert(pair<string, string>("推力瓦温度",""));
-			retMap->insert(pair<string, string>("排涝", ""));
-			retMap->insert(pair<string, string>("灌溉", ""));
-			retMap->insert(pair<string, string>("叶片角度",""));
-			retMap->insert(pair<string, string>("闸上水位",""));
-			retMap->insert(pair<string, string>("调度区水位",""));
-			retMap->insert(pair<string, string>("闸下水位", ""));
-			retMap->insert(pair<string, string>("闸门高度", ""));
+			if(i>=0 && i< 9){
+				retMap->insert(pair<string, string>("电压",""));
+				retMap->insert(pair<string, string>("电流",""));
+				retMap->insert(pair<string, string>("有功功率",""));
+				retMap->insert(pair<string, string>("无功功率",""));
+				retMap->insert(pair<string, string>("励磁电流",""));
+
+				retMap->insert(pair<string, string>("励磁电压",""));
+				retMap->insert(pair<string, string>("主机转速",""));
+				retMap->insert(pair<string, string>("定子温度",""));
+				retMap->insert(pair<string, string>("上导温度",""));
+				retMap->insert(pair<string, string>("下导温度",""));
+
+				retMap->insert(pair<string, string>("上油缸温度",""));
+				retMap->insert(pair<string, string>("下油缸温度",""));
+				retMap->insert(pair<string, string>("推力瓦温度",""));
+				retMap->insert(pair<string, string>("排涝", ""));
+				retMap->insert(pair<string, string>("灌溉", ""));
+
+				retMap->insert(pair<string, string>("叶片角度",""));
+				retMap->insert(pair<string, string>("闸上水位",""));
+				retMap->insert(pair<string, string>("调度区水位",""));
+				retMap->insert(pair<string, string>("闸下水位", ""));
+			}else if(i>=9 && i< 18){
+				retMap->insert(pair<string, string>("闸门高度", ""));
+				retMap->insert(pair<string, string>("电机电流", ""));
+			}
 			retVec->push_back(retMap);
 		}
 	}else if(index == 3){
