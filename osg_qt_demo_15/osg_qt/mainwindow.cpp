@@ -21,6 +21,18 @@ void MyMenu::mouseReleaseEvent(QMouseEvent *e){
     }
     QMenu::mouseReleaseEvent(e);
 }
+
+void MyGraphicsView::mouseReleaseEvent(QMouseEvent *event){
+	if (QGraphicsItem *item = itemAt(event->pos())) {
+         if (MapItem *image = qgraphicsitem_cast<MapItem *>(item)){
+			 int d = image->data(0).toInt();
+			 if(d == 0){
+				 emit itemClicked(osg::Vec3(28332.1, -40417.7, 900), osg::Vec3(1.5132, 0, -4.78175));
+			 }
+		 }
+     }
+     QGraphicsView::mouseReleaseEvent(event);
+}
 MainWindow::MainWindow(WelcomePage* wp, QWidget *parent)
 	: QMainWindow(parent)
 {
@@ -180,10 +192,28 @@ void MainWindow::createDockWindow(){
 		 QListWidgetItem* item = customerList->item(i);
 		 item->setFlags(Qt::NoItemFlags);
 	 }
+	
      dock->setWidget(customerList);
 	 this->setContextMenuPolicy(Qt::NoContextMenu);
      addDockWidget(Qt::LeftDockWidgetArea, dock);
      viewMenu->addAction(dock->toggleViewAction());
+
+	 QDockWidget *mapdock = new QDockWidget(tr("地图窗口"), this);
+     mapdock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+	 QGraphicsScene *scene = new QGraphicsScene(0, 0, 400, 300);
+	 MapItem* mapitem = new MapItem(QPixmap("./open.png"));
+	 mapitem->setData(0, 0);
+	 mapitem->setPos(20, 10);
+	 mapitem->setToolTip(QString(tr("管理站")));
+	 scene->addItem(mapitem);
+	 MyGraphicsView *view = new MyGraphicsView(scene);
+	 view->setRenderHint(QPainter::Antialiasing);
+	 view->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
+	 QPixmap pixmap = QPixmap("./background2.bmp").scaled(400, 300);
+	 view->setBackgroundBrush(pixmap);
+	 connect(view, SIGNAL(itemClicked(osg::Vec3&, osg::Vec3&)), this, SLOT(setCameraToPosition(osg::Vec3&, osg::Vec3&)));
+	 mapdock->setWidget(view);
+	 addDockWidget(Qt::LeftDockWidgetArea, mapdock);
 }
 
 void  MainWindow::open_peng(){
@@ -533,6 +563,13 @@ void MainWindow::textInfoSwitch(){
 			textInfoAct->setChecked(false);
 		}
 	}
+}
+
+void MainWindow::setCameraToPosition(osg::Vec3& trans, osg::Vec3& rot){
+	CameraContext cc = TravelManipulator::Instance()->getCameraContext();
+	cc.m_vPosition = trans;
+	cc.m_vRotation = rot;
+	TravelManipulator::Instance()->setCameraContext(cc);
 }
 
 bool MainWindow::winEvent(MSG * message, long * result){
