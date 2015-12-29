@@ -11,6 +11,9 @@
 #include <QMessageBox>
 #include <QMouseEvent>
 #include <QFileDialog>
+#include <QGraphicsView>
+#include <QGraphicsScene>
+#include "MapItem.h"
 #include "ViewerWidget.h"
 #include "TravelManipulator.h"
 #include "CameraSetting.h"
@@ -36,6 +39,17 @@ public:
 	void mouseReleaseEvent(QMouseEvent *e);
 };
 
+class MyGraphicsView: public QGraphicsView{
+	Q_OBJECT
+public:
+	MyGraphicsView(QGraphicsScene* scene, QWidget *parent = 0):QGraphicsView(scene, parent){}
+	~MyGraphicsView(){}
+protected:
+    void mouseReleaseEvent(QMouseEvent *event);
+signals:
+	void itemClicked(osg::Vec3& trans, osg::Vec3& rot);
+};
+
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -58,6 +72,7 @@ public slots:
 	void showCameraSettingDialog();
 	void setCameraLowMode();
 	void setCameraFlyMode();
+	void setCameraToPosition(osg::Vec3& trans, osg::Vec3& rot);
 	void showPos(osg::Vec3 pos, float radius);
 	void enableItems();
 	void toolbarSwitch();
