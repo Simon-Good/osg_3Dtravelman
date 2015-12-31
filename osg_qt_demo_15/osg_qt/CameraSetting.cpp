@@ -75,27 +75,27 @@ void CameraSetting::showWithContext(){
 
 void CameraSetting::updateContext(){
 	//CameraContext cc;
-	cc.m_fAngle = rotSpeed_lnEdt->text().toFloat();
-	cc.m_fMoveSpeed = transSpeed_lnEdt->text().toFloat();
-	cc.m_vPosition = osg::Vec3(xpos_lnEdt->text().toFloat(),
+	cc->m_fAngle = rotSpeed_lnEdt->text().toFloat();
+	cc->m_fMoveSpeed = transSpeed_lnEdt->text().toFloat();
+	cc->m_vPosition = osg::Vec3(xpos_lnEdt->text().toFloat(),
 							   ypos_lnEdt->text().toFloat(),
 							   zpos_lnEdt->text().toFloat());
-	cc.m_vRotation = osg::Vec3(xrot_lnEdt->text().toFloat(),
+	cc->m_vRotation = osg::Vec3(xrot_lnEdt->text().toFloat(),
 							   yrot_lnEdt->text().toFloat(),
 							   zrot_lnEdt->text().toFloat());
 	TravelManipulator::Instance()->setCameraContext(cc);
 	close();
 }
 
-void CameraSetting::showWithContext(const CameraContext& cc){
+void CameraSetting::showWithContext(CameraContext* cc){
 	QString text;
-	transSpeed_lnEdt->setText(text.setNum(cc.m_fMoveSpeed));
-	rotSpeed_lnEdt->setText(text.setNum(cc.m_fAngle));
-	xpos_lnEdt->setText(text.setNum(cc.m_vPosition.x()));
-	ypos_lnEdt->setText(text.setNum(cc.m_vPosition.y()));
-	zpos_lnEdt->setText(text.setNum(cc.m_vPosition.z()));
-	xrot_lnEdt->setText(text.setNum(cc.m_vRotation.x()));
-	yrot_lnEdt->setText(text.setNum(cc.m_vRotation.y()));
-	zrot_lnEdt->setText(text.setNum(cc.m_vRotation.z()));
+	transSpeed_lnEdt->setText(text.setNum(cc->m_fMoveSpeed));
+	rotSpeed_lnEdt->setText(text.setNum(cc->m_fAngle));
+	xpos_lnEdt->setText(text.setNum(cc->m_vPosition.x()));
+	ypos_lnEdt->setText(text.setNum(cc->m_vPosition.y()));
+	zpos_lnEdt->setText(text.setNum(cc->m_vPosition.z()));
+	xrot_lnEdt->setText(text.setNum(cc->m_vRotation.x()));
+	yrot_lnEdt->setText(text.setNum(cc->m_vRotation.y()));
+	zrot_lnEdt->setText(text.setNum(cc->m_vRotation.z()));
 	show();
 }

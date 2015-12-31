@@ -58,21 +58,22 @@ protected:
 	bool outRange(const osg::Vec3& pos);
 	
 public:
-	float   m_fMoveSpeed;
-	osg::Vec3    m_vPosition;
-	osg::Vec3    m_vRotation;
-	//osg::Vec4	 light_Position;
-	float m_fAngle;
+	CameraContext *cc;
+	//float   m_fMoveSpeed;
+	//osg::Vec3    m_vPosition;
+	//osg::Vec3    m_vRotation;
+	//float m_fAngle;
+	//float min_height;
+	//float max_height;
+	//bool peng;
+	//bool flymode;
+	//bool lowmode;
+	//double fov;
+
 	float dragDelta;
 	float m_fpushX;//������ʱ��Ļ���
 	float m_fpushY;//�Ҽ����ʱ��Ļ���
-	float min_height;
-	float max_height;
 	bool m_bRightButtonDown;//����Ƿ���
-	bool peng;
-	bool flymode;
-	bool lowmode;
-	double fov;
 	osg::ref_ptr<osgViewer::View> view; 
 
 public:
@@ -82,16 +83,16 @@ public:
 	virtual osg::Matrixd getInverseMatrix(void) const;
 	void ChangePosition(osg::Vec3 delta);
 	virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us);
-	CameraContext getCameraContext();
-	void setCameraContext(const CameraContext& context);
+	CameraContext* getCameraContext();
+	void setCameraContext(CameraContext* context);
 	void setRecordPath(bool rec, string savePath = "");
 	bool getRecordPath(){return recordPath;}
 	void setPlayPath(bool ply, string playPath = "");
 	bool getPlayPath(){return playPath;}
 	void resetStateBits();
 	void switchForbidMove();
-	vector<RangeNode>* keepInBorder;
-	vector<RangeNode>* keepOutBorder;
+	//vector<RangeNode>* keepInBorder;
+	//vector<RangeNode>* keepOutBorder;
 
 private:
 	static TravelManipulator* instance;

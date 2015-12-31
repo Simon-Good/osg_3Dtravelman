@@ -217,23 +217,23 @@ void MainWindow::createDockWindow(){
 }
 
 void  MainWindow::open_peng(){
-	CameraContext cc = TravelManipulator::Instance()->getCameraContext();
-	if(cc.peng == true && (!interecAct->isChecked())){
+	CameraContext *cc = TravelManipulator::Instance()->getCameraContext();
+	if(cc->peng == true && (!interecAct->isChecked())){
 		interecActTB->setIcon(QIcon("./peng_closed.png"));
 		interecActTB->setChecked(false);
-		cc.peng = false;
-	}else if(cc.peng == true && (!interecActTB->isChecked())){
+		cc->peng = false;
+	}else if(cc->peng == true && (!interecActTB->isChecked())){
 		interecActTB->setIcon(QIcon("./peng_closed.png"));
 		interecAct->setChecked(false);
-		cc.peng = false;
-	}else if(cc.peng == false && (interecAct->isChecked())){
+		cc->peng = false;
+	}else if(cc->peng == false && (interecAct->isChecked())){
 		interecActTB->setIcon(QIcon("./peng_open.png"));
 		interecActTB->setChecked(true);
-		cc.peng = true;
-	}else if(cc.peng == false && (interecActTB->isChecked())){
+		cc->peng = true;
+	}else if(cc->peng == false && (interecActTB->isChecked())){
 		interecActTB->setIcon(QIcon("./peng_open.png"));
 		interecAct->setChecked(true);
-		cc.peng = true;
+		cc->peng = true;
 	}
 	TravelManipulator::Instance()->setCameraContext(cc);
 }
@@ -277,14 +277,14 @@ void MainWindow::control(){
 void MainWindow::changeModel(QListWidgetItem* item){
 	currentItem = item;
 	viewWidget->reloadModel(customerList->row(item));
-	CameraContext cc = viewWidget->getCameraContext(customerList->row(item));
+	CameraContext *cc = viewWidget->getCameraContext(customerList->row(item));
 	if(customerList->row(item) == 0){
 		cameraFlyModeAct->setDisabled(false);
-		cameraFlyModeAct->setChecked(cc.flymode);
-		cameraLowModeAct->setChecked(cc.lowmode);
+		cameraFlyModeAct->setChecked(cc->flymode);
+		cameraLowModeAct->setChecked(cc->lowmode);
 		cameraFlyModeActTB->setDisabled(false);
-		cameraFlyModeActTB->setChecked(cc.flymode);
-		cameraLowModeActTB->setChecked(cc.lowmode);
+		cameraFlyModeActTB->setChecked(cc->flymode);
+		cameraLowModeActTB->setChecked(cc->lowmode);
 		GeneralEventHandler::Instance(this)->infoEnable(true);
 		textInfoAct->setDisabled(true);
 		textInfoAct->setCheckable(false);
@@ -320,79 +320,79 @@ void MainWindow::showCameraSettingDialog(){
 	cs->showWithContext();
 }
 
-void MainWindow::updateCameraSetting(const CameraContext &cc){
+void MainWindow::updateCameraSetting(CameraContext* cc){
 	cs->showWithContext(cc);
 }
 
 void MainWindow::setCameraFlyMode(){
-	CameraContext cc = TravelManipulator::Instance()->getCameraContext();
-	if(cc.flymode == false && cc.lowmode ==true){
-		cc.flymode = true;
-		cc.lowmode = false;
+	CameraContext* cc = TravelManipulator::Instance()->getCameraContext();
+	if(cc->flymode == false && cc->lowmode ==true){
+		cc->flymode = true;
+		cc->lowmode = false;
 		cameraLowModeAct->setChecked(false);
 		cameraLowModeActTB->setChecked(false);
-		if(cameraFlyModeAct->isChecked() != cc.flymode){
-			cameraFlyModeAct->setChecked(cc.flymode);
+		if(cameraFlyModeAct->isChecked() != cc->flymode){
+			cameraFlyModeAct->setChecked(cc->flymode);
 		}else{
-			cameraFlyModeActTB->setChecked(cc.flymode);
+			cameraFlyModeActTB->setChecked(cc->flymode);
 		}
-		cc.m_vPosition += osg::Vec3(0.0f, 0.0f, 10000.0f);
-		cc.m_vRotation._v[0] = osg::DegreesToRadians(75.0f);
-	}else if(cc.flymode == true){
+		cc->m_vPosition += osg::Vec3(0.0f, 0.0f, 10000.0f);
+		cc->m_vRotation._v[0] = osg::DegreesToRadians(75.0f);
+	}else if(cc->flymode == true){
 		cameraFlyModeAct->setChecked(true);
 		cameraFlyModeActTB->setChecked(true);
 	}
 
-	cc.max_height = 18000;
-	cc.min_height = 8000;
+	cc->max_height = 18000;
+	cc->min_height = 8000;
 	TravelManipulator::Instance()->setCameraContext(cc);
 }
 
 void MainWindow::setCameraLowMode(){
-	CameraContext cc = TravelManipulator::Instance()->getCameraContext();
+	CameraContext *cc = TravelManipulator::Instance()->getCameraContext();
 	int index = customerList->row(currentItem);
-	if(cc.lowmode == false && cc.flymode ==true){
-		cc.flymode = false;
-		cc.lowmode = true;
+	if(cc->lowmode == false && cc->flymode ==true){
+		cc->flymode = false;
+		cc->lowmode = true;
 		cameraFlyModeAct->setChecked(false);
 		cameraFlyModeActTB->setChecked(false);
-		if(cameraLowModeAct->isChecked() != cc.lowmode){
-			cameraLowModeAct->setChecked(cc.lowmode);
+		if(cameraLowModeAct->isChecked() != cc->lowmode){
+			cameraLowModeAct->setChecked(cc->lowmode);
 		}else{
-			cameraLowModeActTB->setChecked(cc.lowmode);
+			cameraLowModeActTB->setChecked(cc->lowmode);
 		}
-		cc.m_vPosition += osg::Vec3(0.0f, 0.0f, 900.0f-cc.m_vPosition.z());
-		cc.m_vRotation._v[0] = osg::DegreesToRadians(90.0f);
-	}else if(cc.lowmode == true){
+		cc->m_vPosition += osg::Vec3(0.0f, 0.0f, 900.0f-cc->m_vPosition.z());
+		cc->m_vRotation._v[0] = osg::DegreesToRadians(90.0f);
+	}else if(cc->lowmode == true){
 		cameraLowModeAct->setChecked(true);
 		cameraLowModeActTB->setChecked(true);
 	}
 	
 	if(index == 0){
-		cc.max_height = 2500;
-		cc.min_height = 450;
+		cc->max_height = 2500;
+		cc->min_height = 450;
 	}else if(index == 1){
-		cc.max_height = 500;
-		cc.min_height = -20;
+		cc->max_height = 500;
+		cc->min_height = -20;
 	}else if(index == 2){
-		cc.max_height = 1000;
-		cc.min_height = 45;
+		cc->max_height = 1000;
+		cc->min_height = 45;
 	}else if(index == 3){
-		cc.max_height = -90;
-		cc.min_height = -300;
+		cc->max_height = -90;
+		cc->min_height = -300;
 	}else if(index == 4){
-		cc.max_height = 70;
-		cc.min_height = 0;
+		cc->max_height = 70;
+		cc->min_height = 0;
 	}else if(index == 5){
-		cc.max_height = 70;
-		cc.min_height = 0;
+		cc->max_height = 70;
+		cc->min_height = 0;
 	}
 	TravelManipulator::Instance()->setCameraContext(cc);
 }
 
 void MainWindow::showPos(osg::Vec3 pos, float radius){
 	vector<RangeNode>::iterator itr;
-	vector<RangeNode>* vec = TravelManipulator::Instance()->keepOutBorder;
+	vector<RangeNode>* vec = TravelManipulator::Instance()->cc->keepout;
 	int index = -1;
 	if(vec->size() > 0){
 		for(itr = vec->begin(); itr != vec->end(); itr++){
@@ -566,9 +566,9 @@ void MainWindow::textInfoSwitch(){
 }
 
 void MainWindow::setCameraToPosition(osg::Vec3& trans, osg::Vec3& rot){
-	CameraContext cc = TravelManipulator::Instance()->getCameraContext();
-	cc.m_vPosition = trans;
-	cc.m_vRotation = rot;
+	CameraContext *cc = TravelManipulator::Instance()->getCameraContext();
+	cc->m_vPosition = trans;
+	cc->m_vRotation = rot;
 	TravelManipulator::Instance()->setCameraContext(cc);
 }
 

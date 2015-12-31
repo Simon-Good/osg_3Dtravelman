@@ -16,7 +16,7 @@ public:
 	QHBoxLayout* vecLayout(QString type, QLineEdit* lnEdit1, QLineEdit* lnEdit2, QLineEdit* lnEdit3);
 	QHBoxLayout* stepLayout(QString step1, QString step2, QLineEdit* lnEdit1, QLineEdit* lnEdit2);
 	void showWithContext();
-	void showWithContext(const CameraContext& cc);
+	void showWithContext(CameraContext* cc);
 public slots:
 	void updateContext();
 protected:
@@ -31,6 +31,6 @@ protected:
 	QLineEdit* rotSpeed_lnEdt;
 	QPushButton* ok_btn;
 	QPushButton* cancle_btn;
-	CameraContext cc;
+	CameraContext* cc;
 };
 

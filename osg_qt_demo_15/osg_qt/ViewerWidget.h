@@ -27,7 +27,7 @@ public:
 	void loadModels(int size);
 	void loadModleThread(int modelnum);
 
-	CameraContext getCameraContext(int index);
+	CameraContext* getCameraContext(int index);
 	void textInfoSwt(int index, bool showTxt);
 
 	vector<RangeNode>* getKeepOutBorder(int modelindex);
@@ -40,11 +40,9 @@ signals:
 public slots:
 	void loadNext();
 public:
-	//osg::ref_ptr<osg::Group> root;
 	osg::ref_ptr<osg::Switch> swt;
 	osg::Node* threadNode;
 	osg::Switch* threadSwt;
-	//unsigned int currentIndex;
 protected:
 	osg::ref_ptr<osgViewer::Viewer> mainView;
 	osgQt::GraphicsWindowQt* qgw;
