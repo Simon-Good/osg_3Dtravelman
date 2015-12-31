@@ -35,13 +35,16 @@ public:
 	vector<map<string, string>*>* generateDBMap(int index);
 signals:
 	void modelLoadFinished();
+	void loadOneSwt(osg::Switch* swt, int index);
 
+public slots:
+	void loadNext();
 public:
-	osg::ref_ptr<osg::Group> root;
+	//osg::ref_ptr<osg::Group> root;
 	osg::ref_ptr<osg::Switch> swt;
 	osg::Node* threadNode;
 	osg::Switch* threadSwt;
-	unsigned int currentIndex;
+	//unsigned int currentIndex;
 protected:
 	osg::ref_ptr<osgViewer::Viewer> mainView;
 	osgQt::GraphicsWindowQt* qgw;
@@ -49,5 +52,5 @@ protected:
 	vector<CameraContext> cameraContextList;
 	QWidget* mparent;
 	bool loadFinished;
-	RenderThread rThread;
+	RenderThread *rThread;
 };

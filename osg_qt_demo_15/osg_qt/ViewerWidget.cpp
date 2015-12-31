@@ -7,7 +7,7 @@
 ViewerWidget::ViewerWidget(QWidget* parent):   QWidget(parent){
 	mparent = parent;
 	loadFinished = false;
-	root = new osg::Group();
+	//root = new osg::Group();
 	swt = new osg::Switch();
 
 	osg::Camera* camera = createCamera( 50, 50, 640, 480 );
@@ -16,7 +16,7 @@ ViewerWidget::ViewerWidget(QWidget* parent):   QWidget(parent){
 	sh->setKeyEventPrintsOutStats('T');
 	mainView = new osgViewer::Viewer();
     mainView->setCamera( camera );
-    mainView->setSceneData( root );
+    mainView->setSceneData( swt );
     mainView->addEventHandler( sh);
     mainView->setCameraManipulator( TravelManipulator::Instance());
     mainView->setThreadingModel( osgViewer::Viewer::SingleThreaded );
@@ -30,9 +30,12 @@ ViewerWidget::ViewerWidget(QWidget* parent):   QWidget(parent){
         layout->addWidget( gw->getGLWidget() );
         setLayout( layout );
     }
-
-	rThread.viewerPtr = mainView;
-	rThread.start();	
+	rThread = new RenderThread(this);
+	rThread->viewerPtr = mainView;
+	rThread->rootswt = swt;
+	connect(this, SIGNAL(loadOneSwt(osg::Switch*, int)), rThread, SLOT(loadNewSwt(osg::Switch*, int)));
+	connect(rThread, SIGNAL(loadSwtFinished()), this, SLOT(loadNext()));
+	rThread->start();	
 }
 
 osg::Camera* ViewerWidget::createCamera( int x, int y, int w, int h )
@@ -96,8 +99,6 @@ void ViewerWidget::loadModels(int size){
 	TravelManipulator::Instance()->setCameraContext(cameraContextList[0]);
 	GeneralEventHandler::Instance(this)->setDBMap(generateDBMap(0));
 	swt->insertChild(0, underswt, true);
-
-	root->addChild(swt);
 }
 void ViewerWidget::loadModleThread(int modelnum){
 	char num[10];
@@ -111,7 +112,7 @@ void ViewerWidget::loadModleThread(int modelnum){
 		threadSwt->insertChild(0, threadNode, true);
 		osg::Vec3 centerpos = threadNode->getBound().center();
 		CameraContext cc;
-		currentIndex = i;
+		//currentIndex = i;
 		cc.keepout  = getKeepOutBorder(i);
 		cc.keepin = getKeepInBorder(i);
 		if(i == 1){
@@ -153,7 +154,6 @@ void ViewerWidget::loadModleThread(int modelnum){
 			cc.m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.329f);
 			cc.max_height = -90;
 			cc.min_height = -350;
-			//cc.light_Position = osg::Vec4(-500, -3557, -240, 0.0);
 		}else if(i == 4){
 			cc.m_fMoveSpeed = 35.0f;
 			cc.m_vPosition = osg::Vec3(40.813f, -550.09f, -30.0f);
@@ -173,11 +173,15 @@ void ViewerWidget::loadModleThread(int modelnum){
 		cc.peng = false;
 		cc.m_fAngle = 0.5f;
 		cameraContextList[i] = cc;
+		emit loadOneSwt(threadSwt, i);
 		loadFinished = true;
 	}
 	emit modelLoadFinished();
 }
 
+void ViewerWidget::loadNext(){
+	loadFinished = false;
+}
 
 CameraContext ViewerWidget::getCameraContext(int index){
 	return cameraContextList.at(index);
