@@ -574,17 +574,7 @@ void MainWindow::setCameraToPosition(osg::Vec3& trans, osg::Vec3& rot){
 
 bool MainWindow::winEvent(MSG * message, long * result){
 	if(message->message == WM_ACTIVATE){
-		//TravelManipulator::Instance()->resetStateBits();
 		TravelManipulator::Instance()->switchForbidMove();
 	}
-	//if(message->message == WM_KILLFOCUS){
-	//	TravelManipulator::Instance()->resetStateBits();
-	//	cout<<"main window killfocus"<<endl;
-	//}
-	//if(message->message == WM_SETFOCUS){
-	//	//TravelManipulator::Instance()->resetStateBits();
-	//	cout<<"main window setfocus"<<endl;
-	//}
-
 	return false;
 }

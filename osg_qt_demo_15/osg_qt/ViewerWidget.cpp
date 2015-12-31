@@ -4,14 +4,36 @@
 #else
 #define MODELBASE "./models/"
 #endif
-ViewerWidget::ViewerWidget(QWidget* parent){
+ViewerWidget::ViewerWidget(QWidget* parent):   QWidget(parent){
 	mparent = parent;
-
-	setThreadingModel(osgViewer::CompositeViewer::SingleThreaded);
-	setKeyEventSetsDone(0);	// disable default setting of viewer.done() by pressing Escape.
-
+	loadFinished = false;
 	root = new osg::Group();
 	swt = new osg::Switch();
+
+	osg::Camera* camera = createCamera( 50, 50, 640, 480 );
+	osgViewer::StatsHandler *sh = new osgViewer::StatsHandler();
+	sh->setKeyEventTogglesOnScreenStats('t');
+	sh->setKeyEventPrintsOutStats('T');
+	mainView = new osgViewer::Viewer();
+    mainView->setCamera( camera );
+    mainView->setSceneData( root );
+    mainView->addEventHandler( sh);
+    mainView->setCameraManipulator( TravelManipulator::Instance());
+    mainView->setThreadingModel( osgViewer::Viewer::SingleThreaded );
+
+        
+    osgQt::GraphicsWindowQt* gw = dynamic_cast<osgQt::GraphicsWindowQt*>( camera->getGraphicsContext() );
+	gw->getTraits();
+    if ( gw )
+    {
+        QVBoxLayout* layout = new QVBoxLayout;
+        layout->addWidget( gw->getGLWidget() );
+        setLayout( layout );
+    }
+	//setThreadingModel(osgViewer::CompositeViewer::SingleThreaded);
+	//setKeyEventSetsDone(0);	// disable default setting of viewer.done() by pressing Escape.
+
+	/*
 	osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
 	createTraits(traits, "OSG_DEMO", 0, 0, 200, 200);
 	qgw = new osgQt::GraphicsWindowQt(traits);
@@ -26,43 +48,67 @@ ViewerWidget::ViewerWidget(QWidget* parent){
 
 	QHBoxLayout *boxlay = new QHBoxLayout;
 	boxlay->addWidget( qgw->getGLWidget());
-	setLayout( boxlay);
+	setLayout( boxlay);*/
 
-	connect( &_timer, SIGNAL(timeout()), this, SLOT(update()) );
-	_timer.start( 10 );	
+	rThread.viewerPtr = mainView;
+	rThread.start();
+	//connect( &_timer, SIGNAL(timeout()), this, SLOT(update()) );
+	//_timer.start( 10 );	
 }
 
-
-void ViewerWidget::createTraits(osg::GraphicsContext::Traits* traits, string name, int x, int y, int H, int W){
-	osg::DisplaySettings* ds = osg::DisplaySettings::instance().get();
-	traits->windowName = name;
-	traits->windowDecoration = false;
-	traits->x = x;
-	traits->y = y;
-	traits->width = W;
-	traits->height = H;
-	traits->doubleBuffer = true;
+osg::Camera* ViewerWidget::createCamera( int x, int y, int w, int h )
+{
+    osg::DisplaySettings* ds = osg::DisplaySettings::instance().get();
+    osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
+    traits->windowDecoration = false;
+    traits->x = x;
+    traits->y = y;
+    traits->width = w;
+    traits->height = h;
+    traits->doubleBuffer = true;
 	traits->alpha = ds->getMinimumNumAlphaBits();
 	traits->stencil = ds->getMinimumNumStencilBits();
 	traits->sampleBuffers = ds->getMultiSamples();
 	traits->samples = 16;
-	//traits->samples = ds->getNumMultiSamples();
+    
+    osg::ref_ptr<osg::Camera> camera = new osg::Camera;
+    camera->setGraphicsContext( new osgQt::GraphicsWindowQt(traits.get()) );
+    camera->setClearColor( osg::Vec4(0.2, 0.2, 0.6, 1.0) );
+    camera->setViewport( new osg::Viewport(0, 0, traits->width, traits->height) );
+    camera->setProjectionMatrixAsPerspective(
+        30.0f, static_cast<double>(traits->width)/static_cast<double>(traits->height), 1.0f, 10000.0f );
+    return camera.release();
 }
+//void ViewerWidget::createTraits(osg::GraphicsContext::Traits* traits, string name, int x, int y, int H, int W){
+//	osg::DisplaySettings* ds = osg::DisplaySettings::instance().get();
+//	traits->windowName = name;
+//	traits->windowDecoration = false;
+//	traits->x = x;
+//	traits->y = y;
+//	traits->width = W;
+//	traits->height = H;
+//	traits->doubleBuffer = true;
+//	traits->alpha = ds->getMinimumNumAlphaBits();
+//	traits->stencil = ds->getMinimumNumStencilBits();
+//	traits->sampleBuffers = ds->getMultiSamples();
+//	traits->samples = 16;
+//	//traits->samples = ds->getNumMultiSamples();
+//}
 
-osg::ref_ptr<osgViewer::View> ViewerWidget::generateMainView(osgQt::GraphicsWindowQt*  qgw){
-	setlocale(LC_ALL,".936");
-	osg::ref_ptr<osgViewer::Viewer> view = new osgViewer::Viewer();
-	view->setDataVariance(osg::Object::DYNAMIC);
-	view->setSceneData(root);
-	//event handler
-	osgViewer::StatsHandler *sh = new osgViewer::StatsHandler();
-	sh->setKeyEventTogglesOnScreenStats('t');
-	sh->setKeyEventPrintsOutStats('T');
-	view->addEventHandler(sh);
-	view->addEventHandler(GeneralEventHandler::Instance(mparent));
-	view->setCameraManipulator(TravelManipulator::Instance());
-	return view;
-}
+//osg::ref_ptr<osgViewer::Viewer> ViewerWidget::generateMainView(osgQt::GraphicsWindowQt*  qgw){
+//	setlocale(LC_ALL,".936");
+//	osg::ref_ptr<osgViewer::Viewer> view = new osgViewer::Viewer();
+//	view->setDataVariance(osg::Object::DYNAMIC);
+//	view->setSceneData(root);
+//	//event handler
+//	osgViewer::StatsHandler *sh = new osgViewer::StatsHandler();
+//	sh->setKeyEventTogglesOnScreenStats('t');
+//	sh->setKeyEventPrintsOutStats('T');
+//	view->addEventHandler(sh);
+//	view->addEventHandler(GeneralEventHandler::Instance(mparent));
+//	view->setCameraManipulator(TravelManipulator::Instance());
+//	return view;
+//}
 
 void ViewerWidget::reloadModel(int index){
 	osg::Switch::ValueList vl = swt->getValueList();
@@ -182,6 +228,7 @@ void ViewerWidget::loadModleThread(int modelnum){
 		//cc.light_Position = osg::Vec4(centerpos.x(), centerpos.y(), centerpos.z(), 1.0);
 		cameraContextList[i] = cc;
 		loadFinished = true;
+		/*swt->insertChild(currentIndex, threadSwt, false);*/
 	}
 	emit modelLoadFinished();
 }
@@ -332,18 +379,18 @@ vector<map<string, string>*>* ViewerWidget::generateDBMap(int index){
 	return retVec;
 }
 
-void ViewerWidget::paintEvent(QPaintEvent* event){
-	frame();
-	if(loadFinished == true){
-		//swt->insertChild(currentIndex, threadNode, false);
-		swt->insertChild(currentIndex, threadSwt, false);
-		loadFinished = false;
-	}
-	if(isActiveWindow() != true){
-		TravelManipulator::Instance()->resetStateBits();
-		//cout<<"viewerWidget paintevent not active window"<<endl;
-	}
-}
+//void ViewerWidget::paintEvent(QPaintEvent* event){
+//	frame();
+//	if(loadFinished == true){
+//		//swt->insertChild(currentIndex, threadNode, false);
+//		swt->insertChild(currentIndex, threadSwt, false);
+//		loadFinished = false;
+//	}
+//	if(isActiveWindow() != true){
+//		TravelManipulator::Instance()->resetStateBits();
+//		//cout<<"viewerWidget paintevent not active window"<<endl;
+//	}
+//}
 
 //bool ViewerWidget::winEvent(MSG * message, long * result){
 //	if(message->message == WM_ACTIVATE){
