@@ -108,7 +108,7 @@ private:
     QAction *aboutAct;
 	QAction *interecAct;
 	QAction *interecActTB;
-
+	QDockWidget *mapdock;
 	//QMenu *fileMenu;
 	//QMenu *editMenu;
 	//QMenu *viewMenu;

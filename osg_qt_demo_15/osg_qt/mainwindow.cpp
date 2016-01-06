@@ -198,7 +198,7 @@ void MainWindow::createDockWindow(){
      addDockWidget(Qt::LeftDockWidgetArea, dock);
      viewMenu->addAction(dock->toggleViewAction());
 
-	 QDockWidget *mapdock = new QDockWidget(tr("地图窗口"), this);
+	 mapdock = new QDockWidget(tr("地图窗口"), this);
      mapdock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 	 QGraphicsScene *scene = new QGraphicsScene(0, 0, 400, 300);
 	 MapItem* mapitem = new MapItem(QPixmap("./open.png"));
@@ -214,6 +214,7 @@ void MainWindow::createDockWindow(){
 	 connect(view, SIGNAL(itemClicked(osg::Vec3&, osg::Vec3&)), this, SLOT(setCameraToPosition(osg::Vec3&, osg::Vec3&)));
 	 mapdock->setWidget(view);
 	 addDockWidget(Qt::LeftDockWidgetArea, mapdock);
+	 viewMenu->addAction(mapdock->toggleViewAction());
 }
 
 void  MainWindow::open_peng(){
@@ -289,6 +290,7 @@ void MainWindow::changeModel(QListWidgetItem* item){
 		textInfoAct->setDisabled(true);
 		textInfoAct->setCheckable(false);
 		textInfoAct->setChecked(false);
+		mapdock->show();
 	}else{
 		cameraFlyModeAct->setDisabled(true);
 		cameraFlyModeAct->setChecked(false);
@@ -307,6 +309,7 @@ void MainWindow::changeModel(QListWidgetItem* item){
 			textInfoAct->setCheckable(false);
 			textInfoAct->setChecked(false);
 		}
+		mapdock->hide();
 	}
 	//if(textInfoAct->isChecked() == true)
 	//	cout<<"change model and textinfo is checked"<<endl;
