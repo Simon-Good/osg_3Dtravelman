@@ -28,9 +28,11 @@ bool GeneralEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 					int numchildren = curSwt->getNumChildren();
 					TextPanel* tp;
 					if(dbHandler::Get_dbH_Instance()->get_dbMessage(curSwtIndex,dbMap)==true){
-						for(int i = 1; i< numchildren; i++){
-							tp = dynamic_cast<TextPanel*>(curSwt->getChild(i));
-							tp->updateContent(dbMap->at(i-1));
+						if(dbMap->size() > 0){
+							for(int i = 1; i< numchildren; i++){
+								tp = dynamic_cast<TextPanel*>(curSwt->getChild(i));
+								tp->updateContent(dbMap->at(i-1));
+							}
 						}
 					}
 				}
