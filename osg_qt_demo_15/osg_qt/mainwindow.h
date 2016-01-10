@@ -61,7 +61,7 @@ public:
 	void createAction();
 	void createDockWindow();
 	void createToolBar();
-	void updateCameraSetting(const CameraContext &cc);
+	void updateCameraSetting(CameraContext *cc);
 	virtual bool winEvent(MSG * message, long * result);
 	float caculateRadius(osg::Vec4& points);
 public slots:
@@ -108,7 +108,7 @@ private:
     QAction *aboutAct;
 	QAction *interecAct;
 	QAction *interecActTB;
-
+	QDockWidget *mapdock;
 	//QMenu *fileMenu;
 	//QMenu *editMenu;
 	//QMenu *viewMenu;

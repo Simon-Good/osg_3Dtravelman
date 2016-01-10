@@ -104,6 +104,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_MapItem.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="RenderThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_RenderThread.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_RenderThread.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="osg_qt.ui">
@@ -140,6 +149,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="MapItem.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="RenderThread.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

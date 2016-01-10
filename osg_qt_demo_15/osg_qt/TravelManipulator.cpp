@@ -12,20 +12,23 @@ TravelManipulator* TravelManipulator::Instance(){
 }
 
 TravelManipulator::TravelManipulator():
-	m_fMoveSpeed(150.0f),m_fAngle(0.5f),moveForward(1),moveBackward(1<<1),
-	moveLeft(1<<2),moveRight(1<<3),moveUpward(1<<4),moveDownward(1<<5)
+	moveForward(1),moveBackward(1<<1),moveLeft(1<<2),
+	moveRight(1<<3),moveUpward(1<<4),moveDownward(1<<5)
+	/*m_fMoveSpeed(150.0f),m_fAngle(0.5f),moveForward(1),moveBackward(1<<1),
+	moveLeft(1<<2),moveRight(1<<3),moveUpward(1<<4),moveDownward(1<<5)*/
 {
-	m_vPosition = osg::Vec3(0.0f, 0.0f, 0.0f);//��ʼλ��
-	m_vRotation = osg::Vec3(osg::PI_2,0.0f,0.0f);//��ʼ�Ƕȣ��ɸ��ӣ���x��ת��ʮ�ȣ�����y������
+	//m_vPosition = osg::Vec3(0.0f, 0.0f, 0.0f);//��ʼλ��
+	//m_vRotation = osg::Vec3(osg::PI_2,0.0f,0.0f);//��ʼ�Ƕȣ��ɸ��ӣ���x��ת��ʮ�ȣ�����y������
 	m_fpushX= 0;
 	m_fpushY= 0;
-	min_height = 450;
-	max_height = 2500;
+	//min_height = 450;
+	//max_height = 2500;
 	dragDelta = 0.05;
-	flymode = false;
-	lowmode = true;
-	peng=false;
-	fov = 30.0;
+	//flymode = false;
+	//lowmode = true;
+	//peng=false;
+	//fov = 30.0;
+	cc = NULL;
 	m_bRightButtonDown= false;
 	view= new osgViewer::View();
 	stateBits = 0x0;
@@ -52,45 +55,57 @@ void TravelManipulator::setByInverseMatrix(const osg::Matrixd& matrix)
 
 osg::Matrixd TravelManipulator::getMatrix(void) const
 {
-	osg::Matrixd mat;
+	if(cc != NULL){
+		osg::Matrixd mat;
 
-	mat.makeRotate(m_vRotation._v[0], osg::Vec3(1.0f, 0.0f, 0.0f),
+		mat.makeRotate(cc->m_vRotation._v[0], osg::Vec3(1.0f, 0.0f, 0.0f),
 
-		m_vRotation._v[1], osg::Vec3(0.0f, 1.0f, 0.0f),
+			cc->m_vRotation._v[1], osg::Vec3(0.0f, 1.0f, 0.0f),
 
-		m_vRotation._v[2], osg::Vec3(0.0f, 0.0f, 1.0f));
+			cc->m_vRotation._v[2], osg::Vec3(0.0f, 0.0f, 1.0f));
 
-	return mat * osg::Matrixd::translate(m_vPosition);
+		return mat * osg::Matrixd::translate(cc->m_vPosition);
+	}else
+		return osg::Matrix::rotate(osg::PI_2, osg::Vec3(1.0f, 0.0f, 0.0f),
+														0, osg::Vec3(0.0f, 1.0f, 0.0f),
+														0, osg::Vec3(0.0f, 0.0f, 1.0f))
+									* osg::Matrix::translate(osg::Vec3(0.0f, 0.0f, 0.0f));
 }
 
 osg::Matrixd TravelManipulator::getInverseMatrix(void) const
 {
-	osg::Matrixd mat;
+	if(cc!=NULL){
+		osg::Matrixd mat;
 
-	mat.makeRotate(m_vRotation._v[0], osg::Vec3(1.0f, 0.0f, 0.0f),
+		mat.makeRotate(cc->m_vRotation._v[0], osg::Vec3(1.0f, 0.0f, 0.0f),
 
-		m_vRotation._v[1], osg::Vec3(0.0f, 1.0f, 0.0f),
+			cc->m_vRotation._v[1], osg::Vec3(0.0f, 1.0f, 0.0f),
 
-		m_vRotation._v[2], osg::Vec3(0.0f, 0.0f, 1.0f));
+			cc->m_vRotation._v[2], osg::Vec3(0.0f, 0.0f, 1.0f));
 
-	return osg::Matrixd::inverse(mat * osg::Matrixd::translate(m_vPosition));
+		return osg::Matrixd::inverse(mat * osg::Matrixd::translate(cc->m_vPosition));
+	}else
+		return osg::Matrix::inverse(osg::Matrix::rotate(osg::PI_2, osg::Vec3(1.0f, 0.0f, 0.0f),
+														0, osg::Vec3(0.0f, 1.0f, 0.0f),
+														0, osg::Vec3(0.0f, 0.0f, 1.0f))
+									* osg::Matrix::translate(osg::Vec3(0.0f, 0.0f, 0.0f)));
 }
 
 void TravelManipulator::ChangePosition(osg::Vec3 delta)
 {
-	if(inRange(m_vPosition+delta))
-		if (peng && lowmode){
-			if(outRange(m_vPosition+delta))
-				m_vPosition += delta;
+	if(inRange(cc->m_vPosition+delta))
+		if (cc->peng && cc->lowmode){
+			if(outRange(cc->m_vPosition+delta))
+				cc->m_vPosition += delta;
 		}else 
-			m_vPosition += delta; 
+			cc->m_vPosition += delta; 
 }
 
 bool TravelManipulator::inRange(const osg::Vec3& pos){
 	bool ret = true;
-	if(keepInBorder != NULL){
-		for(vector<RangeNode>::iterator itr = keepInBorder->begin(); 
-			itr != keepInBorder->end(); 
+	if(cc->keepin!= NULL){
+		for(vector<RangeNode>::iterator itr = cc->keepin->begin(); 
+			itr != cc->keepin->end(); 
 			itr++){
 			if( !((itr->range.x() < pos.x()&& pos.x() < itr->range.y())&&
 				(itr->range.z() < pos.y()&& pos.y() < itr->range.w()))){
@@ -104,9 +119,9 @@ bool TravelManipulator::inRange(const osg::Vec3& pos){
 
 bool TravelManipulator::outRange(const osg::Vec3& pos){
 	bool ret = true;
-	if(keepOutBorder != NULL){
-		for(vector<RangeNode>::iterator itr = keepOutBorder->begin();
-			itr != keepOutBorder->end(); itr++){
+	if(cc->keepout != NULL){
+		for(vector<RangeNode>::iterator itr = cc->keepout->begin();
+			itr != cc->keepout->end(); itr++){
 			if( (itr->range.x() < pos.x()&& pos.x() < itr->range.y())&&
 				(itr->range.z() < pos.y()&& pos.y() < itr->range.w())){
 					ret = false;
@@ -130,27 +145,27 @@ bool TravelManipulator::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActio
 				//////////////////////////update camera position and rotation//////////////////////
 				if(forbidMove != true){
 					if((stateBits&moveForward) != 0 && (stateBits&moveBackward) == 0){
-						ChangePosition(osg::Vec3 (0, m_fMoveSpeed * sinf(osg::PI_2+m_vRotation._v[2]), 0)) ; 
-						ChangePosition(osg::Vec3 (m_fMoveSpeed * cosf(osg::PI_2+m_vRotation._v[2]), 0, 0)) ;
+						ChangePosition(osg::Vec3 (0, cc->m_fMoveSpeed * sinf(osg::PI_2+cc->m_vRotation._v[2]), 0)) ; 
+						ChangePosition(osg::Vec3 (cc->m_fMoveSpeed * cosf(osg::PI_2+cc->m_vRotation._v[2]), 0, 0)) ;
 					}else if((stateBits&moveBackward) != 0 && (stateBits&moveForward) == 0){
-						ChangePosition(osg::Vec3 (0, -m_fMoveSpeed * sinf(osg::PI_2+m_vRotation._v[2]), 0)) ; 
-						ChangePosition(osg::Vec3(-m_fMoveSpeed * cosf(osg::PI_2+m_vRotation._v[2]), 0, 0)) ;
+						ChangePosition(osg::Vec3 (0, -cc->m_fMoveSpeed * sinf(osg::PI_2+cc->m_vRotation._v[2]), 0)) ; 
+						ChangePosition(osg::Vec3(-cc->m_fMoveSpeed * cosf(osg::PI_2+cc->m_vRotation._v[2]), 0, 0)) ;
 					}
 
 					if((stateBits&moveLeft)!= 0 && (stateBits&moveRight) == 0){
-						ChangePosition(osg::Vec3 (0, m_fMoveSpeed * cosf(osg::PI_2+m_vRotation._v[2]), 0)) ; 
-						ChangePosition(osg::Vec3 (-m_fMoveSpeed * sinf(osg::PI_2+m_vRotation._v[2]), 0, 0)) ;
+						ChangePosition(osg::Vec3 (0, cc->m_fMoveSpeed * cosf(osg::PI_2+cc->m_vRotation._v[2]), 0)) ; 
+						ChangePosition(osg::Vec3 (-cc->m_fMoveSpeed * sinf(osg::PI_2+cc->m_vRotation._v[2]), 0, 0)) ;
 					}else if((stateBits&moveRight) != 0 && (stateBits&moveLeft)== 0){
-						ChangePosition(osg::Vec3 (0,-m_fMoveSpeed * cosf(osg::PI_2+m_vRotation._v[2]), 0)) ; 
-						ChangePosition(osg::Vec3 (m_fMoveSpeed * sinf(osg::PI_2+m_vRotation._v[2]), 0, 0)) ;
+						ChangePosition(osg::Vec3 (0,-cc->m_fMoveSpeed * cosf(osg::PI_2+cc->m_vRotation._v[2]), 0)) ; 
+						ChangePosition(osg::Vec3 (cc->m_fMoveSpeed * sinf(osg::PI_2+cc->m_vRotation._v[2]), 0, 0)) ;
 					}
 
 					if((stateBits&moveUpward) != 0 && (stateBits&moveDownward) == 0){
-						if(m_vPosition.z() < max_height)
-							ChangePosition(osg::Vec3 (0, 0, m_fMoveSpeed));
+						if(cc->m_vPosition.z() < cc->max_height)
+							ChangePosition(osg::Vec3 (0, 0, cc->m_fMoveSpeed));
 					}else if((stateBits&moveDownward) != 0 && (stateBits&moveUpward) == 0){
-						if(m_vPosition.z() > min_height)
-							ChangePosition(osg::Vec3 (0, 0, -m_fMoveSpeed));
+						if(cc->m_vPosition.z() > cc->min_height)
+							ChangePosition(osg::Vec3 (0, 0, -cc->m_fMoveSpeed));
 					}
 				}else{
 					this->resetStateBits();
@@ -176,7 +191,7 @@ bool TravelManipulator::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActio
 							osg::Matrix mt;
 							pointMapIt->second.getMatrix(mt);
 							mt = osg::Matrix::inverse(mt);
-							m_vPosition = mt.getTrans();
+							cc->m_vPosition = mt.getTrans();
 							pointMapIt++;
 						}else{
 							playPath = false;
@@ -202,9 +217,9 @@ bool TravelManipulator::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActio
 				if(ea.getKey()==0X53 || ea.getKey()==0X73 )//'s' move to back
 					stateBits |= moveBackward;
 				if (ea.getKey() == 0xFF53)//right arrow,Right roll
-					m_vRotation._v[1] += osg::DegreesToRadians(m_fAngle);
+					cc->m_vRotation._v[1] += osg::DegreesToRadians(cc->m_fAngle);
 				if (ea.getKey()== 0xFF51)//left arrow, Left roll
-					m_vRotation._v[1] -= osg::DegreesToRadians(m_fAngle);
+					cc->m_vRotation._v[1] -= osg::DegreesToRadians(cc->m_fAngle);
 				break;
 				//return false;
 			}
@@ -233,12 +248,12 @@ bool TravelManipulator::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActio
 					mfov += 2.0;
 					cm->setProjectionMatrixAsPerspective(mfov, ratio, near, far);
 					//view->setCamera(cm);
-				}else if(ea.getScrollingMotion() == osgGA::GUIEventAdapter::SCROLL_UP && fov > 25){
+				}else if(ea.getScrollingMotion() == osgGA::GUIEventAdapter::SCROLL_UP && mfov > 25){
 					mfov -= 2.0;
 					cm->setProjectionMatrixAsPerspective(mfov, ratio, near, far);
 					//view->setCamera(cm);
 				}
-				fov = mfov;
+				cc->fov = mfov;
 				return false;//Ĭ�Ϸ���ֵ
 			}
 		case(osgGA::GUIEventAdapter::PUSH):
@@ -256,16 +271,16 @@ bool TravelManipulator::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActio
 			if(m_bRightButtonDown)
 			{	
 				//in one drag process, mouseX alwasy change, while m_fpushX do not change until next PUSH
-				m_vRotation._v[2]-=osg::DegreesToRadians(m_fAngle*(mouseX-m_fpushX - rightDragDistX)*dragDelta);
-				m_vRotation._v[0]+=osg::DegreesToRadians(m_fAngle*(mouseY-m_fpushY - rightDragDistY)*dragDelta);
+				cc->m_vRotation._v[2]-=osg::DegreesToRadians(cc->m_fAngle*(mouseX-m_fpushX - rightDragDistX)*dragDelta);
+				cc->m_vRotation._v[0]+=osg::DegreesToRadians(cc->m_fAngle*(mouseY-m_fpushY - rightDragDistY)*dragDelta);
 
 				rightDragDistX = mouseX - m_fpushX;
 				rightDragDistY = mouseY - m_fpushY;
 
-				if(m_vRotation._v[0]>=3.14)
-					m_vRotation._v[0]=3.14;
-				if(m_vRotation._v[0]<=0)
-					m_vRotation._v[0]=0;
+				if(cc->m_vRotation._v[0]>=3.14)
+					cc->m_vRotation._v[0]=3.14;
+				if(cc->m_vRotation._v[0]<=0)
+					cc->m_vRotation._v[0]=0;
 			}
 			return false;
 		case(osgGA::GUIEventAdapter::RELEASE):
@@ -281,8 +296,8 @@ bool TravelManipulator::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActio
 			}
 	}
 }
-CameraContext TravelManipulator::getCameraContext(){
-	CameraContext ret;
+CameraContext* TravelManipulator::getCameraContext(){
+	/*CameraContext ret;
 	ret.m_fAngle = m_fAngle;
 	ret.m_fMoveSpeed = m_fMoveSpeed;
 	ret.m_vPosition = m_vPosition;
@@ -294,12 +309,12 @@ CameraContext TravelManipulator::getCameraContext(){
 	ret.min_height = min_height;
 	ret.keepin = keepInBorder;
 	ret.keepout = keepOutBorder;
-	ret.fov = fov;
-	return ret;
+	ret.fov = fov;*/
+	return cc;
 }
 
-void TravelManipulator::setCameraContext(const CameraContext& context){
-	m_fAngle = context.m_fAngle;
+void TravelManipulator::setCameraContext(CameraContext* context){
+	/*m_fAngle = context.m_fAngle;
 	m_fMoveSpeed = context.m_fMoveSpeed;
 	m_vPosition = context.m_vPosition;
 	m_vRotation = context.m_vRotation;
@@ -310,7 +325,8 @@ void TravelManipulator::setCameraContext(const CameraContext& context){
 	max_height = context.max_height;
 	keepInBorder = context.keepin;
 	keepOutBorder = context.keepout;
-	fov = context.fov;
+	fov = context.fov;*/
+	cc = context;
 }
 
 void TravelManipulator::resetStateBits(){

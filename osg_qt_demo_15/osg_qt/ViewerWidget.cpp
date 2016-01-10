@@ -4,64 +4,61 @@
 #else
 #define MODELBASE "./models/"
 #endif
-ViewerWidget::ViewerWidget(QWidget* parent){
+ViewerWidget::ViewerWidget(QWidget* parent):   QWidget(parent){
 	mparent = parent;
-
-	setThreadingModel(osgViewer::CompositeViewer::SingleThreaded);
-	setKeyEventSetsDone(0);	// disable default setting of viewer.done() by pressing Escape.
-
-	root = new osg::Group();
+	loadFinished = false;
 	swt = new osg::Switch();
-	osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
-	createTraits(traits, "OSG_DEMO", 0, 0, 200, 200);
-	qgw = new osgQt::GraphicsWindowQt(traits);
 
-	mainView = generateMainView(qgw);
-	addView(mainView);
-	osg::Camera* camera = mainView->getCamera();
-	camera->setGraphicsContext( qgw );
-	camera->setClearColor( osg::Vec4(0.2, 0.2, 0.6, 1.0) );
-	camera->setViewport( new osg::Viewport(0, 0, traits->width, traits->height) );
-	camera->setProjectionMatrixAsPerspective(30.0f, static_cast<double>(traits->width)/static_cast<double>(traits->height), 1.0f, 10000.0f );
-
-	QHBoxLayout *boxlay = new QHBoxLayout;
-	boxlay->addWidget( qgw->getGLWidget());
-	setLayout( boxlay);
-
-	connect( &_timer, SIGNAL(timeout()), this, SLOT(update()) );
-	_timer.start( 10 );	
+	osg::Camera* camera = createCamera( 50, 50, 640, 480 );
+	osgViewer::StatsHandler *sh = new osgViewer::StatsHandler();
+	sh->setKeyEventTogglesOnScreenStats('t');
+	sh->setKeyEventPrintsOutStats('T');
+	mainView = new osgViewer::Viewer();
+    mainView->setCamera( camera );
+    mainView->setSceneData( swt );
+    mainView->addEventHandler( sh);
+    mainView->setCameraManipulator( TravelManipulator::Instance());
+    mainView->setThreadingModel( osgViewer::Viewer::SingleThreaded );
+	mainView->setKeyEventSetsDone(0);
+        
+    osgQt::GraphicsWindowQt* gw = dynamic_cast<osgQt::GraphicsWindowQt*>( camera->getGraphicsContext() );
+	gw->getTraits();
+    if ( gw )
+    {
+        QVBoxLayout* layout = new QVBoxLayout;
+        layout->addWidget( gw->getGLWidget() );
+        setLayout( layout );
+    }
+	rThread = new RenderThread(this);
+	rThread->viewerPtr = mainView;
+	rThread->rootswt = swt;
+	connect(this, SIGNAL(loadOneSwt(osg::Switch*, int)), rThread, SLOT(loadNewSwt(osg::Switch*, int)));
+	connect(rThread, SIGNAL(loadSwtFinished()), this, SLOT(loadNext()));
+	rThread->start();	
 }
 
-
-void ViewerWidget::createTraits(osg::GraphicsContext::Traits* traits, string name, int x, int y, int H, int W){
-	osg::DisplaySettings* ds = osg::DisplaySettings::instance().get();
-	traits->windowName = name;
-	traits->windowDecoration = false;
-	traits->x = x;
-	traits->y = y;
-	traits->width = W;
-	traits->height = H;
-	traits->doubleBuffer = true;
+osg::Camera* ViewerWidget::createCamera( int x, int y, int w, int h )
+{
+    osg::DisplaySettings* ds = osg::DisplaySettings::instance().get();
+    osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
+    traits->windowDecoration = false;
+    traits->x = x;
+    traits->y = y;
+    traits->width = w;
+    traits->height = h;
+    traits->doubleBuffer = true;
 	traits->alpha = ds->getMinimumNumAlphaBits();
 	traits->stencil = ds->getMinimumNumStencilBits();
 	traits->sampleBuffers = ds->getMultiSamples();
 	traits->samples = 16;
-	//traits->samples = ds->getNumMultiSamples();
-}
-
-osg::ref_ptr<osgViewer::View> ViewerWidget::generateMainView(osgQt::GraphicsWindowQt*  qgw){
-	setlocale(LC_ALL,".936");
-	osg::ref_ptr<osgViewer::Viewer> view = new osgViewer::Viewer();
-	view->setDataVariance(osg::Object::DYNAMIC);
-	view->setSceneData(root);
-	//event handler
-	osgViewer::StatsHandler *sh = new osgViewer::StatsHandler();
-	sh->setKeyEventTogglesOnScreenStats('t');
-	sh->setKeyEventPrintsOutStats('T');
-	view->addEventHandler(sh);
-	view->addEventHandler(GeneralEventHandler::Instance(mparent));
-	view->setCameraManipulator(TravelManipulator::Instance());
-	return view;
+    
+    osg::ref_ptr<osg::Camera> camera = new osg::Camera;
+    camera->setGraphicsContext( new osgQt::GraphicsWindowQt(traits.get()) );
+    camera->setClearColor( osg::Vec4(0.2, 0.2, 0.6, 1.0) );
+    camera->setViewport( new osg::Viewport(0, 0, traits->width, traits->height) );
+    camera->setProjectionMatrixAsPerspective(
+        30.0f, static_cast<double>(traits->width)/static_cast<double>(traits->height), 1.0f, 10000.0f );
+    return camera.release();
 }
 
 void ViewerWidget::reloadModel(int index){
@@ -70,11 +67,11 @@ void ViewerWidget::reloadModel(int index){
 	for(mark = 0; mark< vllen; mark++)
 		if(vl[mark] == true)
 			break;
-	cameraContextList[mark] = TravelManipulator::Instance()->getCameraContext();
+	cameraContextList[mark] = *TravelManipulator::Instance()->getCameraContext();
 	swt->setSingleChildOn(index);
 	GeneralEventHandler::Instance(this)->setDBMap(generateDBMap(index));
 	GeneralEventHandler::Instance(this)->setCurrentScene(swt->getChild(index)->asSwitch(), index);
-	TravelManipulator::Instance()->setCameraContext(cameraContextList[index]);
+	TravelManipulator::Instance()->setCameraContext(&cameraContextList[index]);
 }
 
 void ViewerWidget::loadModels(int size){
@@ -85,26 +82,22 @@ void ViewerWidget::loadModels(int size){
 	node = osgDB::readNodeFile(string(MODELBASE)+"0.ive");
 	underswt->addChild(node, true);
 	GeneralEventHandler::Instance(this)->setCurrentScene(underswt, 0);
-	CameraContext cc;
-	cc.m_fMoveSpeed = 150.0f;
-	cc.m_vPosition = osg::Vec3(40315.8f, -78755.8f, 900.0f);
-	cc.m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.33946);
-	cc.max_height = 2500;
-	cc.min_height = 400;
-	cc.keepout  = getKeepOutBorder(0);
-	cc.keepin = getKeepInBorder(0);
-	cc.flymode = false;
-	cc.lowmode = true;
-	cc.peng = false;
-	cc.m_fAngle = 0.5f;
-	cameraContextList[0] = cc;
-	TravelManipulator::Instance()->setCameraContext(cameraContextList[0]);
+	CameraContext *cc = new CameraContext();
+	cc->m_fMoveSpeed = 150.0f;
+	cc->m_vPosition = osg::Vec3(40315.8f, -78755.8f, 900.0f);
+	cc->m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.33946);
+	cc->max_height = 2500;
+	cc->min_height = 400;
+	cc->keepout  = getKeepOutBorder(0);
+	cc->keepin = getKeepInBorder(0);
+	cc->flymode = false;
+	cc->lowmode = true;
+	cc->peng = false;
+	cc->m_fAngle = 0.5f;
+	cameraContextList[0] = *cc;
+	TravelManipulator::Instance()->setCameraContext(cc);
 	GeneralEventHandler::Instance(this)->setDBMap(generateDBMap(0));
-	//LightContext lc;
-	//swt->insertChild(0, node, true);
 	swt->insertChild(0, underswt, true);
-
-	root->addChild(swt);
 }
 void ViewerWidget::loadModleThread(int modelnum){
 	char num[10];
@@ -117,28 +110,27 @@ void ViewerWidget::loadModleThread(int modelnum){
 		threadSwt = new osg::Switch();
 		threadSwt->insertChild(0, threadNode, true);
 		osg::Vec3 centerpos = threadNode->getBound().center();
-		CameraContext cc;
-		currentIndex = i;
-		cc.keepout  = getKeepOutBorder(i);
-		cc.keepin = getKeepInBorder(i);
+		CameraContext *cc = new CameraContext();
+		cc->keepout  = getKeepOutBorder(i);
+		cc->keepin = getKeepInBorder(i);
 		if(i == 1){
-			cc.m_fMoveSpeed = 35.0f;
-			cc.m_vPosition = osg::Vec3(380, -7272.73f, -30.0f);
-			cc.m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.26486f);
-			cc.max_height = 200;
-			cc.min_height = -80;
+			cc->m_fMoveSpeed = 35.0f;
+			cc->m_vPosition = osg::Vec3(380, -7272.73f, -30.0f);
+			cc->m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.26486f);
+			cc->max_height = 200;
+			cc->min_height = -80;
 		}else if(i == 2){//±ÃÕ¾Ò»²ã
-			cc.m_fMoveSpeed = 35.0f;
-			cc.m_vPosition = osg::Vec3(-174.813f, -1986.09f, 180.0f);
-			cc.m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.329f);
-			cc.max_height = 1000;
-			cc.min_height = 45;
+			cc->m_fMoveSpeed = 35.0f;
+			cc->m_vPosition = osg::Vec3(-174.813f, -1986.09f, 180.0f);
+			cc->m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.329f);
+			cc->max_height = 1000;
+			cc->min_height = 45;
 			TextPanel* textnode;
 
 			string namehead = "INFO_#";
 			osg::Vec4 keypoint;
 			for(int i = 0; i< 18; i++){
-				keypoint = cc.keepout->at(i).range;
+				keypoint = cc->keepout->at(i).range;
 				textnode = new TextPanel();
 				textnode->setDataVariance(osg::Object::DYNAMIC);
 				float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
@@ -155,40 +147,42 @@ void ViewerWidget::loadModleThread(int modelnum){
 			}
 
 		}else if(i == 3){
-			cc.m_fMoveSpeed = 35.0f;
-			cc.m_vPosition = osg::Vec3(-324.813f, -1086.09f, -240.0f);
-			cc.m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.329f);
-			cc.max_height = -90;
-			cc.min_height = -350;
-			//cc.light_Position = osg::Vec4(-500, -3557, -240, 0.0);
+			cc->m_fMoveSpeed = 35.0f;
+			cc->m_vPosition = osg::Vec3(-324.813f, -1086.09f, -240.0f);
+			cc->m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.329f);
+			cc->max_height = -90;
+			cc->min_height = -350;
 		}else if(i == 4){
-			cc.m_fMoveSpeed = 35.0f;
-			cc.m_vPosition = osg::Vec3(40.813f, -550.09f, -30.0f);
-			cc.m_vRotation = osg::Vec3(1.5407,0.0f,0.0f);
-			cc.max_height = 70;
-			cc.min_height = 0;
+			cc->m_fMoveSpeed = 35.0f;
+			cc->m_vPosition = osg::Vec3(40.813f, -550.09f, -30.0f);
+			cc->m_vRotation = osg::Vec3(1.5407,0.0f,0.0f);
+			cc->max_height = 70;
+			cc->min_height = 0;
 		}else if(i == 5){
-			cc.m_fMoveSpeed = 20.0f;
-			cc.m_vPosition = osg::Vec3(83.3197, -1841.9, 0.0f);
-			cc.m_vRotation = osg::Vec3(1.5407,0.0f,0.0f);
-			cc.max_height = 70;
-			cc.min_height = 0;
+			cc->m_fMoveSpeed = 20.0f;
+			cc->m_vPosition = osg::Vec3(83.3197, -1841.9, 0.0f);
+			cc->m_vRotation = osg::Vec3(1.5407,0.0f,0.0f);
+			cc->max_height = 70;
+			cc->min_height = 0;
 		}
 
-		cc.flymode = false;
-		cc.lowmode = true;
-		cc.peng = false;
-		cc.m_fAngle = 0.5f;
-		//cc.light_Position = osg::Vec4(centerpos.x(), centerpos.y(), centerpos.z(), 1.0);
-		cameraContextList[i] = cc;
+		cc->flymode = false;
+		cc->lowmode = true;
+		cc->peng = false;
+		cc->m_fAngle = 0.5f;
+		cameraContextList[i] = *cc;
+		emit loadOneSwt(threadSwt, i);
 		loadFinished = true;
 	}
 	emit modelLoadFinished();
 }
 
+void ViewerWidget::loadNext(){
+	loadFinished = false;
+}
 
-CameraContext ViewerWidget::getCameraContext(int index){
-	return cameraContextList.at(index);
+CameraContext* ViewerWidget::getCameraContext(int index){
+	return &cameraContextList.at(index);
 }
 
 void ViewerWidget::textInfoSwt(int index, bool showTxt){
@@ -331,29 +325,4 @@ vector<map<string, string>*>* ViewerWidget::generateDBMap(int index){
 
 	return retVec;
 }
-
-void ViewerWidget::paintEvent(QPaintEvent* event){
-	frame();
-	if(loadFinished == true){
-		//swt->insertChild(currentIndex, threadNode, false);
-		swt->insertChild(currentIndex, threadSwt, false);
-		loadFinished = false;
-	}
-	if(isActiveWindow() != true){
-		TravelManipulator::Instance()->resetStateBits();
-		//cout<<"viewerWidget paintevent not active window"<<endl;
-	}
-}
-
-//bool ViewerWidget::winEvent(MSG * message, long * result){
-//	if(message->message == WM_ACTIVATE){
-//		TravelManipulator::Instance()->resetStateBits();
-//		cout<<"viewervidget activate"<<endl;
-//	}
-//	if(message->message == WM_KILLFOCUS){
-//		TravelManipulator::Instance()->resetStateBits();
-//		cout<<"viewervidget killfocus"<<endl;
-//	}
-//	return false;
-//}
 

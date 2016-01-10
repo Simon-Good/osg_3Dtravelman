@@ -10,48 +10,45 @@
 #include "TravelManipulator.h"
 #include "GeneralEventHandler.h"
 #include "TextPanel.h"
+#include "RenderThread.h"
 #include <vector>
 #include <string>
 #include <boost/thread/thread.hpp>
 using namespace std;
-class ViewerWidget:public QWidget, public osgViewer::CompositeViewer
+class ViewerWidget:public QWidget
 {
 	Q_OBJECT
 public:
 	ViewerWidget(QWidget* parent = 0);
 	~ViewerWidget(){}
 
-	osg::ref_ptr<osgViewer::View> generateMainView(osgQt::GraphicsWindowQt* );
-	void createTraits(osg::GraphicsContext::Traits* traits, string name, int x, int y, int H, int W);
-
+	osg::Camera* createCamera( int x, int y, int w, int h );
 	void reloadModel(int index);
 	void loadModels(int size);
 	void loadModleThread(int modelnum);
 
-	CameraContext getCameraContext(int index);
+	CameraContext* getCameraContext(int index);
 	void textInfoSwt(int index, bool showTxt);
 
 	vector<RangeNode>* getKeepOutBorder(int modelindex);
 	vector<RangeNode>* getKeepInBorder(int modelindex);
 	vector<map<string, string>*>* generateDBMap(int index);
-
-	virtual void paintEvent(QPaintEvent* event);
-	//virtual bool winEvent(MSG * message, long * result);
 signals:
 	void modelLoadFinished();
+	void loadOneSwt(osg::Switch* swt, int index);
 
+public slots:
+	void loadNext();
 public:
-	osg::ref_ptr<osg::Group> root;
 	osg::ref_ptr<osg::Switch> swt;
 	osg::Node* threadNode;
 	osg::Switch* threadSwt;
-	unsigned int currentIndex;
 protected:
-	QTimer _timer;
-	osg::ref_ptr<osgViewer::View> mainView;
+	osg::ref_ptr<osgViewer::Viewer> mainView;
 	osgQt::GraphicsWindowQt* qgw;
 	boost::thread thread;
 	vector<CameraContext> cameraContextList;
 	QWidget* mparent;
 	bool loadFinished;
+	RenderThread *rThread;
 };
