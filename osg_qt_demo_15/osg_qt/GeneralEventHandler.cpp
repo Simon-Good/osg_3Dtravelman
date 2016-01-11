@@ -2,11 +2,12 @@
 #include "dbHandler.h"
 
 GeneralEventHandler* GeneralEventHandler::instance = 0;
-QWidget* GeneralEventHandler::mparent = 0;
+//QWidget* GeneralEventHandler::mparent = 0;
 bool GeneralEventHandler::infoenable = true;
-GeneralEventHandler* GeneralEventHandler::Instance(QWidget* parent){
+//GeneralEventHandler* GeneralEventHandler::Instance(QWidget* parent){
+GeneralEventHandler* GeneralEventHandler::Instance(){
 	if(instance == 0){
-		mparent = parent;
+		//mparent = parent;
 		instance = new GeneralEventHandler();
 	}
 	return instance;
@@ -24,7 +25,8 @@ bool GeneralEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 		{
 			frameCount++;
 			if(frameCount % 30 == 0){
-				if(curSwt->getValueList().size() > 1){
+				
+				if(curSwt!=NULL && curSwt->getValueList().size() > 1){
 					int numchildren = curSwt->getNumChildren();
 					TextPanel* tp;
 					if(dbHandler::Get_dbH_Instance()->get_dbMessage(curSwtIndex,dbMap)==true){
@@ -49,15 +51,15 @@ bool GeneralEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 					osg::NodePath& nodepath = intersection.nodePath;
 					osg::ref_ptr<osg::Node> node=  (nodepath.size() >= 3)?dynamic_cast<osg::Node*>(nodepath[nodepath.size()-4]):0;
 					if(node!= 0)
-						emit selectedPosition(node->getBound().center(), node->getBound().radius());
+						emit selectedPosition(node->getBound().center().x(), node->getBound().center().y(), node->getBound().radius());
 					
 					node=  (nodepath.size() >= 2)?dynamic_cast<osg::Node*>(nodepath[nodepath.size()-3]):0;
 					if(node!= 0)
-						emit selectedPosition(node->getBound().center(), node->getBound().radius());
+						emit selectedPosition(node->getBound().center().x(), node->getBound().center().y(), node->getBound().radius());
 
 					node=  (nodepath.size() >= 1)?dynamic_cast<osg::Node*>(nodepath[nodepath.size()-2]):0;
 					if(node!= 0)
-						emit selectedPosition(node->getBound().center(), node->getBound().radius());
+						emit selectedPosition(node->getBound().center().x(), node->getBound().center().y(), node->getBound().radius());
 				}
 				emit resetDoshow();
 			}

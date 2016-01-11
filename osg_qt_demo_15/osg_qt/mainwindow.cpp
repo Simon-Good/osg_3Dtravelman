@@ -57,7 +57,7 @@ MainWindow::MainWindow(WelcomePage* wp, QWidget *parent)
 	wp->setValue(85);
 	setCentralWidget(viewWidget);
 	connect(viewWidget, SIGNAL(modelLoadFinished()), this, SLOT(enableItems()));
-	connect(GeneralEventHandler::Instance(), SIGNAL(selectedPosition(osg::Vec3, float)), this, SLOT(showPos(osg::Vec3, float)));
+	connect(GeneralEventHandler::Instance(), SIGNAL(selectedPosition(float, float, float)), this, SLOT(showPos(float, float, float)));
 	connect(GeneralEventHandler::Instance(), SIGNAL(resetDoshow()), this, SLOT(resetDoshowFlag()));
 	wp->setValue(95);
 	currentItem = customerList->currentItem();
@@ -286,7 +286,8 @@ void MainWindow::changeModel(QListWidgetItem* item){
 		cameraFlyModeActTB->setDisabled(false);
 		cameraFlyModeActTB->setChecked(cc->flymode);
 		cameraLowModeActTB->setChecked(cc->lowmode);
-		GeneralEventHandler::Instance(this)->infoEnable(true);
+		//GeneralEventHandler::Instance(this)->infoEnable(true);
+		GeneralEventHandler::Instance()->infoEnable(true);
 		textInfoAct->setDisabled(true);
 		textInfoAct->setCheckable(false);
 		textInfoAct->setChecked(false);
@@ -298,13 +299,15 @@ void MainWindow::changeModel(QListWidgetItem* item){
 		cameraFlyModeActTB->setDisabled(true);
 		cameraFlyModeActTB->setChecked(false);
 		cameraLowModeActTB->setChecked(true);
-		if(customerList->row(item) == 2){
-			GeneralEventHandler::Instance(this)->infoEnable(true);
+		if(customerList->row(item) == 2 ||customerList->row(item) == 1){
+			//GeneralEventHandler::Instance(this)->infoEnable(true);
+			GeneralEventHandler::Instance()->infoEnable(true);
 			textInfoAct->setDisabled(false);
 			textInfoAct->setCheckable(true);
 			textInfoAct->setChecked(true);
 		}else{
-			GeneralEventHandler::Instance(this)->infoEnable(false);
+			//GeneralEventHandler::Instance(this)->infoEnable(false);
+			GeneralEventHandler::Instance()->infoEnable(false);
 			textInfoAct->setDisabled(true);
 			textInfoAct->setCheckable(false);
 			textInfoAct->setChecked(false);
@@ -393,14 +396,14 @@ void MainWindow::setCameraLowMode(){
 	TravelManipulator::Instance()->setCameraContext(cc);
 }
 
-void MainWindow::showPos(osg::Vec3 pos, float radius){
+void MainWindow::showPos(float x, float y, float radius){
 	vector<RangeNode>::iterator itr;
 	vector<RangeNode>* vec = TravelManipulator::Instance()->cc->keepout;
 	int index = -1;
 	if(vec->size() > 0){
 		for(itr = vec->begin(); itr != vec->end(); itr++){
-			if( (itr->range.x() < pos.x()&& pos.x() < itr->range.y())&&
-				(itr->range.z() < pos.y()&& pos.y() < itr->range.w())&&
+			if( (itr->range.x() < x&& x < itr->range.y())&&
+				(itr->range.z() < y&& y < itr->range.w())&&
 				(radius <= caculateRadius(itr->range))){
 					index = itr->index;
 					break;

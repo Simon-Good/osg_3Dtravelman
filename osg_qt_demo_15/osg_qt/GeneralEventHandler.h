@@ -20,7 +20,8 @@ class GeneralEventHandler :public QObject, public osgGA::GUIEventHandler
 {
 	Q_OBJECT
 public:
-	static GeneralEventHandler* Instance(QWidget* parent = 0);
+	//static GeneralEventHandler* Instance(QWidget* parent = 0);
+	static GeneralEventHandler* Instance();
 	void infoEnable(bool enable);
 	void setCurrentScene(osg::Switch*, int);
 	void setDBMap(vector<map<string, string>*>* dbmap);
@@ -31,11 +32,12 @@ protected:
 	bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
 	
 signals:
-	void selectedPosition(osg::Vec3 pos, float radius);
+	//void selectedPosition(osg::Vec3 pos, float radius);
+	void selectedPosition(float x, float y, float radius);
 	void resetDoshow();
 private:
 	static GeneralEventHandler* instance;
-	static QWidget* mparent;
+	//static QWidget* mparent;
 	static bool infoenable;
 	osg::Switch* curSwt;
 	vector<map<string, string>*>* dbMap;
