@@ -79,7 +79,7 @@ bool dbHandler::get_dbMessage(int index,vector<map<string,string>*>* v_map)
 	if(pConn != NULL){
 		try
 		{
-			string cmd="select * from V_T_RT_UNT_R_";
+			string cmd="select * from V_T_RT_UNT_R";
 			_bstr_t bstring=cmd.c_str();//ÀàÐÍ×ª»»
 
 			string cmd2="select * from V_T_RT_YS_R";

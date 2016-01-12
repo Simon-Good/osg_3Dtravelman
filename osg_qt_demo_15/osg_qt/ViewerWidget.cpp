@@ -89,8 +89,10 @@ void ViewerWidget::loadModels(int size){
 	GeneralEventHandler::Instance()->setCurrentScene(underswt, 0);
 	CameraContext *cc = new CameraContext();
 	cc->m_fMoveSpeed = 150.0f;
-	cc->m_vPosition = osg::Vec3(40315.8f, -78755.8f, 900.0f);
-	cc->m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.33946);
+	//cc->m_vPosition = osg::Vec3(40315.8f, -78755.8f, 900.0f);
+	//cc->m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.33946);
+	cc->m_vPosition = osg::Vec3(62373.6, -35979.1, 900.0f);
+	cc->m_vRotation = osg::Vec3(1.61923,0.0f,-4.50296);
 	cc->max_height = 2500;
 	cc->min_height = 400;
 	cc->keepout  = getKeepOutBorder(0);
@@ -135,7 +137,7 @@ void ViewerWidget::loadModleThread(int modelnum){
 				textnode->setDataVariance(osg::Object::DYNAMIC);
 				float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
 				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2-90;
-				textnode->addYZContent(osg::Vec3(xpos, ypos, -50.0), 60, 30, true);
+				textnode->addYZContent(osg::Vec3(xpos, ypos, -50.0), 60, 30, 4.0, true);
 				textnode->setName(namehead + to_string((long long)j));
 				threadSwt->insertChild(j+1, textnode, true);
 			}
@@ -157,10 +159,10 @@ void ViewerWidget::loadModleThread(int modelnum){
 				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2;
 				if(j >= 0 && j< 9){
 					ypos = (-1)*ypos+50;
-					textnode->addYZContent(osg::Vec3(xpos, ypos, 200.0), 300, 135);
+					textnode->addYZContent(osg::Vec3(xpos, ypos, 200.0), 300, 135, 12.0);
 				}else if(j >= 9 && j< 18){
 					ypos = ypos - 500;
-					textnode->addYZContent(osg::Vec3(xpos, ypos, 150.0), 90, 50, true);
+					textnode->addYZContent(osg::Vec3(xpos, ypos, 150.0), 90, 50, 12.0, true);
 				}
 				textnode->setName(namehead + to_string((long long)j));
 				threadSwt->insertChild(j+1, textnode, true);
@@ -180,6 +182,29 @@ void ViewerWidget::loadModleThread(int modelnum){
 			cc->m_vRotation = osg::Vec3(1.5407,0.0f,0.0f);
 			cc->max_height = 70;
 			cc->min_height = 0;
+
+			//TextPanel* textnode;
+			//string namehead = "DIAODU_#";
+			//osg::Vec4 keypoint;
+			//for(int j = 0; j< 2; j++){
+			//	//generate two position from each keypoint
+			//	keypoint = cc->keepout->at(j).range;
+			//	textnode = new TextPanel();
+			//	textnode->setDataVariance(osg::Object::DYNAMIC);
+			//	float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
+			//	float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2-90;
+			//	textnode->addYZContent(osg::Vec3(xpos, ypos, -50.0), 60, 30, true);
+			//	textnode->setName(namehead + to_string((long long)j));
+			//	threadSwt->insertChild(j+1, textnode, true);
+
+			//	textnode = new TextPanel();
+			//	textnode->setDataVariance(osg::Object::DYNAMIC);
+			//	float xpos = keypoint.x() - abs(keypoint.y()-keypoint.x())/2;
+			//	float ypos = keypoint.z() - abs(keypoint.w()-keypoint.z())/2+90;
+			//	textnode->addYZContent(osg::Vec3(xpos, ypos, -50.0), 60, 30, true);
+			//	textnode->setName(namehead + to_string((long long)j));
+			//	threadSwt->insertChild(j+2, textnode, true);
+			//}
 		}else if(i == 5){//节制闸
 			cc->m_fMoveSpeed = 20.0f;
 			cc->m_vPosition = osg::Vec3(83.3197, -1841.9, 0.0f);
@@ -239,7 +264,7 @@ vector<RangeNode>* ViewerWidget::getKeepInBorder(int modelindex){
 
 vector<RangeNode>* ViewerWidget::getKeepOutBorder(int modelindex){
 	vector<RangeNode>* ret = new vector<RangeNode>();
-	if(modelindex == 0){
+	if(modelindex == 0){//厂区
 		ret->push_back(RangeNode(0, osg::Vec4(4647.066, 19877.461, -42102.832, -39354.855)));
 		ret->push_back(RangeNode(1, osg::Vec4(-901.902, 4774.132, -41881.059, -39449.918)));
 		ret->push_back(RangeNode(2, osg::Vec4(-27511.979, -21784.602, -67398.156, -39283.802)));
@@ -251,10 +276,10 @@ vector<RangeNode>* ViewerWidget::getKeepOutBorder(int modelindex){
 		ret->push_back(RangeNode(8, osg::Vec4(25834.207, 37383.184, -63846.973, -53276.723)));
 		ret->push_back(RangeNode(9, osg::Vec4(18182.531, 22549.695, -73950.375, -64837.469)));
 		ret->push_back(RangeNode(10, osg::Vec4(-37689.965, -29035.395, -68235.962, -64327.445)));
-	}else if(modelindex == 1){
+	}else if(modelindex == 1){//送水闸
 		ret->push_back(RangeNode(0, osg::Vec4(160.031, 198.88, -6878.99, -6834.36)));
 		ret->push_back(RangeNode(1, osg::Vec4(160.031, 198.88, -6529.84, -6487.92)));
-	}else if(modelindex == 2){
+	}else if(modelindex == 2){//泵站
 		ret->push_back(RangeNode(0, osg::Vec4(-256.911, 280.151, -272.057, 300.0)));//由门至远
 		ret->push_back(RangeNode(1, osg::Vec4(-256.911, 280.151, 500.0, 1080.0)));
 		ret->push_back(RangeNode(2, osg::Vec4(-256.911, 280.151, 1280.0, 1900.0)));
@@ -273,19 +298,23 @@ vector<RangeNode>* ViewerWidget::getKeepOutBorder(int modelindex){
 		ret->push_back(RangeNode(15, osg::Vec4(-1250.6, -750.6, 4480.5, 5250.5)));
 		ret->push_back(RangeNode(16, osg::Vec4(-1250.6, -750.6, 5270.5, 6050.5)));
 		ret->push_back(RangeNode(17, osg::Vec4(-1250.6, -750.6, 6060.5, 6850.5)));
-	}else if(modelindex == 3){
+	}else if(modelindex == 3){//连轴层
 		//ret = NULL;
-	}else if(modelindex == 4){
-		//ret = NULL;
-	}else if(modelindex == 5){
-		ret->push_back(RangeNode(0, osg::Vec4(-67.3615, 75.7484, -1553.51, -1049.4)));
-		ret->push_back(RangeNode(1, osg::Vec4(-107.513, -77.9218, -977.048, -922.796)));
-		ret->push_back(RangeNode(2, osg::Vec4(-67.3615, 71.7206, -871.702, -365.465)));
-		ret->push_back(RangeNode(3, osg::Vec4(-67.3615, 80.257, -182.804, 336.603)));
-		ret->push_back(RangeNode(4, osg::Vec4(-106.9, -80.2308, 404.539, 450.121)));
-		ret->push_back(RangeNode(5, osg::Vec4(-67.3615, 69.1049, 511.798, 1011.59)));
-		ret->push_back(RangeNode(6, osg::Vec4(-107.802, -81.398, 1102.56, 1148.05)));
-		ret->push_back(RangeNode(7, osg::Vec4(-67.3615, 71.5234, 1202.85, 1703.84)));
+	}else if(modelindex == 4){//调度闸
+		ret->push_back(RangeNode(0, osg::Vec4(-159.0, -121.0, -205.634, -154.634)));
+		ret->push_back(RangeNode(1, osg::Vec4(-159.0, -121.0, 492.634, 536.634)));
+	}else if(modelindex == 5){//节制闸
+		ret->push_back(RangeNode(0, osg::Vec4(-120.0, -81.575, -972.88, -928.773)));
+		ret->push_back(RangeNode(1, osg::Vec4(-120.0, -81.575, 406.407, 447.844)));
+		ret->push_back(RangeNode(2, osg::Vec4(-120.0, -81.575, 1102.98, 1146.21)));
+		ret->push_back(RangeNode(3, osg::Vec4(-67.3615, 75.7484, -1553.51, -1049.4)));
+		ret->push_back(RangeNode(4, osg::Vec4(-107.513, -77.9218, -977.048, -922.796)));
+		ret->push_back(RangeNode(5, osg::Vec4(-67.3615, 71.7206, -871.702, -365.465)));
+		ret->push_back(RangeNode(6, osg::Vec4(-67.3615, 80.257, -182.804, 336.603)));
+		ret->push_back(RangeNode(7, osg::Vec4(-106.9, -80.2308, 404.539, 450.121)));
+		ret->push_back(RangeNode(8, osg::Vec4(-67.3615, 69.1049, 511.798, 1011.59)));
+		ret->push_back(RangeNode(9, osg::Vec4(-107.802, -81.398, 1102.56, 1148.05)));
+		ret->push_back(RangeNode(10, osg::Vec4(-67.3615, 71.5234, 1202.85, 1703.84)));
 	}
 	return ret;
 }

@@ -19,7 +19,7 @@ TextPanel::~TextPanel(void)
 {
 }
 
-void TextPanel::addYZContent(const osg::Vec3& leftupCorner, float wid, float hit, bool minus, string fontpath){
+void TextPanel::addYZContent(const osg::Vec3& leftupCorner, float wid, float hit, float size, bool minus, string fontpath){
 	osg::ref_ptr<osg::Geometry> geom = new osg::Geometry();
 	osg::Vec3Array* nodeList = new osg::Vec3Array();
 
@@ -42,7 +42,7 @@ void TextPanel::addYZContent(const osg::Vec3& leftupCorner, float wid, float hit
 	geode->addDrawable(geom.get());
 
 	font = osgText::readFontFile(fontpath);
-	setupProperties(*content, font, 12.0f, leftupCorner + osg::Vec3(1.0f, 0.0f, height-5));//5 margin to up border
+	setupProperties(*content, font, size, leftupCorner + osg::Vec3(1.0f, 0.0f, height-5));//5 margin to up border
 
 	//updateContent(str);
 	geode->addDrawable(content.get());
