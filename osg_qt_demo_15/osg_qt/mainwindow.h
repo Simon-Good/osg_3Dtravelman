@@ -73,7 +73,7 @@ public slots:
 	void setCameraLowMode();
 	void setCameraFlyMode();
 	void setCameraToPosition(osg::Vec3& trans, osg::Vec3& rot);
-	void showPos(osg::Vec3 pos, float radius);
+	void showPos(float x, float y, float radius);
 	void enableItems();
 	void toolbarSwitch();
 	void resetDoshowFlag();

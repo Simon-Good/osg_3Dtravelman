@@ -18,6 +18,8 @@ ViewerWidget::ViewerWidget(QWidget* parent):   QWidget(parent){
     mainView->setSceneData( swt );
     mainView->addEventHandler( sh);
     mainView->setCameraManipulator( TravelManipulator::Instance());
+	mainView->addEventHandler(GeneralEventHandler::Instance());
+	//mainView->addEventHandler(GeneralEventHandler::Instance(mparent));
     mainView->setThreadingModel( osgViewer::Viewer::SingleThreaded );
 	mainView->setKeyEventSetsDone(0);
         
@@ -69,8 +71,10 @@ void ViewerWidget::reloadModel(int index){
 			break;
 	cameraContextList[mark] = *TravelManipulator::Instance()->getCameraContext();
 	swt->setSingleChildOn(index);
-	GeneralEventHandler::Instance(this)->setDBMap(generateDBMap(index));
-	GeneralEventHandler::Instance(this)->setCurrentScene(swt->getChild(index)->asSwitch(), index);
+	/*GeneralEventHandler::Instance(this)->setDBMap(generateDBMap(index));
+	GeneralEventHandler::Instance(this)->setCurrentScene(swt->getChild(index)->asSwitch(), index);*/
+	GeneralEventHandler::Instance()->setDBMap(generateDBMap(index));
+	GeneralEventHandler::Instance()->setCurrentScene(swt->getChild(index)->asSwitch(), index);
 	TravelManipulator::Instance()->setCameraContext(&cameraContextList[index]);
 }
 
@@ -80,8 +84,9 @@ void ViewerWidget::loadModels(int size){
 	osg::ref_ptr<osg::Node> node;
 	osg::ref_ptr<osg::Switch> underswt = new osg::Switch();
 	node = osgDB::readNodeFile(string(MODELBASE)+"0.ive");
-	underswt->addChild(node, true);
-	GeneralEventHandler::Instance(this)->setCurrentScene(underswt, 0);
+	underswt->insertChild(0, node, true);
+	/*GeneralEventHandler::Instance(this)->setCurrentScene(underswt, 0);*/
+	GeneralEventHandler::Instance()->setCurrentScene(underswt, 0);
 	CameraContext *cc = new CameraContext();
 	cc->m_fMoveSpeed = 150.0f;
 	cc->m_vPosition = osg::Vec3(40315.8f, -78755.8f, 900.0f);
@@ -96,7 +101,8 @@ void ViewerWidget::loadModels(int size){
 	cc->m_fAngle = 0.5f;
 	cameraContextList[0] = *cc;
 	TravelManipulator::Instance()->setCameraContext(cc);
-	GeneralEventHandler::Instance(this)->setDBMap(generateDBMap(0));
+	//GeneralEventHandler::Instance(this)->setDBMap(generateDBMap(0));
+	GeneralEventHandler::Instance()->setDBMap(generateDBMap(0));
 	swt->insertChild(0, underswt, true);
 }
 void ViewerWidget::loadModleThread(int modelnum){
@@ -113,52 +119,68 @@ void ViewerWidget::loadModleThread(int modelnum){
 		CameraContext *cc = new CameraContext();
 		cc->keepout  = getKeepOutBorder(i);
 		cc->keepin = getKeepInBorder(i);
-		if(i == 1){
+		if(i == 1){//送水闸
 			cc->m_fMoveSpeed = 35.0f;
 			cc->m_vPosition = osg::Vec3(380, -7272.73f, -30.0f);
 			cc->m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.26486f);
-			cc->max_height = 200;
+			cc->max_height = 30;
 			cc->min_height = -80;
-		}else if(i == 2){//泵站一层
+
+			TextPanel* textnode;
+			string namehead = "SONGSHUI_#";
+			osg::Vec4 keypoint;
+			for(int j = 0; j< 2; j++){
+				keypoint = cc->keepout->at(j).range;
+				textnode = new TextPanel();
+				textnode->setDataVariance(osg::Object::DYNAMIC);
+				float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
+				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2-90;
+				textnode->addYZContent(osg::Vec3(xpos, ypos, -50.0), 60, 30, true);
+				textnode->setName(namehead + to_string((long long)j));
+				threadSwt->insertChild(j+1, textnode, true);
+			}
+		}else if(i == 2){//泵房
 			cc->m_fMoveSpeed = 35.0f;
 			cc->m_vPosition = osg::Vec3(-174.813f, -1986.09f, 180.0f);
 			cc->m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.329f);
 			cc->max_height = 1000;
 			cc->min_height = 45;
+			
 			TextPanel* textnode;
-
-			string namehead = "INFO_#";
+			string namehead = "BENGFANG_#";
 			osg::Vec4 keypoint;
-			for(int i = 0; i< 18; i++){
-				keypoint = cc->keepout->at(i).range;
+			for(int j = 0; j< 18; j++){
+				keypoint = cc->keepout->at(j).range;
 				textnode = new TextPanel();
 				textnode->setDataVariance(osg::Object::DYNAMIC);
 				float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
 				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2;
-				if(i >= 0 && i< 9){
+				if(j >= 0 && j< 9){
 					ypos = (-1)*ypos+50;
 					textnode->addYZContent(osg::Vec3(xpos, ypos, 200.0), 300, 135);
-				}else if(i >= 9 && i< 18){
+				}else if(j >= 9 && j< 18){
 					ypos = ypos - 500;
 					textnode->addYZContent(osg::Vec3(xpos, ypos, 150.0), 90, 50, true);
 				}
-				textnode->setName(namehead + to_string((long long)i));
-				threadSwt->insertChild(i+1, textnode, true);
+				textnode->setName(namehead + to_string((long long)j));
+				threadSwt->insertChild(j+1, textnode, true);
 			}
 
-		}else if(i == 3){
+		}else if(i == 3){//连轴层
 			cc->m_fMoveSpeed = 35.0f;
 			cc->m_vPosition = osg::Vec3(-324.813f, -1086.09f, -240.0f);
 			cc->m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.329f);
 			cc->max_height = -90;
 			cc->min_height = -350;
-		}else if(i == 4){
+
+
+		}else if(i == 4){//调度闸
 			cc->m_fMoveSpeed = 35.0f;
 			cc->m_vPosition = osg::Vec3(40.813f, -550.09f, -30.0f);
 			cc->m_vRotation = osg::Vec3(1.5407,0.0f,0.0f);
 			cc->max_height = 70;
 			cc->min_height = 0;
-		}else if(i == 5){
+		}else if(i == 5){//节制闸
 			cc->m_fMoveSpeed = 20.0f;
 			cc->m_vPosition = osg::Vec3(83.3197, -1841.9, 0.0f);
 			cc->m_vRotation = osg::Vec3(1.5407,0.0f,0.0f);
@@ -230,6 +252,8 @@ vector<RangeNode>* ViewerWidget::getKeepOutBorder(int modelindex){
 		ret->push_back(RangeNode(9, osg::Vec4(18182.531, 22549.695, -73950.375, -64837.469)));
 		ret->push_back(RangeNode(10, osg::Vec4(-37689.965, -29035.395, -68235.962, -64327.445)));
 	}else if(modelindex == 1){
+		ret->push_back(RangeNode(0, osg::Vec4(160.031, 198.88, -6878.99, -6834.36)));
+		ret->push_back(RangeNode(1, osg::Vec4(160.031, 198.88, -6529.84, -6487.92)));
 	}else if(modelindex == 2){
 		ret->push_back(RangeNode(0, osg::Vec4(-256.911, 280.151, -272.057, 300.0)));//由门至远
 		ret->push_back(RangeNode(1, osg::Vec4(-256.911, 280.151, 500.0, 1080.0)));
@@ -274,9 +298,11 @@ vector<map<string, string>*>* ViewerWidget::generateDBMap(int index){
 		retMap->insert(pair<string, string>("电压","dianya0"));
 		retVec->push_back(retMap);
 	}else if(index == 1){
-		retMap = new map<string, string>();
-		retMap->insert(pair<string, string>("电压","dianya1"));
-		retVec->push_back(retMap);
+		for(int i = 0; i< 2; i++){
+			retMap = new map<string, string>();
+			retMap->insert(pair<string, string>("电压","dianya1"));
+			retVec->push_back(retMap);
+		}
 	}else if(index == 2){
 		for(int i = 0; i< 18; i++){//dianji1 juanyangji1 dianji2 juanyangji2... dianji9 juanyangji9 
 			retMap = new map<string, string>();
