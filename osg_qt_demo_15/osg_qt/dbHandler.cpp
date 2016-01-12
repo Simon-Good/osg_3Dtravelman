@@ -1,5 +1,9 @@
 
 #include "dbHandler.h"
+#include<iostream>
+#include<iomanip>
+#include<fstream>
+using namespace std;
 
 dbHandler * dbHandler::dbH_Instance =NULL;
 
@@ -8,30 +12,25 @@ dbHandler::dbHandler(){
 		CoInitialize(NULL);
 		try
 		{
+			std::ifstream infile("./config.ini",ios::in|ios::_Nocreate);//从配置文件中读入数据库配置信息
+			if (!infile)
+			{
+				cerr<<"open error";//提示打开错误，退出
+				exit(1);
+			}
+			char str[100];
+			infile.getline(str,100);//读入数据
+			string s(&str[0],&str[strlen(str)]);//类型转换
+			infile.close();//关闭文件
+			_bstr_t cstr=s.c_str();//类型转换
+
 			//初始化数据库连接对象
 			 pConn=_ConnectionPtr("ADODB.Connection");
 			//打开数据库连接
-			HRESULT rt = pConn->Open("Provider=SQLOLEDB;Server=PGOS;Database=YJH;uid=sa;pwd=123456","","",adConnectUnspecified);
+			HRESULT rt = pConn->Open(cstr,"","",adConnectUnspecified);
 			//初始化记录集对象
 			pRs=_RecordsetPtr("ADODB.Recordset");
-			//cout<<"db return:"<<rt<<endl;
-			////打开指定记录集中数据
-			//pRs->Open("select * from Staff_infor",_variant_t(pConn,true),adOpenStatic,adLockOptimistic,adCmdText);
-
-			//	//访问记录集中数据
-			//	while (!pRs->EndOfFile)
-			//	{
-			//		cout<<"ID"<<"  "<<_bstr_t(pRs->GetCollect("ID"))<<"\t";
-			//		cout<<"Name"<<"  "<<_bstr_t(pRs->GetCollect("Name"))<<"\t";
-			//		pRs->MoveNext();
-			//	}
-			/*}*/
-
-			//关闭记录集
-			//pRs->Close();
-			//关闭数据库连接
-			//pConn->Close();
-			//alm=true;
+			
 		}
 		catch(_com_error &e)
 		{		
@@ -46,7 +45,7 @@ string dbHandler::get_dbMessage(string message,string table,string restrict)
 {
 	//string cmd="Select "+message+" from "+table+" where ID ="+restrict;
 	if(pConn != NULL){
-		string cmd="Select * from v_T_RT_UNT_R";
+		string cmd="Select * from V_T_RT_UNT_R";
 		_bstr_t bstring=cmd.c_str();//类型转换
 	
 		pRs=pConn->Execute(bstring,0,adCmdText);
@@ -80,10 +79,10 @@ bool dbHandler::get_dbMessage(int index,vector<map<string,string>*>* v_map)
 	if(pConn != NULL){
 		try
 		{
-			string cmd="select * from v_T_RT_UNT_R_1";
+			string cmd="select * from V_T_RT_UNT_R_";
 			_bstr_t bstring=cmd.c_str();//类型转换
 
-			string cmd2="select * from V_T_RT_YS_R1";
+			string cmd2="select * from V_T_RT_YS_R";
 			_bstr_t bstring2=cmd2.c_str();
 			//map<string,string> *m;
 			pRs=pConn->Execute(bstring,0,adCmdText);
