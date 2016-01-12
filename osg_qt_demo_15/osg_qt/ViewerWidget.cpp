@@ -84,7 +84,7 @@ void ViewerWidget::loadModels(int size){
 	osg::ref_ptr<osg::Node> node;
 	osg::ref_ptr<osg::Switch> underswt = new osg::Switch();
 	node = osgDB::readNodeFile(string(MODELBASE)+"0.ive");
-	underswt->addChild(node, true);
+	underswt->insertChild(0, node, true);
 	/*GeneralEventHandler::Instance(this)->setCurrentScene(underswt, 0);*/
 	GeneralEventHandler::Instance()->setCurrentScene(underswt, 0);
 	CameraContext *cc = new CameraContext();
@@ -123,7 +123,7 @@ void ViewerWidget::loadModleThread(int modelnum){
 			cc->m_fMoveSpeed = 35.0f;
 			cc->m_vPosition = osg::Vec3(380, -7272.73f, -30.0f);
 			cc->m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.26486f);
-			cc->max_height = 100;
+			cc->max_height = 30;
 			cc->min_height = -80;
 
 			TextPanel* textnode;
@@ -133,13 +133,9 @@ void ViewerWidget::loadModleThread(int modelnum){
 				keypoint = cc->keepout->at(j).range;
 				textnode = new TextPanel();
 				textnode->setDataVariance(osg::Object::DYNAMIC);
-				//float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
-				//float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2;
 				float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
-				float ypos = keypoint.z()-50;
-				cout<<xpos<<" "<<ypos<<endl;
-				//ypos = (-1)*ypos+50;
-				textnode->addYZContent(osg::Vec3(xpos, ypos, -30.0), 300, 135);
+				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2-90;
+				textnode->addYZContent(osg::Vec3(xpos, ypos, -50.0), 60, 30, true);
 				textnode->setName(namehead + to_string((long long)j));
 				threadSwt->insertChild(j+1, textnode, true);
 			}
@@ -176,6 +172,8 @@ void ViewerWidget::loadModleThread(int modelnum){
 			cc->m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.329f);
 			cc->max_height = -90;
 			cc->min_height = -350;
+
+
 		}else if(i == 4){//调度闸
 			cc->m_fMoveSpeed = 35.0f;
 			cc->m_vPosition = osg::Vec3(40.813f, -550.09f, -30.0f);
@@ -296,15 +294,15 @@ vector<map<string, string>*>* ViewerWidget::generateDBMap(int index){
 	map<string, string>* retMap;
 	vector<map<string, string>*>* retVec = new vector<map<string, string>*>();
 	if(index == 0){
+		retMap = new map<string, string>();
+		retMap->insert(pair<string, string>("电压","dianya0"));
+		retVec->push_back(retMap);
+	}else if(index == 1){
 		for(int i = 0; i< 2; i++){
 			retMap = new map<string, string>();
-			retMap->insert(pair<string, string>("电压","dianya0"));
+			retMap->insert(pair<string, string>("电压","dianya1"));
 			retVec->push_back(retMap);
 		}
-	}else if(index == 1){
-		retMap = new map<string, string>();
-		retMap->insert(pair<string, string>("电压","dianya1"));
-		retVec->push_back(retMap);
 	}else if(index == 2){
 		for(int i = 0; i< 18; i++){//dianji1 juanyangji1 dianji2 juanyangji2... dianji9 juanyangji9 
 			retMap = new map<string, string>();

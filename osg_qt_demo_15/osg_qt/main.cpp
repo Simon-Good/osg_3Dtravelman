@@ -22,5 +22,4 @@ int main(int argc, char** argv){
 	wp->setValue(100);
 	mwd->showMaximized();
 	return app.exec();
-
 }
