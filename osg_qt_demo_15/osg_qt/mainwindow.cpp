@@ -171,6 +171,8 @@ void MainWindow::createToolBar(){
 
 void MainWindow::createDockWindow(){
 	 QDockWidget *dock = new QDockWidget(tr("导航窗口"), this);
+	 dock->setMaximumWidth(320);
+	 dock->setMinimumWidth(300);
      dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
      customerList = new QListWidget(dock);
      customerList->addItems(QStringList()
@@ -194,18 +196,28 @@ void MainWindow::createDockWindow(){
      viewMenu->addAction(dock->toggleViewAction());
 
 	 mapdock = new QDockWidget(tr("地图窗口"), this);
+	 mapdock->setMaximumHeight(420);
+	 mapdock->setMinimumHeight(400);
+	 mapdock->setMaximumWidth(320);
+	 mapdock->setMinimumWidth(300);
      mapdock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-	 QGraphicsScene *scene = new QGraphicsScene(0, 0, 400, 300);
-	 MapItem* mapitem = new MapItem(QPixmap("./open.png"));
+	 QGraphicsScene *scene = new QGraphicsScene(0, 0, 300, 400);
+	 MapItem* mapitem = new MapItem(QPixmap("./kongzhilou.png"));
 	 mapitem->setData(0, 0);
 	 mapitem->setPos(20, 10);
 	 mapitem->setToolTip(QString(tr("管理站")));
 	 scene->addItem(mapitem);
+
+	 QGraphicsPixmapItem* backgrounditem = new QGraphicsPixmapItem(QPixmap("./map.png").scaled(300,400));
+	 backgrounditem->setPos(0,0);
+	 backgrounditem->setZValue(-1);
+	 scene->addItem(backgrounditem);
 	 MyGraphicsView *view = new MyGraphicsView(scene);
 	 view->setRenderHint(QPainter::Antialiasing);
 	 view->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
-	 QPixmap pixmap = QPixmap("./background2.bmp").scaled(400, 300);
-	 view->setBackgroundBrush(pixmap);
+	 //QPixmap pixmap = QPixmap("./map.png").scaled(300, 400);
+	 //QPixmap pixmap = QPixmap("./map.png");
+	 //view->setBackgroundBrush(pixmap);
 	 connect(view, SIGNAL(itemClicked(osg::Vec3&, osg::Vec3&)), this, SLOT(setCameraToPosition(osg::Vec3&, osg::Vec3&)));
 	 mapdock->setWidget(view);
 	 addDockWidget(Qt::LeftDockWidgetArea, mapdock);

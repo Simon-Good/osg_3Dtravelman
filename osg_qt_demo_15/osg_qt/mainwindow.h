@@ -13,6 +13,7 @@
 #include <QFileDialog>
 #include <QGraphicsView>
 #include <QGraphicsScene>
+#include <QGraphicsPixmapItem>
 #include "MapItem.h"
 #include "ViewerWidget.h"
 #include "TravelManipulator.h"
