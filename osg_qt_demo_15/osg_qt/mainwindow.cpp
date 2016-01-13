@@ -48,10 +48,7 @@ MainWindow::MainWindow(WelcomePage* wp, QWidget *parent)
 	createToolBar();
 	wp->setValue(35);
 	viewWidget = new ViewerWidget(this);
-	//viewWidget->setFocusPolicy(Qt::StrongFocus);
 	doshow = true;
-	//setFocusPolicy(Qt::StrongFocus);
-	//connect(this,SIGNAL(QApplication::focusChanged()), this, SLOT(tempfocuschange()));
 	wp->setValue(65);
 	viewWidget->loadModels(customerList->count());
 	wp->setValue(85);
@@ -161,9 +158,6 @@ void MainWindow::createAction(){
 }
 
 void MainWindow::createToolBar(){
-	 //fileToolBar = addToolBar(tr("ÎÄ¼þ"));
-	 //fileToolBar->addAction(openpathActTB);
-
 	 editToolBar=addToolBar(tr("±à¼­"));
 	 editToolBar->addAction(openpathActTB);
 	 editToolBar->addAction(recordpathActTB);
@@ -241,11 +235,9 @@ void  MainWindow::open_peng(){
 
 void MainWindow::toolbarSwitch(){
 	if(toolBarViewAct->isChecked()){
-		//fileToolBar->show();
 		editToolBar->show();
 		settingToolBar->show();
 	}else{
-		//fileToolBar->hide();
 		editToolBar->hide();
 		settingToolBar->hide();
 	}
@@ -286,7 +278,6 @@ void MainWindow::changeModel(QListWidgetItem* item){
 		cameraFlyModeActTB->setDisabled(false);
 		cameraFlyModeActTB->setChecked(cc->flymode);
 		cameraLowModeActTB->setChecked(cc->lowmode);
-		//GeneralEventHandler::Instance(this)->infoEnable(true);
 		GeneralEventHandler::Instance()->infoEnable(true);
 		textInfoAct->setDisabled(true);
 		textInfoAct->setCheckable(false);
@@ -299,14 +290,12 @@ void MainWindow::changeModel(QListWidgetItem* item){
 		cameraFlyModeActTB->setDisabled(true);
 		cameraFlyModeActTB->setChecked(false);
 		cameraLowModeActTB->setChecked(true);
-		if(customerList->row(item) == 2 ||customerList->row(item) == 1){
-			//GeneralEventHandler::Instance(this)->infoEnable(true);
+		if(customerList->row(item) == 2 ||customerList->row(item) == 1 || customerList->row(item) == 4){
 			GeneralEventHandler::Instance()->infoEnable(true);
 			textInfoAct->setDisabled(false);
 			textInfoAct->setCheckable(true);
 			textInfoAct->setChecked(true);
 		}else{
-			//GeneralEventHandler::Instance(this)->infoEnable(false);
 			GeneralEventHandler::Instance()->infoEnable(false);
 			textInfoAct->setDisabled(true);
 			textInfoAct->setCheckable(false);
@@ -314,10 +303,6 @@ void MainWindow::changeModel(QListWidgetItem* item){
 		}
 		mapdock->hide();
 	}
-	//if(textInfoAct->isChecked() == true)
-	//	cout<<"change model and textinfo is checked"<<endl;
-	//else
-	//	cout<<"change model and textinfo is unchecked"<<endl;
 	if(cs->isVisible())
 		updateCameraSetting(cc);
 }

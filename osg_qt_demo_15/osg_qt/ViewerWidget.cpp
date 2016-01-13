@@ -19,7 +19,6 @@ ViewerWidget::ViewerWidget(QWidget* parent):   QWidget(parent){
     mainView->addEventHandler( sh);
     mainView->setCameraManipulator( TravelManipulator::Instance());
 	mainView->addEventHandler(GeneralEventHandler::Instance());
-	//mainView->addEventHandler(GeneralEventHandler::Instance(mparent));
     mainView->setThreadingModel( osgViewer::Viewer::SingleThreaded );
 	mainView->setKeyEventSetsDone(0);
         
@@ -64,6 +63,7 @@ osg::Camera* ViewerWidget::createCamera( int x, int y, int w, int h )
 }
 
 void ViewerWidget::reloadModel(int index){
+	cout<<"viewer widget reloadmodel"<<endl;
 	osg::Switch::ValueList vl = swt->getValueList();
 	int vllen = vl.size(), mark = 0;
 	for(mark = 0; mark< vllen; mark++)
@@ -71,8 +71,6 @@ void ViewerWidget::reloadModel(int index){
 			break;
 	cameraContextList[mark] = *TravelManipulator::Instance()->getCameraContext();
 	swt->setSingleChildOn(index);
-	/*GeneralEventHandler::Instance(this)->setDBMap(generateDBMap(index));
-	GeneralEventHandler::Instance(this)->setCurrentScene(swt->getChild(index)->asSwitch(), index);*/
 	GeneralEventHandler::Instance()->setDBMap(generateDBMap(index));
 	GeneralEventHandler::Instance()->setCurrentScene(swt->getChild(index)->asSwitch(), index);
 	TravelManipulator::Instance()->setCameraContext(&cameraContextList[index]);
@@ -85,12 +83,9 @@ void ViewerWidget::loadModels(int size){
 	osg::ref_ptr<osg::Switch> underswt = new osg::Switch();
 	node = osgDB::readNodeFile(string(MODELBASE)+"0.ive");
 	underswt->insertChild(0, node, true);
-	/*GeneralEventHandler::Instance(this)->setCurrentScene(underswt, 0);*/
 	GeneralEventHandler::Instance()->setCurrentScene(underswt, 0);
 	CameraContext *cc = new CameraContext();
-	cc->m_fMoveSpeed = 150.0f;
-	//cc->m_vPosition = osg::Vec3(40315.8f, -78755.8f, 900.0f);
-	//cc->m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.33946);
+	cc->m_fMoveSpeed = 80.0f;
 	cc->m_vPosition = osg::Vec3(62373.6, -35979.1, 900.0f);
 	cc->m_vRotation = osg::Vec3(1.61923,0.0f,-4.50296);
 	cc->max_height = 2500;
@@ -103,7 +98,6 @@ void ViewerWidget::loadModels(int size){
 	cc->m_fAngle = 0.5f;
 	cameraContextList[0] = *cc;
 	TravelManipulator::Instance()->setCameraContext(cc);
-	//GeneralEventHandler::Instance(this)->setDBMap(generateDBMap(0));
 	GeneralEventHandler::Instance()->setDBMap(generateDBMap(0));
 	swt->insertChild(0, underswt, true);
 }
@@ -122,7 +116,7 @@ void ViewerWidget::loadModleThread(int modelnum){
 		cc->keepout  = getKeepOutBorder(i);
 		cc->keepin = getKeepInBorder(i);
 		if(i == 1){//送水闸
-			cc->m_fMoveSpeed = 35.0f;
+			cc->m_fMoveSpeed = 5.0f;
 			cc->m_vPosition = osg::Vec3(380, -7272.73f, -30.0f);
 			cc->m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.26486f);
 			cc->max_height = 30;
@@ -142,7 +136,7 @@ void ViewerWidget::loadModleThread(int modelnum){
 				threadSwt->insertChild(j+1, textnode, true);
 			}
 		}else if(i == 2){//泵房
-			cc->m_fMoveSpeed = 35.0f;
+			cc->m_fMoveSpeed = 15.0f;
 			cc->m_vPosition = osg::Vec3(-174.813f, -1986.09f, 180.0f);
 			cc->m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.329f);
 			cc->max_height = 1000;
@@ -169,7 +163,7 @@ void ViewerWidget::loadModleThread(int modelnum){
 			}
 
 		}else if(i == 3){//连轴层
-			cc->m_fMoveSpeed = 35.0f;
+			cc->m_fMoveSpeed = 5.0f;
 			cc->m_vPosition = osg::Vec3(-324.813f, -1086.09f, -240.0f);
 			cc->m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.329f);
 			cc->max_height = -90;
@@ -177,40 +171,45 @@ void ViewerWidget::loadModleThread(int modelnum){
 
 
 		}else if(i == 4){//调度闸
-			cc->m_fMoveSpeed = 35.0f;
+			cc->m_fMoveSpeed = 5.0f;
 			cc->m_vPosition = osg::Vec3(40.813f, -550.09f, -30.0f);
 			cc->m_vRotation = osg::Vec3(1.5407,0.0f,0.0f);
-			cc->max_height = 70;
+			cc->max_height = 40;
 			cc->min_height = 0;
 
-			//TextPanel* textnode;
-			//string namehead = "DIAODU_#";
-			//osg::Vec4 keypoint;
-			//for(int j = 0; j< 2; j++){
-			//	//generate two position from each keypoint
-			//	keypoint = cc->keepout->at(j).range;
-			//	textnode = new TextPanel();
-			//	textnode->setDataVariance(osg::Object::DYNAMIC);
-			//	float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
-			//	float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2-90;
-			//	textnode->addYZContent(osg::Vec3(xpos, ypos, -50.0), 60, 30, true);
-			//	textnode->setName(namehead + to_string((long long)j));
-			//	threadSwt->insertChild(j+1, textnode, true);
-
-			//	textnode = new TextPanel();
-			//	textnode->setDataVariance(osg::Object::DYNAMIC);
-			//	float xpos = keypoint.x() - abs(keypoint.y()-keypoint.x())/2;
-			//	float ypos = keypoint.z() - abs(keypoint.w()-keypoint.z())/2+90;
-			//	textnode->addYZContent(osg::Vec3(xpos, ypos, -50.0), 60, 30, true);
-			//	textnode->setName(namehead + to_string((long long)j));
-			//	threadSwt->insertChild(j+2, textnode, true);
-			//}
+			TextPanel* textnode;
+			string namehead = "DIAODU_#";
+			osg::Vec4 keypoint;
+			for(int j = 0; j< 2; j++){
+				keypoint = cc->keepout->at(j).range;
+				textnode = new TextPanel();
+				textnode->setDataVariance(osg::Object::DYNAMIC);
+				float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
+				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2 -100;
+				textnode->addYZContent(osg::Vec3(xpos, ypos, -20.0), 50, 20, 2.0, true);
+				textnode->setName(namehead + to_string((long long)j));
+				threadSwt->insertChild(j+1, textnode, true);
+			}
 		}else if(i == 5){//节制闸
 			cc->m_fMoveSpeed = 20.0f;
 			cc->m_vPosition = osg::Vec3(83.3197, -1841.9, 0.0f);
 			cc->m_vRotation = osg::Vec3(1.5407,0.0f,0.0f);
 			cc->max_height = 70;
 			cc->min_height = 0;
+
+			TextPanel* textnode;
+			string namehead = "JIEZHI_#";
+			osg::Vec4 keypoint;
+			for(int j = 0; j< 3; j++){
+				keypoint = cc->keepout->at(j).range;
+				textnode = new TextPanel();
+				textnode->setDataVariance(osg::Object::DYNAMIC);
+				float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
+				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2 -100;
+				textnode->addYZContent(osg::Vec3(xpos, ypos, -20.0), 50, 20, 2.0, true);
+				textnode->setName(namehead + to_string((long long)j));
+				threadSwt->insertChild(j+1, textnode, true);
+			}
 		}
 
 		cc->flymode = false;
@@ -326,13 +325,20 @@ vector<map<string, string>*>* ViewerWidget::generateDBMap(int index){
 		retMap = new map<string, string>();
 		retMap->insert(pair<string, string>("电压","dianya0"));
 		retVec->push_back(retMap);
-	}else if(index == 1){
-		for(int i = 0; i< 2; i++){
-			retMap = new map<string, string>();
-			retMap->insert(pair<string, string>("电压","dianya1"));
-			retVec->push_back(retMap);
-		}
-	}else if(index == 2){
+	}else if(index == 1){//送水闸//retVec[map(kaigao1,kaigao2),map(kaigao3)]
+		retMap = new map<string, string>();
+		retMap->insert(pair<string, string>("开高1",""));
+		retMap->insert(pair<string, string>("开高2",""));
+		retMap->insert(pair<string, string>("送水河水位",""));
+		retMap->insert(pair<string, string>("调度区水位", ""));
+		retVec->push_back(retMap);
+
+		retMap = new map<string, string>();
+		retMap->insert(pair<string, string>("开高3",""));
+		retMap->insert(pair<string, string>("送水河水位",""));
+		retMap->insert(pair<string, string>("调度区水位", ""));
+		retVec->push_back(retMap);
+	}else if(index == 2){//泵站
 		for(int i = 0; i< 18; i++){//dianji1 juanyangji1 dianji2 juanyangji2... dianji9 juanyangji9 
 			retMap = new map<string, string>();
 			if(i>=0 && i< 9){
@@ -368,13 +374,30 @@ vector<map<string, string>*>* ViewerWidget::generateDBMap(int index){
 		retMap = new map<string, string>();
 		retMap->insert(pair<string, string>("电压","dianya3"));
 		retVec->push_back(retMap);
-	}else if(index == 4){
+	}else if(index == 4){//调度闸//retVec[map(kaigao1,kaigao2),map(kaigao3, kaigao4)]
+		for(int i = 0; i< 2; i++){
+			retMap = new map<string, string>();
+			retMap->insert(pair<string, string>("开高"+to_string((long long)(2*i + 1)),""));
+			retMap->insert(pair<string, string>("开高"+to_string((long long)(2*i + 2)),""));
+			retMap->insert(pair<string, string>("闸下水位",""));
+			retMap->insert(pair<string, string>("调度区水位",""));
+			retVec->push_back(retMap);
+		}
+	}else if(index == 5){//节制闸//retVec[map(kaigao1, kaigao2),map(kaigao3,kaigao4), map(kaigao5)]
+		for(int i = 0; i< 2; i++){
+			retMap = new map<string, string>();
+			retMap->insert(pair<string, string>("开高"+to_string((long long)(2*i + 1)),""));
+			retMap->insert(pair<string, string>("开高"+to_string((long long)(2*i + 2)),""));
+			retMap->insert(pair<string, string>("内河侧水位",""));
+			retMap->insert(pair<string, string>("长江侧水位",""));
+			retMap->insert(pair<string, string>("实际流量",""));
+			retVec->push_back(retMap);
+		}
 		retMap = new map<string, string>();
-		retMap->insert(pair<string, string>("电压","dianya4"));
-		retVec->push_back(retMap);
-	}else if(index == 5){
-		retMap = new map<string, string>();
-		retMap->insert(pair<string, string>("电压","dianya5"));
+		retMap->insert(pair<string, string>("开高5",""));
+		retMap->insert(pair<string, string>("内河侧水位",""));
+		retMap->insert(pair<string, string>("长江侧水位",""));
+		retMap->insert(pair<string, string>("实际流量",""));
 		retVec->push_back(retMap);
 	}
 

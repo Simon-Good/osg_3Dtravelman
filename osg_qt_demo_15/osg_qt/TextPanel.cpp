@@ -84,10 +84,6 @@ void TextPanel::updateContent(map<string,string>* dbmap){
 	delete wtext;
 }
 
-//void TextPanel::updateTime(string stime){
-//	timeString = stime + "\n";
-//}
-
 void TextPanel::setupProperties(osgText::Text& textObject,osgText::Font* font,float size,const osg::Vec3& pos )
 {
    	textObject.setFont(font);//

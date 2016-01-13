@@ -14,7 +14,6 @@ public:
 	~TextPanel(void);
 	void updateContent(string str);
 	void updateContent(map<string, string>* m);
-	//void updateTime(string stime);
 	void setupProperties(osgText::Text& textObject,osgText::Font* font,float size,const osg::Vec3& pos );
 	void addYZContent(const osg::Vec3& pos, float widht, float height, float size ,bool minus = false, string fontpath = "simhei.ttf");
 private:
