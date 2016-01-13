@@ -384,6 +384,7 @@ vector<map<string, string>*>* ViewerWidget::generateDBMap(int index){
 			retVec->push_back(retMap);
 		}
 	}else if(index == 5){//节制闸//retVec[map(kaigao1, kaigao2),map(kaigao3,kaigao4), map(kaigao5)]
+		cout<<"generate map for index 5"<<endl;
 		for(int i = 0; i< 2; i++){
 			retMap = new map<string, string>();
 			retMap->insert(pair<string, string>("开高"+to_string((long long)(2*i + 1)),""));
@@ -399,6 +400,7 @@ vector<map<string, string>*>* ViewerWidget::generateDBMap(int index){
 		retMap->insert(pair<string, string>("长江侧水位",""));
 		retMap->insert(pair<string, string>("实际流量",""));
 		retVec->push_back(retMap);
+		cout<<retVec->size()<<endl;
 	}
 
 	return retVec;

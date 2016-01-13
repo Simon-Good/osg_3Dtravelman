@@ -29,11 +29,16 @@ bool GeneralEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 				if(curSwt!=NULL && curSwt->getValueList().size() > 1){
 					int numchildren = curSwt->getNumChildren();
 					TextPanel* tp;
+					cout<<"general in"<<endl;
 					if(dbHandler::Get_dbH_Instance()->get_dbMessage(curSwtIndex,dbMap)==true){
+						cout<<dbMap->size()<<endl;
 						if(dbMap->size() > 0){
+							cout<<"general more than 0"<<endl;
 							for(int i = 1; i< numchildren; i++){
+								cout<<"general before"<<endl;
 								tp = dynamic_cast<TextPanel*>(curSwt->getChild(i));
 								tp->updateContent(dbMap->at(i-1));
+								cout<<"general after"<<endl;
 							}
 						}
 					}

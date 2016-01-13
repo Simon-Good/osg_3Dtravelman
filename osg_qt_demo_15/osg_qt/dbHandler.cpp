@@ -79,10 +79,6 @@ bool dbHandler::get_dbMessage(int index,vector<map<string,string>*>* v_map)
 	if(pConn != NULL){
 		try
 		{
-			if (index==0)
-			{
-
-			}
 			if (index==1)
 			{
 				
@@ -92,22 +88,19 @@ bool dbHandler::get_dbMessage(int index,vector<map<string,string>*>* v_map)
 				_bstr_t bstring2=cmd2.c_str();
 				pRs=pConn->Execute(bstring1,0,adCmdText);
 				pRs2=pConn->Execute(bstring2,0,adCmdText);
-				while(!pRs->EndOfFile)
-				{
-					v_map->at(0)->at("开高1")=_bstr_t(pRs->GetCollect("KG1"))+"m";
-					v_map->at(0)->at("开高2")=_bstr_t(pRs->GetCollect("KG2"))+"m";
-					v_map->at(0)->at("送水河水位")=_bstr_t(pRs->GetCollect("SSHSW"))+"m";
-					v_map->at(0)->at("调度区水位")=_bstr_t(pRs2->GetCollect("DDQSW"))+"m";
 
-					v_map->at(1)->at("开高3")=_bstr_t(pRs->GetCollect("KG3"))+"m";
-					v_map->at(1)->at("送水河水位")=_bstr_t(pRs->GetCollect("SSHSW"))+"m";
-					v_map->at(1)->at("调度区水位")=_bstr_t(pRs2->GetCollect("DDQSW"))+"m";		
-				pRs->MoveNext();
-				}
+				v_map->at(0)->at("开高1")=_bstr_t(pRs->GetCollect("KG1"))+"m";
+				v_map->at(0)->at("开高2")=_bstr_t(pRs->GetCollect("KG2"))+"m";
+				v_map->at(0)->at("送水河水位")=_bstr_t(pRs->GetCollect("SSHSW"))+"m";
+				v_map->at(0)->at("调度区水位")=_bstr_t(pRs2->GetCollect("DDQSW"))+"m";
+
+				v_map->at(1)->at("开高3")=_bstr_t(pRs->GetCollect("KG3"))+"m";
+				v_map->at(1)->at("送水河水位")=_bstr_t(pRs->GetCollect("SSHSW"))+"m";
+				v_map->at(1)->at("调度区水位")=_bstr_t(pRs2->GetCollect("DDQSW"))+"m";		
 
 			}
 
-			if(index==2)
+			else if(index==2)
 			{
 				int i=0;
 				string cmd="select * from V_T_RT_UNT_R";
@@ -120,90 +113,70 @@ bool dbHandler::get_dbMessage(int index,vector<map<string,string>*>* v_map)
 
 				while(!pRs->EndOfFile)
 				{
-						v_map->at(i)->at("叶片角度")=_bstr_t(pRs->GetCollect("YPJD"))+"°";
-						v_map->at(i)->at("电流")=_bstr_t(pRs->GetCollect("DZDLAB"))+"A";
-						v_map->at(i)->at("励磁电流")=_bstr_t(pRs->GetCollect("LCDL"))+"A";
-						v_map->at(i)->at("有功功率")=_bstr_t(pRs->GetCollect("YGGL"))+"KW";
-						v_map->at(i)->at("无功功率")=_bstr_t(pRs->GetCollect("WGGL"))+"KW";
-						v_map->at(i)->at("主机转速")=_bstr_t(pRs->GetCollect("ZS"))+"rpm";
-						v_map->at(i)->at("闸下水位")=_bstr_t(pRs->GetCollect("CJSW"))+"m";
-						v_map->at(i)->at("闸上水位")=_bstr_t(pRs->GetCollect("DDQSW"))+"m";
-						v_map->at(i)->at("定子温度")=_bstr_t(pRs->GetCollect("DZWD1"))+"℃";
-						v_map->at(i)->at("上导温度")=_bstr_t(pRs->GetCollect("SDWD1"))+"℃";
-						v_map->at(i)->at("下导温度")=_bstr_t(pRs->GetCollect("SDWD3"))+"℃";
-						v_map->at(i)->at("上油缸温度")=_bstr_t(pRs->GetCollect("SYGWD"))+"℃";
-						v_map->at(i)->at("下油缸温度")=_bstr_t(pRs->GetCollect("XYGWD"))+"℃";
-						v_map->at(i)->at("推力瓦温度")=_bstr_t(pRs->GetCollect("TLWWD1"))+"℃";
-						string KG="KG"+to_string((long long)(i+1));
-						//cout<<KG;
+					v_map->at(i)->at("叶片角度")=_bstr_t(pRs->GetCollect("YPJD"))+"°";
+					v_map->at(i)->at("电流")=_bstr_t(pRs->GetCollect("DZDLAB"))+"A";
+					v_map->at(i)->at("励磁电流")=_bstr_t(pRs->GetCollect("LCDL"))+"A";
+					v_map->at(i)->at("有功功率")=_bstr_t(pRs->GetCollect("YGGL"))+"KW";
+					v_map->at(i)->at("无功功率")=_bstr_t(pRs->GetCollect("WGGL"))+"KW";
+					v_map->at(i)->at("主机转速")=_bstr_t(pRs->GetCollect("ZS"))+"rpm";
+					v_map->at(i)->at("闸下水位")=_bstr_t(pRs->GetCollect("CJSW"))+"m";
+					v_map->at(i)->at("闸上水位")=_bstr_t(pRs->GetCollect("DDQSW"))+"m";
+					v_map->at(i)->at("定子温度")=_bstr_t(pRs->GetCollect("DZWD1"))+"℃";
+					v_map->at(i)->at("上导温度")=_bstr_t(pRs->GetCollect("SDWD1"))+"℃";
+					v_map->at(i)->at("下导温度")=_bstr_t(pRs->GetCollect("SDWD3"))+"℃";
+					v_map->at(i)->at("上油缸温度")=_bstr_t(pRs->GetCollect("SYGWD"))+"℃";
+					v_map->at(i)->at("下油缸温度")=_bstr_t(pRs->GetCollect("XYGWD"))+"℃";
+					v_map->at(i)->at("推力瓦温度")=_bstr_t(pRs->GetCollect("TLWWD1"))+"℃";
+					string KG="KG"+to_string((long long)(i+1));
 
-						_bstr_t kg=KG.c_str();
-						v_map->at(i+9)->at(("闸门高度"))=_bstr_t(pRs2->GetCollect(kg))+"m";
-						//cout<<v_map->at(i+9)->at("闸门高度")<<endl;
+					_bstr_t kg=KG.c_str();
+					v_map->at(i+9)->at(("闸门高度"))=_bstr_t(pRs2->GetCollect(kg))+"m";
 					i++;
 					pRs->MoveNext();
 				}
 
 			}
-			if (index==3)
-			{
-
-
-
-			}
-			if (index==4)//调度闸//retVec[map(kaigao1,kaigao2),map(kaigao3, kaigao4)]
+			else if (index==4)//调度闸//retVec[map(kaigao1,kaigao2),map(kaigao3, kaigao4)]
 			{
 				string cmd4="select * from V_T_RT_DDZ_R";
 				_bstr_t bstring4=cmd4.c_str();//类型转换
 				pRs=pConn->Execute(bstring4,0,adCmdText);
-				while(!pRs->EndOfFile)
-				{
-					v_map->at(0)->at("开高1")=_bstr_t(pRs->GetCollect("KG1"))+"m";
-					v_map->at(0)->at("开高2")=_bstr_t(pRs->GetCollect("KG2"))+"m";
-					v_map->at(0)->at("闸下水位")=_bstr_t(pRs->GetCollect("YJHSW"))+"m";
-					v_map->at(0)->at("调度区水位")=_bstr_t(pRs->GetCollect("DDQSW"))+"m";
 
-					v_map->at(0)->at("开高3")=_bstr_t(pRs->GetCollect("KG3"))+"m";
-					v_map->at(0)->at("开高4")=_bstr_t(pRs->GetCollect("KG4"))+"m";
-					v_map->at(0)->at("闸下水位")=_bstr_t(pRs->GetCollect("YJHSW"))+"m";
-					v_map->at(0)->at("调度区水位")=_bstr_t(pRs->GetCollect("DDQSW"))+"m";
-					pRs->MoveNext();
-				}
+				v_map->at(0)->at("开高1")=_bstr_t(pRs->GetCollect("KG1"))+"m";
+				v_map->at(0)->at("开高2")=_bstr_t(pRs->GetCollect("KG2"))+"m";
+				v_map->at(0)->at("闸下水位")=_bstr_t(pRs->GetCollect("YJHSW"))+"m";
+				v_map->at(0)->at("调度区水位")=_bstr_t(pRs->GetCollect("DDQSW"))+"m";
+
+				v_map->at(1)->at("开高3")=_bstr_t(pRs->GetCollect("KG3"))+"m";
+				v_map->at(1)->at("开高4")=_bstr_t(pRs->GetCollect("KG4"))+"m";
+				v_map->at(1)->at("闸下水位")=_bstr_t(pRs->GetCollect("YJHSW"))+"m";
+				v_map->at(1)->at("调度区水位")=_bstr_t(pRs->GetCollect("DDQSW"))+"m";
 
 			}
-			if (index==5)
+			else if (index==5)
 			{
 				string cmd5="select * from V_T_RT_WGT_R";
 				_bstr_t bstring5=cmd5.c_str();
 				pRs=pConn->Execute(bstring5,0,adCmdText);
-				while (!pRs->EndOfFile)
-				{
-					v_map->at(0)->at("开高1")=_bstr_t(pRs->GetCollect("KG1"))+"m";
-					v_map->at(0)->at("开高2")=_bstr_t(pRs->GetCollect("KG2"))+"m";
-					v_map->at(0)->at("内河侧水位")=_bstr_t(pRs->GetCollect("SYSW"))+"m";
-					v_map->at(0)->at("长江侧水位")=_bstr_t(pRs->GetCollect("XYSW"))+"m";
-					v_map->at(0)->at("实际流量")=_bstr_t(pRs->GetCollect("SJLL"))+"m";
-					
-					v_map->at(1)->at("开高3")=_bstr_t(pRs->GetCollect("KG3"))+"m";
-					v_map->at(1)->at("开高4")=_bstr_t(pRs->GetCollect("KG4"))+"m";
-					v_map->at(1)->at("内河侧水位")=_bstr_t(pRs->GetCollect("SYSW"))+"m";
-					v_map->at(1)->at("长江侧水位")=_bstr_t(pRs->GetCollect("XYSW"))+"m";
-					v_map->at(1)->at("实际流量")=_bstr_t(pRs->GetCollect("SJLL"))+"m";
 
-					v_map->at(2)->at("开高5")=_bstr_t(pRs->GetCollect("KG5"))+"m";
-					v_map->at(2)->at("内河侧水位")=_bstr_t(pRs->GetCollect("SYSW"))+"m";
-					v_map->at(2)->at("长江侧水位")=_bstr_t(pRs->GetCollect("XYSW"))+"m";
-					v_map->at(2)->at("实际流量")=_bstr_t(pRs->GetCollect("SJLL"))+"m";
+				v_map->at(0)->at("开高1")=_bstr_t(pRs->GetCollect("KG1"))+"m";
+				v_map->at(0)->at("开高2")=_bstr_t(pRs->GetCollect("KG2"))+"m";
+				v_map->at(0)->at("内河侧水位")=_bstr_t(pRs->GetCollect("SYSW"))+"m";
+				v_map->at(0)->at("长江侧水位")=_bstr_t(pRs->GetCollect("XYSW"))+"m";
+				v_map->at(0)->at("实际流量")=_bstr_t(pRs->GetCollect("SJLL"))+"m";
 					
-				}
+				v_map->at(1)->at("开高3")=_bstr_t(pRs->GetCollect("KG3"))+"m";
+				v_map->at(1)->at("开高4")=_bstr_t(pRs->GetCollect("KG4"))+"m";
+				v_map->at(1)->at("内河侧水位")=_bstr_t(pRs->GetCollect("SYSW"))+"m";
+				v_map->at(1)->at("长江侧水位")=_bstr_t(pRs->GetCollect("XYSW"))+"m";
+				v_map->at(1)->at("实际流量")=_bstr_t(pRs->GetCollect("SJLL"))+"m";
+
+				v_map->at(2)->at("开高5")=_bstr_t(pRs->GetCollect("KG5"))+"m";
+				v_map->at(2)->at("内河侧水位")=_bstr_t(pRs->GetCollect("SYSW"))+"m";
+				v_map->at(2)->at("长江侧水位")=_bstr_t(pRs->GetCollect("XYSW"))+"m";
+				v_map->at(2)->at("实际流量")=_bstr_t(pRs->GetCollect("SJLL"))+"m";
+
 			}
-
-
-
-
-			}//end try
-
-
 			return true;
 		}
 		catch(_com_error &e)
