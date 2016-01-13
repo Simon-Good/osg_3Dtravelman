@@ -145,65 +145,52 @@ bool dbHandler::get_dbMessage(int index,vector<map<string,string>*>* v_map)
 				}
 
 			}
-			if (index==3)
-			{
-
-
-
-			}
-			if (index==4)//调度闸//retVec[map(kaigao1,kaigao2),map(kaigao3, kaigao4)]
+			else if (index==4)//调度闸//retVec[map(kaigao1,kaigao2),map(kaigao3, kaigao4)]
 			{
 				string cmd4="select * from V_T_RT_DDZ_R";
 				_bstr_t bstring4=cmd4.c_str();//类型转换
 				pRs=pConn->Execute(bstring4,0,adCmdText);
 				while(!pRs->EndOfFile)
 				{
-					v_map->at(0)->at("开高1")==_bstr_t(pRs->GetCollect("KG1"))+"m";
-					v_map->at(0)->at("开高2")==_bstr_t(pRs->GetCollect("KG2"))+"m";
-					v_map->at(0)->at("闸下水位")==_bstr_t(pRs->GetCollect("YJHSW"))+"m";
-					v_map->at(0)->at("调度区水位")==_bstr_t(pRs->GetCollect("DDQSW"))+"m";
+					v_map->at(0)->at("开高1")=_bstr_t(pRs->GetCollect("KG1"))+"m";
+					v_map->at(0)->at("开高2")=_bstr_t(pRs->GetCollect("KG2"))+"m";
+					v_map->at(0)->at("闸下水位")=_bstr_t(pRs->GetCollect("YJHSW"))+"m";
+					v_map->at(0)->at("调度区水位")=_bstr_t(pRs->GetCollect("DDQSW"))+"m";
 
-					v_map->at(0)->at("开高3")==_bstr_t(pRs->GetCollect("KG3"))+"m";
-					v_map->at(0)->at("开高4")==_bstr_t(pRs->GetCollect("KG4"))+"m";
-					v_map->at(0)->at("闸下水位")==_bstr_t(pRs->GetCollect("YJHSW"))+"m";
-					v_map->at(0)->at("调度区水位")==_bstr_t(pRs->GetCollect("DDQSW"))+"m";
+					v_map->at(0)->at("开高3")=_bstr_t(pRs->GetCollect("KG3"))+"m";
+					v_map->at(0)->at("开高4")=_bstr_t(pRs->GetCollect("KG4"))+"m";
+					v_map->at(0)->at("闸下水位")=_bstr_t(pRs->GetCollect("YJHSW"))+"m";
+					v_map->at(0)->at("调度区水位")=_bstr_t(pRs->GetCollect("DDQSW"))+"m";
 					pRs->MoveNext();
 				}
 
 			}
-			if (index==5)
+			else if (index==5)
 			{
 				string cmd5="select * from V_WGT_R";
 				_bstr_t bstring5=cmd5.c_str();
 				pRs=pConn->Execute(bstring5,0,adCmdText);
 				while (!pRs->EndOfFile)
 				{
-					v_map->at(0)->at("开高1")==_bstr_t(pRs->GetCollect("KG1"))+"m";
-					v_map->at(0)->at("开高2")==_bstr_t(pRs->GetCollect("KG2"))+"m";
-					v_map->at(0)->at("内河侧水位")==_bstr_t(pRs->GetCollect("SYSW"))+"m";
-					v_map->at(0)->at("长江侧水位")==_bstr_t(pRs->GetCollect("XYSW"))+"m";
-					v_map->at(0)->at("实际流量")==_bstr_t(pRs->GetCollect("SJLL"))+"m";
+					v_map->at(0)->at("开高1")=_bstr_t(pRs->GetCollect("KG1"))+"m";
+					v_map->at(0)->at("开高2")=_bstr_t(pRs->GetCollect("KG2"))+"m";
+					v_map->at(0)->at("内河侧水位")=_bstr_t(pRs->GetCollect("SYSW"))+"m";
+					v_map->at(0)->at("长江侧水位")=_bstr_t(pRs->GetCollect("XYSW"))+"m";
+					v_map->at(0)->at("实际流量")=_bstr_t(pRs->GetCollect("SJLL"))+"m";
 					
-					v_map->at(1)->at("开高3")==_bstr_t(pRs->GetCollect("KG3"))+"m";
-					v_map->at(1)->at("开高4")==_bstr_t(pRs->GetCollect("KG4"))+"m";
-					v_map->at(1)->at("内河侧水位")==_bstr_t(pRs->GetCollect("SYSW"))+"m";
-					v_map->at(1)->at("长江侧水位")==_bstr_t(pRs->GetCollect("XYSW"))+"m";
-					v_map->at(1)->at("实际流量")==_bstr_t(pRs->GetCollect("SJLL"))+"m";
+					v_map->at(1)->at("开高3")=_bstr_t(pRs->GetCollect("KG3"))+"m";
+					v_map->at(1)->at("开高4")=_bstr_t(pRs->GetCollect("KG4"))+"m";
+					v_map->at(1)->at("内河侧水位")=_bstr_t(pRs->GetCollect("SYSW"))+"m";
+					v_map->at(1)->at("长江侧水位")=_bstr_t(pRs->GetCollect("XYSW"))+"m";
+					v_map->at(1)->at("实际流量")=_bstr_t(pRs->GetCollect("SJLL"))+"m";
 
-					v_map->at(2)->at("开高5")==_bstr_t(pRs->GetCollect("KG5"))+"m";
-					v_map->at(2)->at("内河侧水位")==_bstr_t(pRs->GetCollect("SYSW"))+"m";
-					v_map->at(2)->at("长江侧水位")==_bstr_t(pRs->GetCollect("XYSW"))+"m";
-					v_map->at(2)->at("实际流量")==_bstr_t(pRs->GetCollect("SJLL"))+"m";
+					v_map->at(2)->at("开高5")=_bstr_t(pRs->GetCollect("KG5"))+"m";
+					v_map->at(2)->at("内河侧水位")=_bstr_t(pRs->GetCollect("SYSW"))+"m";
+					v_map->at(2)->at("长江侧水位")=_bstr_t(pRs->GetCollect("XYSW"))+"m";
+					v_map->at(2)->at("实际流量")=_bstr_t(pRs->GetCollect("SJLL"))+"m";
 					
 				}
 			}
-
-
-
-
-			}//end try
-
-
 			return true;
 		}
 		catch(_com_error &e)
