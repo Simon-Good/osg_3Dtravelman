@@ -179,7 +179,8 @@ void MainWindow::createDockWindow(){
 			 << ">泵房"
 			 << ">连轴层"
 			 << ">调度闸"
-			 << ">节制闸");
+			 << ">节制闸"
+			 << ">站变室");
 	 customerList->setCurrentRow(0);
 	 int num = customerList->count();
 	 for(int i = 0; i< num; i++){
@@ -290,7 +291,9 @@ void MainWindow::changeModel(QListWidgetItem* item){
 		cameraFlyModeActTB->setDisabled(true);
 		cameraFlyModeActTB->setChecked(false);
 		cameraLowModeActTB->setChecked(true);
-		if(customerList->row(item) == 2 ||customerList->row(item) == 1 || customerList->row(item) == 4 ||customerList->row(item) == 5){
+		if(customerList->row(item) == 2 ||customerList->row(item) == 1 
+			|| customerList->row(item) == 4 ||customerList->row(item) == 5
+			|| customerList->row(item) == 6){
 			GeneralEventHandler::Instance()->infoEnable(true);
 			textInfoAct->setDisabled(false);
 			textInfoAct->setCheckable(true);

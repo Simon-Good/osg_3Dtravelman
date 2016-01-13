@@ -10,8 +10,8 @@ TextPanel::TextPanel(void):osg::MatrixTransform()
 	this->addChild(geode);
 	timeString = "";
 	textString = "床前明月光；\n疑是地上霜；\n举头望明月；\n低头思故乡；\n";
-	width = 1.0;
-	height = 1.0;
+	//width = 1.0;
+	//height = 1.0;
 }
 
 
@@ -19,16 +19,40 @@ TextPanel::~TextPanel(void)
 {
 }
 
-void TextPanel::addYZContent(const osg::Vec3& leftupCorner, float wid, float hit, float size, bool minus, string fontpath){
-	osg::ref_ptr<osg::Geometry> geom = new osg::Geometry();
+void TextPanel::addYZContent(const osg::Vec3& leftupCorner, 
+							 float width, float height, 
+							 float size, bool minus, 
+							 string fontpath){
 	osg::Vec3Array* nodeList = new osg::Vec3Array();
-
-	width = wid;
-	height = hit;
 	nodeList->push_back(leftupCorner);
 	nodeList->push_back(leftupCorner + osg::Vec3(0.0f, width, 0.0f));
 	nodeList->push_back(leftupCorner + osg::Vec3(0.0f, width, height));
 	nodeList->push_back(leftupCorner + osg::Vec3(0.0f, 0.0f, height));
+
+	font = osgText::readFontFile(fontpath);
+	addContent(leftupCorner, nodeList,  osgText::Text::YZ_PLANE, width, height,size, minus);
+}
+
+void TextPanel::addXZContent(const osg::Vec3& leftupCorner, 
+							 float width, float height, 
+							 float size, bool minus, 
+							 string fontpath){
+	osg::Vec3Array* nodeList = new osg::Vec3Array();
+	nodeList->push_back(leftupCorner);
+	nodeList->push_back(leftupCorner + osg::Vec3(width, 0.0f, 0.0f));
+	nodeList->push_back(leftupCorner + osg::Vec3(width,0.0f, height));
+	nodeList->push_back(leftupCorner + osg::Vec3(0.0f, 0.0f, height));
+
+	font = osgText::readFontFile(fontpath);
+	addContent(leftupCorner, nodeList, osgText::Text::XZ_PLANE, width, height,  size, minus);
+}
+
+void TextPanel::addContent(const osg::Vec3& leftupCorner, 
+						   osg::Vec3Array* nodeList, 
+						   osgText::TextBase::AxisAlignment align, 
+						   float& width, float& height, 
+						   float& size, bool minus){
+	osg::ref_ptr<osg::Geometry> geom = new osg::Geometry();
 
 	osg::ref_ptr<osg::Vec4Array> colors = new osg::Vec4Array;
 	colors->push_back(osg::Vec4(0.4, 0.8, 0.4, 0.6));
@@ -41,10 +65,9 @@ void TextPanel::addYZContent(const osg::Vec3& leftupCorner, float wid, float hit
 	stateset->setMode(GL_BLEND, osg::StateAttribute::ON);
 	geode->addDrawable(geom.get());
 
-	font = osgText::readFontFile(fontpath);
-	setupProperties(*content, font, size, leftupCorner + osg::Vec3(1.0f, 0.0f, height-5));//5 margin to up border
+	
+	setupProperties(*content, font, osgText::Text::YZ_PLANE, size, leftupCorner + osg::Vec3(1.0f, 0.0f, height-5));//5 margin to up border
 
-	//updateContent(str);
 	geode->addDrawable(content.get());
 	if(minus == false)
 		this->setMatrix(osg::Matrix::rotate(3.141592657, osg::Vec3(0, 0, 1)));
@@ -61,12 +84,11 @@ void TextPanel::addYZContent(const osg::Vec3& leftupCorner, float wid, float hit
 
 void TextPanel::updateContent(map<string,string, MyCompRule>* dbmap){
 	string contentString = "";
-	int count = dbmap->size();
 	for(map<string, string, MyCompRule>::iterator it = dbmap->begin();
 		it != dbmap->end();
 		it++)
 	{
-		if(count == 2){
+		if(dbmap->size() < 6){
 			contentString += it->first + ":"+ it->second + "\n";
 		}else{
 			contentString += it->first + ":"+ it->second + "        ";
@@ -84,8 +106,10 @@ void TextPanel::updateContent(map<string,string, MyCompRule>* dbmap){
 	delete wtext;
 }
 
-void TextPanel::setupProperties(osgText::Text& textObject,osgText::Font* font,float size,const osg::Vec3& pos )
-{
+void TextPanel::setupProperties(osgText::Text& textObject,
+								osgText::Font* font, 
+								osgText::TextBase::AxisAlignment align, 
+								float size,const osg::Vec3& pos ){
    	textObject.setFont(font);//
 	textObject.setCharacterSize(size);//字体大小
 	textObject.setPosition(pos);
@@ -94,5 +118,5 @@ void TextPanel::setupProperties(osgText::Text& textObject,osgText::Font* font,fl
 	textObject.setAlignment(osgText::Text::LEFT_TOP);
 	textObject.setAxisAlignment(osgText::Text::SCREEN);//获取文字对称成方式正对屏幕方向
 	textObject.setAutoRotateToScreen(true);//跟随视角不断变化，但离物体越远，文字越小，和现实当中像类似
-    textObject.setAxisAlignment(osgText::Text::YZ_PLANE);//获取文字对称成方式
+    textObject.setAxisAlignment(align);//获取文字对称成方式
 }
