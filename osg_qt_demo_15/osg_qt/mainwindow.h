@@ -80,18 +80,15 @@ public slots:
 	void playCameraPath();
 	void recordCameraPath();
 	void textInfoSwitch();
-	//void tempfocuschange(){cout<<"focus change"<<endl;}
 public:
 	QProgressDialog* progress;
 	vector<string>* names;
 private:
-	//QToolBar *fileToolBar;
 	QToolBar *editToolBar;
 	QToolBar *settingToolBar;
 	QAction *toolBarViewAct;
 	QAction *textInfoAct;
 
-	//ViewerWidget *vwWidget;
 	QAction *openpathAct;
 	QAction *openpathActTB;
 	QAction *recordpathAct;
@@ -109,11 +106,7 @@ private:
 	QAction *interecAct;
 	QAction *interecActTB;
 	QDockWidget *mapdock;
-	//QMenu *fileMenu;
-	//QMenu *editMenu;
-	//QMenu *viewMenu;
- //   QMenu *settingMenu;
-	//QMenu *helpMenu;
+
 	MyMenu *fileMenu;
 	MyMenu *editMenu;
 	MyMenu *viewMenu;
@@ -122,7 +115,6 @@ private:
 	QListWidget *customerList;
 	ViewerWidget* viewWidget;
 	CameraSetting* cs;
-	//CameraModeSetting* cms;
 	QListWidgetItem * currentItem;
 	bool doshow;
 };

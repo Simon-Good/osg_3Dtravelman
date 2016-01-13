@@ -74,7 +74,7 @@ dbHandler * dbHandler::Get_dbH_Instance()
 	return dbH_Instance;
 }
 
-bool dbHandler::get_dbMessage(int index,vector<map<string,string>*>* v_map)
+bool dbHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>* v_map)
 {
 	if(pConn != NULL){
 		try

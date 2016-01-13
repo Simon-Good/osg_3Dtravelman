@@ -50,19 +50,19 @@ void TextPanel::addYZContent(const osg::Vec3& leftupCorner, float wid, float hit
 		this->setMatrix(osg::Matrix::rotate(3.141592657, osg::Vec3(0, 0, 1)));
 }
 
-void TextPanel::updateContent(string cont){
-	cont = cont+textString;
-	int requiredSize = mbstowcs(NULL, cont.c_str(), 0);
-	wchar_t * wtext = new wchar_t[requiredSize+1];
-	mbstowcs(wtext , cont.c_str(), requiredSize+1);
-	content->setText(wtext);
-	delete wtext;
-}
+//void TextPanel::updateContent(string cont){
+//	cont = cont+textString;
+//	int requiredSize = mbstowcs(NULL, cont.c_str(), 0);
+//	wchar_t * wtext = new wchar_t[requiredSize+1];
+//	mbstowcs(wtext , cont.c_str(), requiredSize+1);
+//	content->setText(wtext);
+//	delete wtext;
+//}
 
-void TextPanel::updateContent(map<string,string>* dbmap){
+void TextPanel::updateContent(map<string,string, MyCompRule>* dbmap){
 	string contentString = "";
 	int count = dbmap->size();
-	for(map<string, string>::iterator it = dbmap->begin();
+	for(map<string, string, MyCompRule>::iterator it = dbmap->begin();
 		it != dbmap->end();
 		it++)
 	{

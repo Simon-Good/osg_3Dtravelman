@@ -11,6 +11,7 @@
 #include "GeneralEventHandler.h"
 #include "TextPanel.h"
 #include "RenderThread.h"
+#include "Global.h"
 #include <vector>
 #include <string>
 #include <boost/thread/thread.hpp>
@@ -32,7 +33,7 @@ public:
 
 	vector<RangeNode>* getKeepOutBorder(int modelindex);
 	vector<RangeNode>* getKeepInBorder(int modelindex);
-	vector<map<string, string>*>* generateDBMap(int index);
+	vector<map<string, string, MyCompRule>*>* generateDBMap(int index);
 signals:
 	void modelLoadFinished();
 	void loadOneSwt(osg::Switch* swt, int index);
