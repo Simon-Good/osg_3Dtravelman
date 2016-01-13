@@ -290,7 +290,7 @@ void MainWindow::changeModel(QListWidgetItem* item){
 		cameraFlyModeActTB->setDisabled(true);
 		cameraFlyModeActTB->setChecked(false);
 		cameraLowModeActTB->setChecked(true);
-		if(customerList->row(item) == 2 ||customerList->row(item) == 1 || customerList->row(item) == 4){
+		if(customerList->row(item) == 2 ||customerList->row(item) == 1 || customerList->row(item) == 4 ||customerList->row(item) == 5){
 			GeneralEventHandler::Instance()->infoEnable(true);
 			textInfoAct->setDisabled(false);
 			textInfoAct->setCheckable(true);
