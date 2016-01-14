@@ -15,7 +15,7 @@ dbHandler::dbHandler(){
 			std::ifstream infile("./config.ini",ios::in|ios::_Nocreate);//从配置文件中读入数据库配置信息
 			if (!infile)
 			{
-				cerr<<"open error";//提示打开错误，退出
+				cerr<<"no config file ";//提示打开错误，退出
 				exit(1);
 			}
 			char str[100];
