@@ -189,19 +189,15 @@ bool dbHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*
 				v_map->at(0)->at("所变低压侧电流")=_bstr_t(pRs->GetCollect("SBDDLA"))+"A";
 
 				v_map->at(1)->at("站变高压侧电压")=_bstr_t(pRs->GetCollect("DDYAB"))+"KV";	
-				cout<<"开始了       ";
-				string x=IsEmpty(pRs->GetCollect("DDLA"));
-				v_map->at(1)->at("站变高压侧电流")=x+"A";	
 				
+				//v_map->at(1)->at("站变高压侧电流")=IsEmpty(pRs->GetCollect("DDLA"))+"A";	
+				v_map->at(1)->at("站变高压侧电流")=_bstr_t(pRs->GetCollect("DDLA"))+"A";
 				v_map->at(1)->at("站变低压侧电压")=_bstr_t(pRs->GetCollect("ZNBDDYAB"))+"KV";				
 				v_map->at(1)->at("站变低压侧电流")=_bstr_t(pRs->GetCollect("ZNBDDLB"))+"A";
 
 				v_map->at(2)->at("站变铁芯温度")=_bstr_t(pRs->GetCollect("ZNBWD"))+"℃";
 			
 				v_map->at(3)->at("所变铁芯温度")=_bstr_t(pRs->GetCollect("SBWD"))+"℃";
-			    cout<<"结束了       ";
-				//pRs->MoveNext();
-				//}
 			}
 			return true;
 		}
