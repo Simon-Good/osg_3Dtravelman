@@ -205,7 +205,7 @@ void MainWindow::createDockWindow(){
 
 	 MapItem* mapitem1 = new MapItem(QPixmap("./kongzhilou.png").scaled(36.5,29));
 	 mapitem1->setData(0, 0);
-	 mapitem1->setPos(83, 170);
+	 mapitem1->setPos(83, 171);
 	 mapitem1->setToolTip(QString(tr("¹ÜÀíÕ¾")));
 	 scene->addItem(mapitem1);
 
