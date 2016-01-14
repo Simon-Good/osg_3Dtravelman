@@ -296,6 +296,7 @@ vector<RangeNode>* ViewerWidget::getKeepOutBorder(int modelindex){
 		ret->push_back(RangeNode(8, osg::Vec4(25834.207, 37383.184, -63846.973, -53276.723)));
 		ret->push_back(RangeNode(9, osg::Vec4(18182.531, 22549.695, -73950.375, -64837.469)));
 		ret->push_back(RangeNode(10, osg::Vec4(-37689.965, -29035.395, -68235.962, -64327.445)));
+		ret->push_back(RangeNode(11, osg::Vec4(3338.7,42143.2 , -38250.4, -30315.8)));
 	}else if(modelindex == 1){//ËÍË®Õ¢
 		ret->push_back(RangeNode(0, osg::Vec4(160.031, 198.88, -6878.99, -6834.36)));
 		ret->push_back(RangeNode(1, osg::Vec4(160.031, 198.88, -6529.84, -6487.92)));

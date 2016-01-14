@@ -459,6 +459,13 @@ void MainWindow::showPos(float x, float y, float radius){
 						title = tr("送水闸");
 					}
 					break;
+				case 11:
+					{
+						content= tr(
+							"变电所有主变一台，SF6继路器1台，电流互感器、电压互感器各3只，隔离刀闸4组");
+						title=tr("变电所");
+					}
+					break;
 				default: return;
 				}
 			}else if(customerList->row(currentItem) == 2){

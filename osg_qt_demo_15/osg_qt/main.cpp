@@ -18,6 +18,7 @@ int main(int argc, char** argv){
 
 	setlocale(LC_ALL, ".936");
 	WelcomePage* wp = new WelcomePage();
+	
 	MainWindow *mwd = new MainWindow(wp);
 	wp->setValue(100);
 	mwd->showMaximized();
