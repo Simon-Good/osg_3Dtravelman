@@ -215,9 +215,7 @@ void MainWindow::createDockWindow(){
 	 MyGraphicsView *view = new MyGraphicsView(scene);
 	 view->setRenderHint(QPainter::Antialiasing);
 	 view->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
-	 //QPixmap pixmap = QPixmap("./map.png").scaled(300, 400);
-	 //QPixmap pixmap = QPixmap("./map.png");
-	 //view->setBackgroundBrush(pixmap);
+
 	 connect(view, SIGNAL(itemClicked(osg::Vec3&, osg::Vec3&)), this, SLOT(setCameraToPosition(osg::Vec3&, osg::Vec3&)));
 	 mapdock->setWidget(view);
 	 addDockWidget(Qt::LeftDockWidgetArea, mapdock);
@@ -260,7 +258,7 @@ void MainWindow::about(){
 	QMessageBox msgBox;
 	msgBox.setWindowTitle(tr("<b>关于</b>"));
 	msgBox.setText(tr("<b>厂区漫游系统</b>"));
-	msgBox.setInformativeText(tr("	可以让你在虚拟的厂区和工作间之中自由浏览。<br> "
+	msgBox.setInformativeText(tr("	可以让你在虚拟的厂区和工作间之中自由巡览。<br> "
 								"  版本号：V1.0<br>"
 								  "开发单位：河海大学<br>"));
 	msgBox.addButton(tr("确定"), QMessageBox::AcceptRole);
@@ -274,7 +272,7 @@ void MainWindow::control(){
 	msgBox.setInformativeText(tr("摄像机前后左右平移：W、S、A、D键<br> "
 					 "摄像机上下平移：Q、E键<br> "
 					 "摄像机转动：拖动鼠标右键<br> "
-					 "选中建筑物：拖动鼠标左键<br> "
+					 "选中物体查看接受：点击鼠标左键<br> "
 					 "放大/缩小：鼠标滚轮滚动<br> "));
 	msgBox.addButton(tr("确定"), QMessageBox::AcceptRole);
 	int ret = msgBox.exec();
@@ -285,24 +283,44 @@ void MainWindow::changeModel(QListWidgetItem* item){
 	viewWidget->reloadModel(customerList->row(item));
 	CameraContext *cc = viewWidget->getCameraContext(customerList->row(item));
 	if(customerList->row(item) == 0){
-		cameraFlyModeAct->setDisabled(false);
+		cameraFlyModeAct->setEnabled(true);
+		cameraFlyModeAct->setCheckable(true);
 		cameraFlyModeAct->setChecked(cc->flymode);
+
+		cameraLowModeAct->setEnabled(true);
+		cameraLowModeAct->setCheckable(true);
 		cameraLowModeAct->setChecked(cc->lowmode);
-		cameraFlyModeActTB->setDisabled(false);
+
+		cameraFlyModeActTB->setEnabled(true);
 		cameraFlyModeActTB->setChecked(cc->flymode);
+		cameraLowModeActTB->setEnabled(true);
 		cameraLowModeActTB->setChecked(cc->lowmode);
+		
 		GeneralEventHandler::Instance()->infoEnable(true);
 		textInfoAct->setDisabled(true);
 		textInfoAct->setCheckable(false);
 		textInfoAct->setChecked(false);
+
+		mapdock->toggleViewAction()->setDisabled(false);
+		mapdock->toggleViewAction()->setCheckable(true);
+		mapdock->toggleViewAction()->setChecked(true);
 		mapdock->show();
 	}else{
-		cameraFlyModeAct->setDisabled(true);
+		cameraFlyModeAct->setEnabled(false);
 		cameraFlyModeAct->setChecked(false);
+		cameraFlyModeAct->setCheckable(false);
+
+		cameraLowModeAct->setEnabled(true);
 		cameraLowModeAct->setChecked(true);
-		cameraFlyModeActTB->setDisabled(true);
+		cameraLowModeAct->setCheckable(true);
+
+		cameraFlyModeActTB->setEnabled(false);
 		cameraFlyModeActTB->setChecked(false);
+		cameraFlyModeActTB->setCheckable(false);
+
+		cameraLowModeActTB->setEnabled(true);
 		cameraLowModeActTB->setChecked(true);
+		cameraLowModeActTB->setCheckable(true);
 		if(customerList->row(item) == 2 ||customerList->row(item) == 1 
 			|| customerList->row(item) == 4 ||customerList->row(item) == 5
 			|| customerList->row(item) == 6){
@@ -316,6 +334,9 @@ void MainWindow::changeModel(QListWidgetItem* item){
 			textInfoAct->setCheckable(false);
 			textInfoAct->setChecked(false);
 		}
+		mapdock->toggleViewAction()->setDisabled(true);
+		mapdock->toggleViewAction()->setCheckable(false);
+		mapdock->toggleViewAction()->setChecked(false);
 		mapdock->hide();
 	}
 	if(cs->isVisible())
@@ -331,27 +352,29 @@ void MainWindow::updateCameraSetting(CameraContext* cc){
 }
 
 void MainWindow::setCameraFlyMode(){
-	CameraContext* cc = TravelManipulator::Instance()->getCameraContext();
-	if(cc->flymode == false && cc->lowmode ==true){
-		cc->flymode = true;
-		cc->lowmode = false;
-		cameraLowModeAct->setChecked(false);
-		cameraLowModeActTB->setChecked(false);
-		if(cameraFlyModeAct->isChecked() != cc->flymode){
-			cameraFlyModeAct->setChecked(cc->flymode);
-		}else{
-			cameraFlyModeActTB->setChecked(cc->flymode);
+	if(cameraFlyModeAct->isEnabled()){
+		CameraContext* cc = TravelManipulator::Instance()->getCameraContext();
+		if(cc->flymode == false && cc->lowmode ==true){
+			cc->flymode = true;
+			cc->lowmode = false;
+			cameraLowModeAct->setChecked(false);
+			cameraLowModeActTB->setChecked(false);
+			if(cameraFlyModeAct->isChecked() != cc->flymode){
+				cameraFlyModeAct->setChecked(cc->flymode);
+			}else{
+				cameraFlyModeActTB->setChecked(cc->flymode);
+			}
+			cc->m_vPosition += osg::Vec3(0.0f, 0.0f, 10000.0f);
+			cc->m_vRotation._v[0] = osg::DegreesToRadians(75.0f);
+		}else if(cc->flymode == true){
+			cameraFlyModeAct->setChecked(true);
+			cameraFlyModeActTB->setChecked(true);
 		}
-		cc->m_vPosition += osg::Vec3(0.0f, 0.0f, 10000.0f);
-		cc->m_vRotation._v[0] = osg::DegreesToRadians(75.0f);
-	}else if(cc->flymode == true){
-		cameraFlyModeAct->setChecked(true);
-		cameraFlyModeActTB->setChecked(true);
-	}
 
-	cc->max_height = 18000;
-	cc->min_height = 8000;
-	TravelManipulator::Instance()->setCameraContext(cc);
+		cc->max_height = 18000;
+		cc->min_height = 8000;
+		TravelManipulator::Instance()->setCameraContext(cc);
+	}
 }
 
 void MainWindow::setCameraLowMode(){

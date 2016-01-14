@@ -211,7 +211,7 @@ void ViewerWidget::loadModleThread(int modelnum){
 			}
 		}else if(i == 6){
 			cc->m_fMoveSpeed = 10.0f;
-			cc->m_vPosition = osg::Vec3(-778.774, -2709.9, 720.0f);
+			cc->m_vPosition = osg::Vec3(-778.774, -2709.9, 890.0f);
 			cc->m_vRotation = osg::Vec3(1.5407,0.0f,0.0f);
 			cc->max_height = 1700;
 			cc->min_height = 20;
@@ -219,13 +219,18 @@ void ViewerWidget::loadModleThread(int modelnum){
 			TextPanel* textnode;
 			string namehead = "ZHANBIANSUOBIAN_#";
 			osg::Vec4 keypoint;
-			for(int j = 0; j< 3; j++){
+			for(int j = 0; j< 4; j++){
+				float wid = 300;
+
 				keypoint = cc->keepout->at(j).range;
 				textnode = new TextPanel();
 				textnode->setDataVariance(osg::Object::DYNAMIC);
-				float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
-				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2 -100;
-				textnode->addXZContent(osg::Vec3(xpos, ypos, -20.0), 50, 20, 2.0);
+				float xpos = keypoint.x()+(keypoint.y() - keypoint.x() - wid);
+				float ypos = keypoint.z();
+				if(j< 2)
+					textnode->addXZContent(osg::Vec3(xpos, ypos, 780.0), wid, 150, 2.0, true);
+				else
+					textnode->addXZContent(osg::Vec3(xpos, ypos, 680.0), wid, 90, 2.0, true);
 				textnode->setName(namehead + to_string((long long)j));
 				threadSwt->insertChild(j+1, textnode, true);
 			}
@@ -336,9 +341,10 @@ vector<RangeNode>* ViewerWidget::getKeepOutBorder(int modelindex){
 		ret->push_back(RangeNode(9, osg::Vec4(-107.802, -81.398, 1102.56, 1148.05)));
 		ret->push_back(RangeNode(10, osg::Vec4(-67.3615, 71.5234, 1202.85, 1703.84)));
 	}else if(modelindex == 6){
-		ret->push_back(RangeNode(0, osg::Vec4(-986.176, -140.834, -1723.67, -1373.82)));
-		ret->push_back(RangeNode(1, osg::Vec4(-1112.15, -21.4336, -23.3993,678.568)));
-		ret->push_back(RangeNode(2, osg::Vec4(-1112.15, -21.4336, 1466.82, 2174.4)));
+		ret->push_back(RangeNode(0, osg::Vec4(-986.176, -560.574, -1723.67, -1373.82)));
+		ret->push_back(RangeNode(1, osg::Vec4(-550.176, -140.834, -1723.67, -1373.82)));
+		ret->push_back(RangeNode(2, osg::Vec4(-1112.15, -21.4336, -24.3993,678.568)));
+		ret->push_back(RangeNode(3, osg::Vec4(-1112.15, -21.4336, 1466.82, 2174.4)));
 	}
 	return ret;
 }
@@ -430,6 +436,9 @@ vector<map<string, string, MyCompRule>*>* ViewerWidget::generateDBMap(int index)
 		retMap->insert(pair<string, string>("所变高压侧电流",""));
 		retMap->insert(pair<string, string>("所变低压侧电压",""));
 		retMap->insert(pair<string, string>("所变低压侧电流",""));
+		retVec->push_back(retMap);
+
+		retMap = new map<string, string, MyCompRule>();
 		retMap->insert(pair<string, string>("站变高压侧电压",""));
 		retMap->insert(pair<string, string>("站变高压侧电流",""));
 		retMap->insert(pair<string, string>("站变低压侧电压",""));
