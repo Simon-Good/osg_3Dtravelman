@@ -177,13 +177,53 @@ bool dbHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*
 				v_map->at(2)->at("实际流量")=_bstr_t(pRs->GetCollect("SJLL"))+"m";
 
 			}
+			else if(index==6)
+			{
+				string cmd6="select * from V_T_RT_ZB_R";
+				_bstr_t bstring6=cmd6.c_str();
+				pRs=pConn->Execute(bstring6,0,adCmdText);
+
+				v_map->at(0)->at("所变高压侧电压")=_bstr_t(pRs->GetCollect("SBGDYAB"))+"KV";
+				v_map->at(0)->at("所变高压侧电流")=_bstr_t(pRs->GetCollect("SBGDLA"))+"A";
+				v_map->at(0)->at("所变低压侧电压")=_bstr_t(pRs->GetCollect("SBDDYBC"))+"KV";
+				v_map->at(0)->at("所变低压侧电流")=_bstr_t(pRs->GetCollect("SBDDLA"))+"A";
+
+				v_map->at(1)->at("站变高压侧电压")=_bstr_t(pRs->GetCollect("DDYAB"))+"KV";	
+				cout<<"开始了       ";
+				string x=IsEmpty(pRs->GetCollect("DDLA"));
+				v_map->at(1)->at("站变高压侧电流")=x+"A";	
+				
+				v_map->at(1)->at("站变低压侧电压")=_bstr_t(pRs->GetCollect("ZNBDDYAB"))+"KV";				
+				v_map->at(1)->at("站变低压侧电流")=_bstr_t(pRs->GetCollect("ZNBDDLB"))+"A";
+
+				v_map->at(2)->at("站变铁芯温度")=_bstr_t(pRs->GetCollect("ZNBWD"))+"℃";
+			
+				v_map->at(3)->at("所变铁芯温度")=_bstr_t(pRs->GetCollect("SBWD"))+"℃";
+			    cout<<"结束了       ";
+				//pRs->MoveNext();
+				//}
+			}
 			return true;
 		}
 		catch(_com_error &e)
-		{	
+		{	 
 			return false;
 		}
 	}else{
 		return false;
+	}
+}
+
+string dbHandler::IsEmpty(_variant_t infor)
+{
+	if (infor.vt==VT_NULL)
+	{
+		string x="0";
+		return x;
+	} 
+	else
+	{
+		string x=_bstr_t(infor);
+		return x;
 	}
 }
