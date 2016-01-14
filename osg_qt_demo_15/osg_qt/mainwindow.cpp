@@ -196,17 +196,20 @@ void MainWindow::createDockWindow(){
      viewMenu->addAction(dock->toggleViewAction());
 
 	 mapdock = new QDockWidget(tr("地图窗口"), this);
-	 mapdock->setMaximumHeight(420);
+	 mapdock->setMaximumHeight(450);
 	 mapdock->setMinimumHeight(400);
-	 mapdock->setMaximumWidth(320);
+	 mapdock->setMaximumWidth(350);
 	 mapdock->setMinimumWidth(300);
      mapdock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 	 QGraphicsScene *scene = new QGraphicsScene(0, 0, 300, 400);
-	 MapItem* mapitem = new MapItem(QPixmap("./kongzhilou.png"));
-	 mapitem->setData(0, 0);
-	 mapitem->setPos(20, 10);
-	 mapitem->setToolTip(QString(tr("管理站")));
-	 scene->addItem(mapitem);
+
+	 MapItem* mapitem1 = new MapItem(QPixmap("./kongzhilou.png").scaled(36.5,29));
+	 mapitem1->setData(0, 0);
+	 mapitem1->setPos(83, 170);
+	 mapitem1->setToolTip(QString(tr("管理站")));
+	 scene->addItem(mapitem1);
+
+	 MapItem* mapitem2 = new MapItem(QPixmap("./diaoduzha.png"));
 
 	 QGraphicsPixmapItem* backgrounditem = new QGraphicsPixmapItem(QPixmap("./map.png").scaled(300,400));
 	 backgrounditem->setPos(0,0);
