@@ -1,9 +1,9 @@
 #include "ViewerWidget.h"
-#ifdef _DEBUG
-#define MODELBASE "../../models/"
-#else
-#define MODELBASE "./models/"
-#endif
+//#ifdef _DEBUG
+//#define MODELBASE "../../models/"
+//#else
+//#define MODELBASE "./models/"
+//#endif
 ViewerWidget::ViewerWidget(QWidget* parent):   QWidget(parent){
 	mparent = parent;
 	loadFinished = false;
@@ -80,7 +80,8 @@ void ViewerWidget::loadModels(int size){
 	thread = boost::thread(&ViewerWidget::loadModleThread, this, size);
 	osg::ref_ptr<osg::Node> node;
 	osg::ref_ptr<osg::Switch> underswt = new osg::Switch();
-	node = osgDB::readNodeFile(string(MODELBASE)+"0.ive");
+	//node = osgDB::readNodeFile(string(MODELBASE)+"0.ive");
+	node = osgDB::readNodeFile(MODELPATH+"0.ive");
 	underswt->insertChild(0, node, true);
 	GeneralEventHandler::Instance()->setCurrentScene(underswt, 0);
 	CameraContext *cc = new CameraContext();
@@ -106,8 +107,10 @@ void ViewerWidget::loadModleThread(int modelnum){
 		while(loadFinished == true)
 			boost::this_thread::sleep(boost::posix_time::millisec(50));
 		_itoa(i, num, 10);
-		cout<<"inthread"<<MODELBASE+string(num)+".ive"<<endl;
-		threadNode = osgDB::readNodeFile(MODELBASE+string(num)+".ive");
+		//cout<<"inthread"<<MODELBASE+string(num)+".ive"<<endl;
+		cout<<"inthread"<<MODELPATH+string(num)+".ive"<<endl;
+		threadNode = osgDB::readNodeFile(MODELPATH+string(num)+".ive");
+		//threadNode = osgDB::readNodeFile(MODELBASE+string(num)+".ive");
 		threadSwt = new osg::Switch();
 		threadSwt->insertChild(0, threadNode, true);
 		osg::Vec3 centerpos = threadNode->getBound().center();

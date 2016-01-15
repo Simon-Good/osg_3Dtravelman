@@ -22,7 +22,7 @@ WelcomePage::WelcomePage(QWidget *parent)
 	
 	setFixedWidth(850);
 	setFixedHeight(600);
-	QPixmap pixmap = QPixmap("./background2.bmp").scaled(this->size());
+	QPixmap pixmap = QPixmap(string(RESOURCESPATH + "background2.bmp").c_str()).scaled(this->size());
 	QPalette palette(this->palette());
 	palette.setBrush(QPalette::Background, QBrush(pixmap));
 	setPalette(palette);

@@ -1,8 +1,9 @@
 #pragma once
 #include <string>
 using namespace std;
-const string RESPATH = "../resources/";
-//const string
+const string RESOURCESPATH = "../resources/";
+const string MODELPATH = "../models/";
+const string PATHPATH = "../path";
 
 struct MyCompRule{
 	bool operator() (const string& l, const string& r) const{

@@ -19,7 +19,8 @@
 #include "TravelManipulator.h"
 #include "CameraSetting.h"
 #include "WelcomePage.h"
-#include "dbHandler.h"
+#include "Global.h"
+#include "DBHandler.h"
 #include "GeneralEventHandler.h"
 #include <osg/Matrix>
 #include <osg/Vec3>

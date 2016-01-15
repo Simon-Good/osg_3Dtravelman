@@ -1,18 +1,18 @@
 
-#include "dbHandler.h"
+#include "DBHandler.h"
 #include<iostream>
 #include<iomanip>
 #include<fstream>
 using namespace std;
 
-dbHandler * dbHandler::dbH_Instance =NULL;
+DBHandler * DBHandler::dbH_Instance =NULL;
 
-dbHandler::dbHandler(){
+DBHandler::DBHandler(){
 	//初始化Com对象
 		CoInitialize(NULL);
 		try
 		{
-			std::ifstream infile("./config.ini",ios::in|ios::_Nocreate);//从配置文件中读入数据库配置信息
+			std::ifstream infile("../config.ini",ios::in|ios::_Nocreate);//从配置文件中读入数据库配置信息
 			if (!infile)
 			{
 				cerr<<"no config file ";//提示打开错误，退出
@@ -41,7 +41,7 @@ dbHandler::dbHandler(){
 		}
 }
 
-string dbHandler::get_dbMessage(string message,string table,string restrict)
+string DBHandler::get_dbMessage(string message,string table,string restrict)
 {
 	//string cmd="Select "+message+" from "+table+" where ID ="+restrict;
 	if(pConn != NULL){
@@ -59,22 +59,22 @@ string dbHandler::get_dbMessage(string message,string table,string restrict)
 }
 
 
-string dbHandler::get_dbMessage(string messgage){
+string DBHandler::get_dbMessage(string messgage){
 	pRs=pConn->Execute("Select * From Staff_Infor",0,adCmdText);
 	string a=_bstr_t(pRs->GetCollect("Name"));
 
 	return a;
 }
-dbHandler * dbHandler::Get_dbH_Instance()
+DBHandler * DBHandler::Get_dbH_Instance()
 {
 	if (dbH_Instance==NULL)
 	{
-		dbH_Instance=new dbHandler();
+		dbH_Instance=new DBHandler();
 	}
 	return dbH_Instance;
 }
 
-bool dbHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>* v_map)
+bool DBHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>* v_map)
 {
 	if(pConn != NULL){
 		try
@@ -214,7 +214,7 @@ bool dbHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*
 	}
 }
 
-string dbHandler::IsEmpty(_variant_t infor)
+string DBHandler::IsEmpty(_variant_t infor)
 {
 	if (infor.vt==VT_NULL)
 	{
