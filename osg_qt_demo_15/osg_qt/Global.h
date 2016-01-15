@@ -1,6 +1,9 @@
 #pragma once
 #include <string>
 using namespace std;
+const string RESPATH = "../resources/";
+//const string
+
 struct MyCompRule{
 	bool operator() (const string& l, const string& r) const{
 		const char *lchar = l.c_str();
