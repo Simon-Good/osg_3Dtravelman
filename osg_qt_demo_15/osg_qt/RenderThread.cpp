@@ -10,7 +10,7 @@ void RenderThread::run(){
 			viewerPtr->frame();
 			if(additional == true){
 				if(loadswt != NULL && rootswt != NULL && loadindex != -1){
-					rootswt->insertChild(loadindex, loadswt);
+					rootswt->insertChild(loadindex, loadswt, false);
 					loadswt = NULL;
 					emit loadSwtFinished();
 				}

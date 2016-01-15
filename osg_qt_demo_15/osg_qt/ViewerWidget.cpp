@@ -289,7 +289,7 @@ vector<RangeNode>* ViewerWidget::getKeepInBorder(int modelindex){
 	}else if(modelindex == 2){
 		ret->push_back(RangeNode(0, osg::Vec4(-1266.5, 306.5, -2485.69, 6885.69)));
 	}else if(modelindex == 3){
-		//ret->push_back(RangeNode(0, osg::Vec4(-501.837, 306.5, -1247.69, 6885.69)));
+		ret->push_back(RangeNode(0, osg::Vec4(-501.837, 306.5, -1247.69, 6885.69)));
 	}else if(modelindex == 4){
 		ret->push_back(RangeNode(0, osg::Vec4(36.8103, 76.6053, -561.673, 851.025)));
 	}else if(modelindex == 5){
