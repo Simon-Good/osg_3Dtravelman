@@ -81,7 +81,6 @@ void ViewerWidget::loadModels(int size){
 	thread = boost::thread(&ViewerWidget::loadModleThread, this, size);
 	osg::ref_ptr<osg::Node> node;
 	osg::ref_ptr<osg::Switch> underswt = new osg::Switch();
-	//node = osgDB::readNodeFile(string(MODELBASE)+"0.ive");
 	node = osgDB::readNodeFile(MODELPATH+"0.ive");
 	underswt->insertChild(0, node, true);
 	GeneralEventHandler::Instance()->setCurrentScene(underswt, 0);
@@ -100,19 +99,19 @@ void ViewerWidget::loadModels(int size){
 	cameraContextList[0] = *cc;
 	TravelManipulator::Instance()->setCameraContext(cc);
 	GeneralEventHandler::Instance()->setDBMap(generateDBMap(0));
-	swt->insertChild(0, underswt, true);
-	
+	swt->insertChild(0, underswt, true);	
 }
 void ViewerWidget::loadModleThread(int modelnum){
 	char num[10];
+	TextPanel* textnode;
+	string namehead;
+	osg::Vec4 keypoint;
 	for(int i = 1; i< modelnum; i++){
 		while(loadFinished == true)
 			boost::this_thread::sleep(boost::posix_time::millisec(50));
 		_itoa(i, num, 10);
-		//cout<<"inthread"<<MODELBASE+string(num)+".ive"<<endl;
 		cout<<"inthread"<<MODELPATH+string(num)+".ive"<<endl;
 		threadNode = osgDB::readNodeFile(MODELPATH+string(num)+".ive");
-		//threadNode = osgDB::readNodeFile(MODELBASE+string(num)+".ive");
 		threadSwt = new osg::Switch();
 		threadSwt->insertChild(0, threadNode, true);
 		osg::Vec3 centerpos = threadNode->getBound().center();
@@ -126,16 +125,14 @@ void ViewerWidget::loadModleThread(int modelnum){
 			cc->max_height = 30;
 			cc->min_height = -80;
 
-			TextPanel* textnode;
-			string namehead = "SONGSHUI_#";
-			osg::Vec4 keypoint;
+			namehead = "SONGSHUI_#";
 			for(int j = 0; j< 2; j++){
 				keypoint = cc->keepout->at(j).range;
 				textnode = new TextPanel();
-				textnode->setDataVariance(osg::Object::DYNAMIC);
 				float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
 				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2-50;
-				textnode->addYZContent(osg::Vec3(xpos, ypos, -40.0), 30, 15, 3.0, true);
+				textnode->setMatrix(osg::Matrix::translate(osg::Vec3(xpos, ypos, -20.0)));
+				textnode->addContent(30, 15, 3.0);
 				textnode->setName(namehead + to_string((long long)j));
 				threadSwt->insertChild(j+1, textnode, true);
 			}
@@ -146,21 +143,19 @@ void ViewerWidget::loadModleThread(int modelnum){
 			cc->max_height = 1000;
 			cc->min_height = 45;
 			
-			TextPanel* textnode;
-			string namehead = "BENGFANG_#";
-			osg::Vec4 keypoint;
+			namehead = "BENGFANG_#";
 			for(int j = 0; j< 18; j++){
 				keypoint = cc->keepout->at(j).range;
 				textnode = new TextPanel();
-				textnode->setDataVariance(osg::Object::DYNAMIC);
 				float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
-				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2;
 				if(j >= 0 && j< 9){
-					ypos = (-1)*ypos+50;
-					textnode->addYZContent(osg::Vec3(xpos, ypos, 200.0), 300, 135, 12.0);
+					float ypos = keypoint.z()+ 150;
+					textnode->setMatrix(osg::Matrix::rotate(osg::PI, osg::Vec3(0, 0, 1)) * osg::Matrix::translate(osg::Vec3(xpos, ypos, 300.0)));
+					textnode->addContent(300, 135, 12.0);
 				}else if(j >= 9 && j< 18){
-					ypos = ypos - 500;
-					textnode->addYZContent(osg::Vec3(xpos, ypos, 180.0), 90, 40, 12.0, true);
+					float ypos = keypoint.z() - 100;
+					textnode->setMatrix(osg::Matrix::translate(osg::Vec3(xpos, ypos, 210.0)));
+					textnode->addContent(90, 40, 12.0);
 				}
 				textnode->setName(namehead + to_string((long long)j));
 				threadSwt->insertChild(j+1, textnode, true);
@@ -170,20 +165,18 @@ void ViewerWidget::loadModleThread(int modelnum){
 			cc->m_fMoveSpeed = 5.0f;
 			cc->m_vPosition = osg::Vec3(-324.813f, -1086.09f, -240.0f);
 			cc->m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.329f);
-			cc->max_height = 9000;
-			cc->min_height = -3500;
+			cc->max_height = 900;
+			cc->min_height = -350;
 
-			
-			/*string namehead = "LIANZHOU_#";
-			osg::Vec4 keypoint = cc->keepout->at(0).range;
-			TextPanel* textnode = new TextPanel();
-			textnode->setDataVariance(osg::Object::DYNAMIC);
-			float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
-			float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2 -50;
-			cout<<xpos<<" "<<ypos<<endl;
-			textnode->addXZContent(osg::Vec3(xpos, ypos, -240.0), 1000, 300, 2.0);
+			namehead = "LIANZHOU_#";
+			keypoint = cc->keepout->at(0).range;
+			textnode = new TextPanel();
+			float xpos = keypoint.y()-50;
+			float ypos = keypoint.w()-50;
+			textnode->setMatrix(osg::Matrix::rotate(osg::PI_2, osg::Vec3(0, 0, 1)) * osg::Matrix::translate(osg::Vec3(xpos, ypos, -200.0)));
+			textnode->addContent(100, 50, 8.0);
 			textnode->setName(namehead + to_string((long long)0));
-			threadSwt->insertChild(1, textnode, true);*/
+			threadSwt->insertChild(1, textnode, true);
 		}else if(i == 4){//µ÷¶ÈÕ¢
 			cc->m_fMoveSpeed = 5.0f;
 			cc->m_vPosition = osg::Vec3(40.813f, -550.09f, -30.0f);
@@ -191,16 +184,14 @@ void ViewerWidget::loadModleThread(int modelnum){
 			cc->max_height = 40;
 			cc->min_height = 0;
 
-			TextPanel* textnode;
-			string namehead = "DIAODU_#";
-			osg::Vec4 keypoint;
+			namehead = "DIAODU_#";
 			for(int j = 0; j< 2; j++){
 				keypoint = cc->keepout->at(j).range;
 				textnode = new TextPanel();
-				textnode->setDataVariance(osg::Object::DYNAMIC);
 				float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
 				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2 -50;
-				textnode->addYZContent(osg::Vec3(xpos, ypos, -20.0), 25, 10, 2.0, true);
+				textnode->setMatrix(osg::Matrix::translate(osg::Vec3(xpos, ypos, -5.0)));
+				textnode->addContent(25, 10, 2.0);
 				textnode->setName(namehead + to_string((long long)j));
 				threadSwt->insertChild(j+1, textnode, true);
 			}
@@ -211,16 +202,14 @@ void ViewerWidget::loadModleThread(int modelnum){
 			cc->max_height = 70;
 			cc->min_height = 0;
 
-			TextPanel* textnode;
-			string namehead = "JIEZHI_#";
-			osg::Vec4 keypoint;
+			namehead = "JIEZHI_#";
 			for(int j = 0; j< 3; j++){
 				keypoint = cc->keepout->at(j).range;
 				textnode = new TextPanel();
-				textnode->setDataVariance(osg::Object::DYNAMIC);
 				float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
-				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2 -40;
-				textnode->addYZContent(osg::Vec3(xpos, ypos, -20.0), 20, 12, 2.0, true);
+				float ypos = keypoint.z() - 22;
+				textnode->setMatrix(osg::Matrix::translate(osg::Vec3(xpos, ypos, -5.0)));
+				textnode->addContent(20, 12, 2.0);
 				textnode->setName(namehead + to_string((long long)j));
 				threadSwt->insertChild(j+1, textnode, true);
 			}
@@ -231,21 +220,21 @@ void ViewerWidget::loadModleThread(int modelnum){
 			cc->max_height = 1700;
 			cc->min_height = 20;
 
-			TextPanel* textnode;
-			string namehead = "ZHANBIANSUOBIAN_#";
-			osg::Vec4 keypoint;
+			namehead = "ZHANBIANSUOBIAN_#";
 			for(int j = 0; j< 4; j++){
 				float wid = 200;
 
 				keypoint = cc->keepout->at(j).range;
 				textnode = new TextPanel();
-				textnode->setDataVariance(osg::Object::DYNAMIC);
 				float xpos = keypoint.x()+(keypoint.y() - keypoint.x() - wid);
 				float ypos = keypoint.z();
-				if(j< 2)
-					textnode->addXZContent(osg::Vec3(xpos, ypos, 880.0), wid, 60, 12.0, true);
-				else
-					textnode->addXZContent(osg::Vec3(xpos, ypos, 750.0), wid, 40, 12.0, true);
+				if(j< 2){
+					textnode->setMatrix(osg::Matrix::rotate((-1)*osg::PI_2, osg::Vec3(0, 0 , 1)) * osg::Matrix::translate(osg::Vec3(xpos, ypos, 930.0)));
+					textnode->addContent(wid, 60, 12.0);
+				}else{
+					textnode->setMatrix(osg::Matrix::rotate((-1)*osg::PI_2, osg::Vec3(0, 0 , 1)) * osg::Matrix::translate(osg::Vec3(xpos, ypos, 780.0)));
+					textnode->addContent(wid, 40, 12.0);
+				}
 				textnode->setName(namehead + to_string((long long)j));
 				threadSwt->insertChild(j+1, textnode, true);
 			}

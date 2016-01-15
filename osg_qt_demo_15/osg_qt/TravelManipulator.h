@@ -32,7 +32,6 @@ struct RangeNode{
 struct CameraContext{
 	osg::Vec3 m_vPosition;
 	osg::Vec3 m_vRotation;
-	//osg::Vec4 light_Position;
 	float m_fMoveSpeed;
 	float m_fAngle;
 	float min_height;
@@ -59,16 +58,6 @@ protected:
 	
 public:
 	CameraContext *cc;
-	//float   m_fMoveSpeed;
-	//osg::Vec3    m_vPosition;
-	//osg::Vec3    m_vRotation;
-	//float m_fAngle;
-	//float min_height;
-	//float max_height;
-	//bool peng;
-	//bool flymode;
-	//bool lowmode;
-	//double fov;
 
 	float dragDelta;
 	float m_fpushX;//������ʱ��Ļ���
@@ -91,9 +80,6 @@ public:
 	bool getPlayPath(){return playPath;}
 	void resetStateBits();
 	void switchForbidMove();
-	//vector<RangeNode>* keepInBorder;
-	//vector<RangeNode>* keepOutBorder;
-
 private:
 	static TravelManipulator* instance;
 	static float rightDragDistX;
