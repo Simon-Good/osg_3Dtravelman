@@ -1,5 +1,5 @@
 #include "GeneralEventHandler.h"
-#include "dbHandler.h"
+#include "DBHandler.h"
 
 GeneralEventHandler* GeneralEventHandler::instance = 0;
 bool GeneralEventHandler::infoenable = true;
@@ -26,7 +26,7 @@ bool GeneralEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 				if(curSwt!=NULL && curSwt->getValueList().size() > 1){
 					int numchildren = curSwt->getNumChildren();
 					TextPanel* tp;
-					if(dbHandler::Get_dbH_Instance()->get_dbMessage(curSwtIndex,dbMap)==true){
+					if(DBHandler::Get_dbH_Instance()->get_dbMessage(curSwtIndex,dbMap)==true){
 						if(dbMap->size() > 0){
 							for(int i = 1; i< numchildren; i++){
 								tp = dynamic_cast<TextPanel*>(curSwt->getChild(i));

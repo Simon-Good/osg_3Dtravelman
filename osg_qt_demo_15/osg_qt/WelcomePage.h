@@ -9,6 +9,7 @@
 #include <QGridLayout>
 #include <QElapsedTimer>
 #include <QCoreApplication>
+#include "Global.h"
 class WelcomePage : public QDialog
 {
 	Q_OBJECT

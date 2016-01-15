@@ -41,15 +41,6 @@
     <ClCompile Include="GeneratedFiles\qrc_osg_qt.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="mainwindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_mainwindow.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_mainwindow.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="ViewerWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -92,9 +83,6 @@
     <ClCompile Include="TextPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dbHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MapItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -113,6 +101,18 @@
     <ClCompile Include="GeneratedFiles\Release\moc_RenderThread.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="DBHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MainWindow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MainWindow.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="MainWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="osg_qt.ui">
@@ -120,9 +120,6 @@
     </CustomBuild>
     <CustomBuild Include="osg_qt.qrc">
       <Filter>Resource Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="mainwindow.h">
-      <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="mainwindow.ui">
       <Filter>Form Files</Filter>
@@ -154,6 +151,9 @@
     <CustomBuild Include="RenderThread.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="MainWindow.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_osg_qt.h">
@@ -177,10 +177,10 @@
     <ClInclude Include="TextPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dbHandler.h">
+    <ClInclude Include="Global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Global.h">
+    <ClInclude Include="DBHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

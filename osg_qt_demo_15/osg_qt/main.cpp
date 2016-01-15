@@ -2,7 +2,7 @@
 #include <QTextCodec>
 #include <QWaitCondition>
 #include <locale.h>
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "CameraSetting.h"
 #include "WelcomePage.h"
 

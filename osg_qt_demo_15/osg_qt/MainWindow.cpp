@@ -40,7 +40,7 @@ MainWindow::MainWindow(WelcomePage* wp, QWidget *parent)
 	wp->setValue(5);
 	setGeometry(100, 100, 800, 600);
 	setWindowTitle(tr("高港闸站工程三维可视化综合管理与决策系统"));
-	dbHandler::Get_dbH_Instance();
+	DBHandler::Get_dbH_Instance();
 	wp->setValue(15);
 	createAction();
 	createMenu();
@@ -95,22 +95,26 @@ void MainWindow::createMenu(){
 }
 
 void MainWindow::createAction(){
-	openpathActTB = new QAction(QIcon("./open.png"),tr("&打开路径"), this);
+	//openpathActTB = new QAction(QIcon("./open.png"),tr("&打开路径"), this);
+	openpathActTB = new QAction(QIcon(string(RESOURCESPATH +"open.png").c_str()),tr("&打开路径"), this);
 	openpathAct = new QAction(tr("&打开路径"), this);
 	connect(openpathActTB, SIGNAL(triggered()), this, SLOT(playCameraPath()));
 	connect(openpathAct, SIGNAL(triggered()), this, SLOT(playCameraPath()));
-	recordpathActTB = new QAction(QIcon("./recordpath.png"), tr("&开始记录路径"), this);
+	//recordpathActTB = new QAction(QIcon("./recordpath.png"), tr("&开始记录路径"), this);
+	recordpathActTB = new QAction(QIcon(string(RESOURCESPATH +"recordpath.png").c_str()), tr("&开始记录路径"), this);
 	recordpathAct = new QAction(tr("&开始记录路径"), this);
 	connect(recordpathAct, SIGNAL(triggered()), this, SLOT(recordCameraPath()));
 	connect(recordpathActTB, SIGNAL(triggered()), this, SLOT(recordCameraPath()));
 	
-	cameraSettingActTB = new QAction(QIcon("./camera_setting.png"),tr("&视点参数设置"), this);
+	//cameraSettingActTB = new QAction(QIcon("./camera_setting.png"),tr("&视点参数设置"), this);
+	cameraSettingActTB = new QAction(QIcon(string(RESOURCESPATH +"camera_setting.png").c_str()),tr("&视点参数设置"), this);
 	cameraSettingAct = new QAction(tr("&视点参数设置"), this);
 	connect(cameraSettingActTB, SIGNAL(triggered()), this, SLOT(showCameraSettingDialog()));
 	connect(cameraSettingAct, SIGNAL(triggered()), this, SLOT(showCameraSettingDialog()));
 
 	cameraLowModeAct = new QAction(tr("&贴地模式视点"), this);
-	cameraLowModeActTB = new QAction(QIcon("./lowmode.png"),tr("&贴地模式视点"), this);
+	//cameraLowModeActTB = new QAction(QIcon("./lowmode.png"),tr("&贴地模式视点"), this);
+	cameraLowModeActTB = new QAction(QIcon(string(RESOURCESPATH + "lowmode.png").c_str()),tr("&贴地模式视点"), this);
 	cameraLowModeAct->setCheckable(true);
 	cameraLowModeAct->setChecked(true);
 	cameraLowModeActTB->setCheckable(true);
@@ -119,7 +123,8 @@ void MainWindow::createAction(){
 	connect(cameraLowModeActTB, SIGNAL(triggered()), this, SLOT(setCameraLowMode()));
 
 	cameraFlyModeAct = new QAction(tr("&鸟瞰模式视点"), this);
-	cameraFlyModeActTB = new QAction(QIcon("./flymode.png"),tr("&鸟瞰模式视点"), this);
+	/*cameraFlyModeActTB = new QAction(QIcon("./flymode.png"),tr("&鸟瞰模式视点"), this);*/
+	cameraFlyModeActTB = new QAction(QIcon(string(RESOURCESPATH + "flymode.png").c_str()),tr("&鸟瞰模式视点"), this);
 	cameraFlyModeAct->setCheckable(true);
 	cameraFlyModeAct->setChecked(false);
 	cameraFlyModeActTB->setCheckable(true);
@@ -131,7 +136,8 @@ void MainWindow::createAction(){
     exitAct->setShortcut(tr("Ctrl+Q"));
     connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
 
-	interecActTB = new QAction(QIcon("./peng_closed.png"), tr("&碰撞检测"), this);
+	/*interecActTB = new QAction(QIcon("./peng_closed.png"), tr("&碰撞检测"), this);*/
+	interecActTB = new QAction(QIcon(string(RESOURCESPATH + "peng_closed.png").c_str()), tr("&碰撞检测"), this);
 	interecAct = new QAction(tr("&碰撞检测"), this);
     interecAct->setShortcut(tr("Ctrl+I"));
 	interecAct->setCheckable(true);
@@ -203,15 +209,16 @@ void MainWindow::createDockWindow(){
      mapdock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 	 QGraphicsScene *scene = new QGraphicsScene(0, 0, 300, 400);
 
-	 MapItem* mapitem1 = new MapItem(QPixmap("./kongzhilou.png").scaled(36.5,29));
+	 //MapItem* mapitem1 = new MapItem(QPixmap("./kongzhilou.png").scaled(36.5,29));
+	 MapItem* mapitem1 = new MapItem(QPixmap(string(RESOURCESPATH + "kongzhilou.png").c_str()).scaled(36.5,29));
 	 mapitem1->setData(0, 0);
-	 mapitem1->setPos(83, 170);
+	 mapitem1->setPos(83, 171);
 	 mapitem1->setToolTip(QString(tr("管理站")));
 	 scene->addItem(mapitem1);
 
-	 MapItem* mapitem2 = new MapItem(QPixmap("./diaoduzha.png"));
+	 MapItem* mapitem2 = new MapItem(QPixmap(string(RESOURCESPATH + "diaoduzha.png").c_str()));
 
-	 QGraphicsPixmapItem* backgrounditem = new QGraphicsPixmapItem(QPixmap("./map.png").scaled(300,400));
+	 QGraphicsPixmapItem* backgrounditem = new QGraphicsPixmapItem(QPixmap(string(RESOURCESPATH + "map.png").c_str()).scaled(300,400));
 	 backgrounditem->setPos(0,0);
 	 backgrounditem->setZValue(-1);
 	 scene->addItem(backgrounditem);
@@ -228,19 +235,19 @@ void MainWindow::createDockWindow(){
 void  MainWindow::open_peng(){
 	CameraContext *cc = TravelManipulator::Instance()->getCameraContext();
 	if(cc->peng == true && (!interecAct->isChecked())){
-		interecActTB->setIcon(QIcon("./peng_closed.png"));
+		interecActTB->setIcon(QIcon(string(RESOURCESPATH + "peng_closed.png").c_str()));
 		interecActTB->setChecked(false);
 		cc->peng = false;
 	}else if(cc->peng == true && (!interecActTB->isChecked())){
-		interecActTB->setIcon(QIcon("./peng_closed.png"));
+		interecActTB->setIcon(QIcon(string(RESOURCESPATH + "peng_closed.png").c_str()));
 		interecAct->setChecked(false);
 		cc->peng = false;
 	}else if(cc->peng == false && (interecAct->isChecked())){
-		interecActTB->setIcon(QIcon("./peng_open.png"));
+		interecActTB->setIcon(QIcon(string(RESOURCESPATH + "peng_open.png").c_str()));
 		interecActTB->setChecked(true);
 		cc->peng = true;
 	}else if(cc->peng == false && (interecActTB->isChecked())){
-		interecActTB->setIcon(QIcon("./peng_open.png"));
+		interecActTB->setIcon(QIcon(string(RESOURCESPATH + "peng_open.png").c_str()));
 		interecAct->setChecked(true);
 		cc->peng = true;
 	}
@@ -553,7 +560,7 @@ void MainWindow::enableItems(){
 
 void MainWindow::playCameraPath(){
 	if(TravelManipulator::Instance()->getPlayPath() == false){
-		string openpath = QFileDialog::getOpenFileName(this, tr("打开路径"),"./path", tr("*.path")).toStdString();
+		string openpath = QFileDialog::getOpenFileName(this, tr("打开路径"),"./paths", tr("*.path")).toStdString();
 		TravelManipulator::Instance()->setPlayPath(true, openpath);
 	}
 }
@@ -567,7 +574,7 @@ void MainWindow::recordCameraPath(){
 		msgBox.addButton(tr("否"), QMessageBox::RejectRole);//ret = 1
 		int ret = msgBox.exec();
 		if(ret == 0){
-			this->recordpathActTB->setIcon(QIcon("./pause.png"));
+			this->recordpathActTB->setIcon(QIcon(string(RESOURCESPATH + "pause.png").c_str()));
 			this->recordpathActTB->setText(tr("暂停记录路径"));
 			this->recordpathAct->setText(tr("暂停记录路径"));
 			TravelManipulator::Instance()->setRecordPath(true);
@@ -578,12 +585,12 @@ void MainWindow::recordCameraPath(){
 		msgBox.addButton(tr("否"), QMessageBox::RejectRole);//ret = 1
 		int ret = msgBox.exec();
 		if(ret == 0){
-			string savepath = QFileDialog::getSaveFileName(this, tr("保存路径"),"./path", tr("*.path")).toStdString();
+			string savepath = QFileDialog::getSaveFileName(this, tr("保存路径"),"./paths", tr("*.path")).toStdString();
 			string ext = savepath.substr(savepath.rfind('.')+1, savepath.length());
 			if(ext.compare("path") !=0){//useless, only for safe
 				QMessageBox::information(this, tr("请重新选择保存名称"), tr("路径文件只接受\".path\"扩展名，请重新保存路径。"));
 			}else{
-				recordpathActTB->setIcon(QIcon("./recordpath.png"));
+				recordpathActTB->setIcon(QIcon(string(RESOURCESPATH + "recordpath.png").c_str()));
 				this->recordpathActTB->setText(tr("开始记录路径"));
 				this->recordpathAct->setText(tr("开始记录路径"));
 				TravelManipulator::Instance()->setRecordPath(false, savepath);
