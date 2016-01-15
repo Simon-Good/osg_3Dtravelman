@@ -55,4 +55,5 @@ protected:
 	QWidget* mparent;
 	bool loadFinished;
 	RenderThread *rThread;
+	void genRangeNodeList(int listSize);
 };

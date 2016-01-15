@@ -116,6 +116,7 @@ bool DBHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*
 					v_map->at(i)->at("叶片角度")=_bstr_t(pRs->GetCollect("YPJD"))+"°";
 					v_map->at(i)->at("电流")=_bstr_t(pRs->GetCollect("DZDLAB"))+"A";
 					v_map->at(i)->at("励磁电流")=_bstr_t(pRs->GetCollect("LCDL"))+"A";
+					v_map->at(i)->at("励磁电压")=_bstr_t(pRs->GetCollect("LCDY"))+"kv";
 					v_map->at(i)->at("有功功率")=_bstr_t(pRs->GetCollect("YGGL"))+"KW";
 					v_map->at(i)->at("无功功率")=_bstr_t(pRs->GetCollect("WGGL"))+"KW";
 					v_map->at(i)->at("主机转速")=_bstr_t(pRs->GetCollect("ZS"))+"rpm";
@@ -128,9 +129,9 @@ bool DBHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*
 					v_map->at(i)->at("下油缸温度")=_bstr_t(pRs->GetCollect("XYGWD"))+"℃";
 					v_map->at(i)->at("推力瓦温度")=_bstr_t(pRs->GetCollect("TLWWD1"))+"℃";
 					string KG="KG"+to_string((long long)(i+1));
-
 					_bstr_t kg=KG.c_str();
 					v_map->at(i+9)->at(("闸门高度"))=_bstr_t(pRs2->GetCollect(kg))+"m";
+
 					i++;
 					pRs->MoveNext();
 				}
