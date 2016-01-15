@@ -26,8 +26,18 @@ void MyGraphicsView::mouseReleaseEvent(QMouseEvent *event){
 	if (QGraphicsItem *item = itemAt(event->pos())) {
          if (MapItem *image = qgraphicsitem_cast<MapItem *>(item)){
 			 int d = image->data(0).toInt();
-			 if(d == 0){
+			 if(d == 0){//kongzhilou
 				 emit itemClicked(osg::Vec3(28332.1, -40417.7, 900), osg::Vec3(1.5132, 0, -4.78175));
+			 }else if(d == 1){//diaoduzha
+				 emit itemClicked(osg::Vec3(17458.7, -25214.2, 900), osg::Vec3(1.48702, 0, -4.36944));
+			 }else if(d == 2){//bengzhan
+				 emit itemClicked(osg::Vec3(19640.7, -38137.6, 900), osg::Vec3(1.63756, 0, -4.49249));
+			 }else if(d == 3){//biandianzhan
+				 emit itemClicked(osg::Vec3(30467.3, -27406.9, 900), osg::Vec3(1.49488, 0, -2.11273));
+			 }else if(d == 4){//jiezhizha
+				 emit itemClicked(osg::Vec3(6641.6, -38446.6, 900), osg::Vec3(1.46346, 0, -4.32625));
+			 }else if(d == 5){//songshuizha
+				 emit itemClicked(osg::Vec3(21120.8, -34238.3, 900), osg::Vec3(1.47917, 0, -6.21512));
 			 }
 		 }
      }
@@ -213,30 +223,35 @@ void MainWindow::createDockWindow(){
 	 MapItem* mapitem1 = new MapItem(QPixmap(string(RESOURCESPATH + "kongzhilou.png").c_str()).scaled(36.5,29));
 	 mapitem1->setData(0, 0);
 	 mapitem1->setPos(83, 171);
-	 mapitem1->setToolTip(QString(tr("管理站")));
+	 mapitem1->setToolTip(QString(tr("控制楼")));
 	 scene->addItem(mapitem1);
 
 	 MapItem* mapitem2 = new MapItem(QPixmap(string(RESOURCESPATH + "diaoduzha.png").c_str()).scaled(13,33));
-	 mapitem2->setPos(226.5,122);
+	 mapitem2->setData(0, 1);
+	 mapitem2->setPos(226,122);
 	 mapitem2->setToolTip(QString(tr("调度闸")));
 	 scene->addItem(mapitem2);
 	 
-	 MapItem* mapitem3 =new MapItem(QPixmap(string(RESOURCESPATH + "bengzhan.png").c_str()).scaled(36.5,105.5));
-	 mapitem3->setPos(82.5,65.5);
+	 MapItem* mapitem3 =new MapItem(QPixmap(string(RESOURCESPATH + "bengzhan.png").c_str()).scaled(36,105));
+	 mapitem3->setData(0, 2);
+	 mapitem3->setPos(82,66);
 	 mapitem3->setToolTip(QString(tr("泵站")));
 	 scene->addItem(mapitem3);
 	  
 	 MapItem* mapitem4=new MapItem(QPixmap(string(RESOURCESPATH + "biandianzhan.png").c_str()).scaled(68,67.5));
-	 mapitem4->setPos(134.5,316.5);
+	 mapitem4->setData(0, 3);
+	 mapitem4->setPos(134,316.5);
 	 mapitem4->setToolTip(QString(tr("变电站")));
 	 scene->addItem(mapitem4);
 
-	 MapItem* mapitem5=new MapItem(QPixmap(string(RESOURCESPATH + "jiezhizha.png").c_str()).scaled(36.5,51.5));
-	 mapitem5->setPos(82.5,14.5);
-	 mapitem5->setToolTip(QString(tr("变电站")));
+	 MapItem* mapitem5=new MapItem(QPixmap(string(RESOURCESPATH + "jiezhizha.png").c_str()).scaled(25,51));
+	 mapitem5->setData(0, 4);
+	 mapitem5->setPos(91,14);
+	 mapitem5->setToolTip(QString(tr("节制闸")));
 	 scene->addItem(mapitem5);
 
 	 MapItem* mapitem6=new MapItem(QPixmap(string(RESOURCESPATH + "songshuizha.png").c_str()).scaled(43.5,39.5));
+	 mapitem6->setData(0, 5);
 	 mapitem6->setPos(180.5,187.5);
 	 mapitem6->setToolTip(QString(tr("送水闸")));
 	 scene->addItem(mapitem6);
