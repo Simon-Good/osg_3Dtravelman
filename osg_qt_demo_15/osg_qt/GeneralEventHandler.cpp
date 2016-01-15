@@ -20,9 +20,9 @@ bool GeneralEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 	switch(ea.getEventType()){
 		case osgGA::GUIEventAdapter::FRAME:
 		{
-			frameCount++;
-			if(frameCount % 30 == 0){
-				
+			frameCount = frameCount<<1;
+			if((frameCount | 0x0) == 0x0){
+				frameCount = 0x1;
 				if(curSwt!=NULL && curSwt->getValueList().size() > 1){
 					int numchildren = curSwt->getNumChildren();
 					TextPanel* tp;

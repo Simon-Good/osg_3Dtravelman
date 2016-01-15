@@ -158,7 +158,7 @@ void ViewerWidget::loadModleThread(int modelnum){
 					textnode->addYZContent(osg::Vec3(xpos, ypos, 200.0), 300, 135, 12.0);
 				}else if(j >= 9 && j< 18){
 					ypos = ypos - 500;
-					textnode->addYZContent(osg::Vec3(xpos, ypos, 150.0), 90, 50, 12.0, true);
+					textnode->addYZContent(osg::Vec3(xpos, ypos, 180.0), 90, 40, 12.0, true);
 				}
 				textnode->setName(namehead + to_string((long long)j));
 				threadSwt->insertChild(j+1, textnode, true);
@@ -168,10 +168,20 @@ void ViewerWidget::loadModleThread(int modelnum){
 			cc->m_fMoveSpeed = 5.0f;
 			cc->m_vPosition = osg::Vec3(-324.813f, -1086.09f, -240.0f);
 			cc->m_vRotation = osg::Vec3(osg::PI_2,0.0f,-6.329f);
-			cc->max_height = -90;
-			cc->min_height = -350;
+			cc->max_height = 9000;
+			cc->min_height = -3500;
 
-
+			
+			string namehead = "LIANZHOU_#";
+			osg::Vec4 keypoint = cc->keepout->at(0).range;
+			TextPanel* textnode = new TextPanel();
+			textnode->setDataVariance(osg::Object::DYNAMIC);
+			float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
+			float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2 -50;
+			cout<<xpos<<" "<<ypos<<endl;
+			textnode->addXZContent(osg::Vec3(xpos, ypos, -240.0), 1000, 300, 2.0);
+			textnode->setName(namehead + to_string((long long)0));
+			threadSwt->insertChild(1, textnode, true);
 		}else if(i == 4){//调度闸
 			cc->m_fMoveSpeed = 5.0f;
 			cc->m_vPosition = osg::Vec3(40.813f, -550.09f, -30.0f);
@@ -279,7 +289,7 @@ vector<RangeNode>* ViewerWidget::getKeepInBorder(int modelindex){
 	}else if(modelindex == 2){
 		ret->push_back(RangeNode(0, osg::Vec4(-1266.5, 306.5, -2485.69, 6885.69)));
 	}else if(modelindex == 3){
-		ret->push_back(RangeNode(0, osg::Vec4(-501.837, 306.5, -1247.69, 6885.69)));
+		//ret->push_back(RangeNode(0, osg::Vec4(-501.837, 306.5, -1247.69, 6885.69)));
 	}else if(modelindex == 4){
 		ret->push_back(RangeNode(0, osg::Vec4(36.8103, 76.6053, -561.673, 851.025)));
 	}else if(modelindex == 5){
@@ -328,7 +338,7 @@ vector<RangeNode>* ViewerWidget::getKeepOutBorder(int modelindex){
 		ret->push_back(RangeNode(16, osg::Vec4(-1250.6, -750.6, 5270.5, 6050.5)));
 		ret->push_back(RangeNode(17, osg::Vec4(-1250.6, -750.6, 6060.5, 6850.5)));
 	}else if(modelindex == 3){//连轴层
-		//ret = NULL;
+		ret->push_back(RangeNode(0, osg::Vec4(-136.528, 284.223, -1128, -930.987)));
 	}else if(modelindex == 4){//调度闸
 		ret->push_back(RangeNode(0, osg::Vec4(-159.0, -121.0, -205.634, -154.634)));
 		ret->push_back(RangeNode(1, osg::Vec4(-159.0, -121.0, 492.634, 536.634)));
@@ -405,9 +415,13 @@ vector<map<string, string, MyCompRule>*>* ViewerWidget::generateDBMap(int index)
 			}
 			retVec->push_back(retMap);
 		}
-	}else if(index == 3){
+	}else if(index == 3){//连轴层
 		retMap = new map<string, string, MyCompRule>();
-		retMap->insert(pair<string, string>("电压","dianya3"));
+		retMap->insert(pair<string, string>("1#供水母管压力",""));
+		retMap->insert(pair<string, string>("2#供水母管压力",""));
+		retMap->insert(pair<string, string>("1#供泵状态",""));
+		retMap->insert(pair<string, string>("2#供泵状态",""));
+		retMap->insert(pair<string, string>("3#供泵状态",""));
 		retVec->push_back(retMap);
 	}else if(index == 4){//调度闸//retVec[map(kaigao1,kaigao2),map(kaigao3, kaigao4)]
 		for(int i = 0; i< 2; i++){

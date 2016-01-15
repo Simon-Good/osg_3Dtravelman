@@ -25,7 +25,7 @@ public:
 	void setCurrentScene(osg::Switch*, int);
 	void setDBMap(vector<map<string, string, MyCompRule>*>* dbmap);
 protected:
-	GeneralEventHandler():curSwtIndex(0),frameCount(0){curSwt = NULL;dbMap = NULL;}
+	GeneralEventHandler():curSwtIndex(0),frameCount(1){curSwt = NULL;dbMap = NULL;}
 	~GeneralEventHandler(){}
 	bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
 	

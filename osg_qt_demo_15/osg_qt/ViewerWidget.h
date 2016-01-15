@@ -34,6 +34,7 @@ public:
 	vector<RangeNode>* getKeepOutBorder(int modelindex);
 	vector<RangeNode>* getKeepInBorder(int modelindex);
 	vector<map<string, string, MyCompRule>*>* generateDBMap(int index);
+
 signals:
 	void modelLoadFinished();
 	void loadOneSwt(osg::Switch* swt, int index);
@@ -49,6 +50,8 @@ protected:
 	osgQt::GraphicsWindowQt* qgw;
 	boost::thread thread;
 	vector<CameraContext> cameraContextList;
+	vector<vector<RangeNode>*> keepOutList;
+	vector<vector<RangeNode>*> keepInList;
 	QWidget* mparent;
 	bool loadFinished;
 	RenderThread *rThread;
