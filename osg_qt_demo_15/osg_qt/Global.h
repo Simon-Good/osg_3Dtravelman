@@ -7,6 +7,8 @@ const string PATHPATH = "../path";
 
 struct MyCompRule{
 	bool operator() (const string& l, const string& r) const{
+		if(l.length() < r.length())return true;
+		else if(l.length() > r.length())return false;
 		const char *lchar = l.c_str();
 		const char *rchar = r.c_str();
 		int i = 0, lval = 0, rval = 0;
@@ -20,7 +22,8 @@ struct MyCompRule{
 			rval += rchar[i];
 			i++;
 		}
-		if (lval > rval) return true;
+
+		if (lval < rval) return true;
 		else return false;
     }
 };

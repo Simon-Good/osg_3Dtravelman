@@ -30,7 +30,8 @@ void TextPanel::addYZContent(const osg::Vec3& leftupCorner,
 	nodeList->push_back(leftupCorner + osg::Vec3(0.0f, 0.0f, height));
 
 	font = osgText::readFontFile(fontpath);
-	addContent(leftupCorner, nodeList,  osgText::Text::YZ_PLANE, width, height,size, minus);
+	addContent(leftupCorner + osg::Vec3(1.0f, 0.0f, height-size*0.3), nodeList,  osgText::Text::YZ_PLANE, width, height,size, minus);
+	//set margin to up border, and 1 offset from plain
 }
 
 void TextPanel::addXZContent(const osg::Vec3& leftupCorner, 
@@ -44,7 +45,8 @@ void TextPanel::addXZContent(const osg::Vec3& leftupCorner,
 	nodeList->push_back(leftupCorner + osg::Vec3(0.0f, 0.0f, height));
 
 	font = osgText::readFontFile(fontpath);
-	addContent(leftupCorner, nodeList, osgText::Text::XZ_PLANE, width, height,  size, minus);
+	addContent(leftupCorner + osg::Vec3(0.0f, -1.0f, height-size*0.3), nodeList, osgText::Text::XZ_PLANE, width, height,  size, minus);
+	//set margin to up border, and 1 offset from plain
 }
 
 void TextPanel::addContent(const osg::Vec3& leftupCorner, 
@@ -66,7 +68,7 @@ void TextPanel::addContent(const osg::Vec3& leftupCorner,
 	geode->addDrawable(geom.get());
 
 	
-	setupProperties(*content, font, osgText::Text::YZ_PLANE, size, leftupCorner + osg::Vec3(1.0f, 0.0f, height-5));//5 margin to up border
+	setupProperties(*content, font, align, size, leftupCorner);
 
 	geode->addDrawable(content.get());
 	if(minus == false)
@@ -113,10 +115,11 @@ void TextPanel::setupProperties(osgText::Text& textObject,
    	textObject.setFont(font);//
 	textObject.setCharacterSize(size);//字体大小
 	textObject.setPosition(pos);
+	//textObject.setRotation(osg::Quat(osg::PI_2, osg::Vec3(0, 1, 0)));
 	textObject.setColor(osg::Vec4(0.8, 1.0, 0.9, 1.0));
 	//textObject.setAlignment(osgText::Text::LEFT_BOTTOM);//文字显示方向
 	textObject.setAlignment(osgText::Text::LEFT_TOP);
-	textObject.setAxisAlignment(osgText::Text::SCREEN);//获取文字对称成方式正对屏幕方向
+	//textObject.setAxisAlignment(osgText::Text::SCREEN);//获取文字对称成方式正对屏幕方向
 	textObject.setAutoRotateToScreen(true);//跟随视角不断变化，但离物体越远，文字越小，和现实当中像类似
-    textObject.setAxisAlignment(align);//获取文字对称成方式
+   textObject.setAxisAlignment(align);//获取文字对称成方式
 }
