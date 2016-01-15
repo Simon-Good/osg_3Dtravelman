@@ -132,8 +132,8 @@ void ViewerWidget::loadModleThread(int modelnum){
 				textnode = new TextPanel();
 				textnode->setDataVariance(osg::Object::DYNAMIC);
 				float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
-				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2-90;
-				textnode->addYZContent(osg::Vec3(xpos, ypos, -50.0), 60, 30, 4.0, true);
+				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2-50;
+				textnode->addYZContent(osg::Vec3(xpos, ypos, -40.0), 30, 15, 3.0, true);
 				textnode->setName(namehead + to_string((long long)j));
 				threadSwt->insertChild(j+1, textnode, true);
 			}
@@ -187,13 +187,13 @@ void ViewerWidget::loadModleThread(int modelnum){
 				textnode = new TextPanel();
 				textnode->setDataVariance(osg::Object::DYNAMIC);
 				float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
-				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2 -100;
-				textnode->addYZContent(osg::Vec3(xpos, ypos, -20.0), 50, 20, 2.0, true);
+				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2 -50;
+				textnode->addYZContent(osg::Vec3(xpos, ypos, -20.0), 25, 10, 2.0, true);
 				textnode->setName(namehead + to_string((long long)j));
 				threadSwt->insertChild(j+1, textnode, true);
 			}
 		}else if(i == 5){//½ÚÖÆÕ¢
-			cc->m_fMoveSpeed = 20.0f;
+			cc->m_fMoveSpeed = 8.0f;
 			cc->m_vPosition = osg::Vec3(83.3197, -1841.9, 0.0f);
 			cc->m_vRotation = osg::Vec3(1.5407,0.0f,0.0f);
 			cc->max_height = 70;
@@ -207,8 +207,8 @@ void ViewerWidget::loadModleThread(int modelnum){
 				textnode = new TextPanel();
 				textnode->setDataVariance(osg::Object::DYNAMIC);
 				float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
-				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2 -100;
-				textnode->addYZContent(osg::Vec3(xpos, ypos, -20.0), 50, 20, 2.0, true);
+				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2 -40;
+				textnode->addYZContent(osg::Vec3(xpos, ypos, -20.0), 20, 12, 2.0, true);
 				textnode->setName(namehead + to_string((long long)j));
 				threadSwt->insertChild(j+1, textnode, true);
 			}
@@ -223,7 +223,7 @@ void ViewerWidget::loadModleThread(int modelnum){
 			string namehead = "ZHANBIANSUOBIAN_#";
 			osg::Vec4 keypoint;
 			for(int j = 0; j< 4; j++){
-				float wid = 300;
+				float wid = 200;
 
 				keypoint = cc->keepout->at(j).range;
 				textnode = new TextPanel();
@@ -231,9 +231,9 @@ void ViewerWidget::loadModleThread(int modelnum){
 				float xpos = keypoint.x()+(keypoint.y() - keypoint.x() - wid);
 				float ypos = keypoint.z();
 				if(j< 2)
-					textnode->addXZContent(osg::Vec3(xpos, ypos, 780.0), wid, 150, 2.0, true);
+					textnode->addXZContent(osg::Vec3(xpos, ypos, 880.0), wid, 60, 12.0, true);
 				else
-					textnode->addXZContent(osg::Vec3(xpos, ypos, 680.0), wid, 90, 2.0, true);
+					textnode->addXZContent(osg::Vec3(xpos, ypos, 750.0), wid, 40, 12.0, true);
 				textnode->setName(namehead + to_string((long long)j));
 				threadSwt->insertChild(j+1, textnode, true);
 			}
