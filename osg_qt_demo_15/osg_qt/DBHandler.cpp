@@ -189,9 +189,7 @@ bool DBHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*
 				v_map->at(0)->at("所变低压侧电流")=_bstr_t(pRs->GetCollect("SBDDLA"))+"A";
 
 				v_map->at(1)->at("站变高压侧电压")=_bstr_t(pRs->GetCollect("DDYAB"))+"KV";	
-				
-				v_map->at(1)->at("站变高压侧电流")=IsEmpty(pRs->GetCollect("DDLA"))+"A";	
-				//v_map->at(1)->at("站变高压侧电流")=_bstr_t(pRs->GetCollect("DDLA"))+"A";
+				v_map->at(1)->at("站变高压侧电流")=_bstr_t(pRs->GetCollect("DDLA"))+"A";
 				v_map->at(1)->at("站变低压侧电压")=_bstr_t(pRs->GetCollect("ZNBDDYAB"))+"KV";				
 				v_map->at(1)->at("站变低压侧电流")=_bstr_t(pRs->GetCollect("ZNBDDLB"))+"A";
 
@@ -210,16 +208,3 @@ bool DBHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*
 	}
 }
 
-string DBHandler::IsEmpty(_variant_t infor)
-{
-	if (infor.vt==VT_NULL)
-	{
-		string x="0";
-		return x;
-	} 
-	else
-	{
-		string x=_bstr_t(infor);
-		return x;
-	}
-}

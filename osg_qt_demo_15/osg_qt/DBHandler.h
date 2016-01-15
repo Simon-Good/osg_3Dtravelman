@@ -19,7 +19,6 @@ public:
 	static DBHandler *Get_dbH_Instance();
 	string get_dbMessage(string);
 	bool get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*);
-	string IsEmpty(_variant_t infor);
 public:
 	_RecordsetPtr pRs;
 	_RecordsetPtr pRs2;
