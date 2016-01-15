@@ -172,7 +172,7 @@ void ViewerWidget::loadModleThread(int modelnum){
 			cc->min_height = -3500;
 
 			
-			string namehead = "LIANZHOU_#";
+			/*string namehead = "LIANZHOU_#";
 			osg::Vec4 keypoint = cc->keepout->at(0).range;
 			TextPanel* textnode = new TextPanel();
 			textnode->setDataVariance(osg::Object::DYNAMIC);
@@ -181,7 +181,7 @@ void ViewerWidget::loadModleThread(int modelnum){
 			cout<<xpos<<" "<<ypos<<endl;
 			textnode->addXZContent(osg::Vec3(xpos, ypos, -240.0), 1000, 300, 2.0);
 			textnode->setName(namehead + to_string((long long)0));
-			threadSwt->insertChild(1, textnode, true);
+			threadSwt->insertChild(1, textnode, true);*/
 		}else if(i == 4){//µ÷¶ÈÕ¢
 			cc->m_fMoveSpeed = 5.0f;
 			cc->m_vPosition = osg::Vec3(40.813f, -550.09f, -30.0f);
