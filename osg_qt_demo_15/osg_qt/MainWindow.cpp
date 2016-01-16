@@ -105,25 +105,21 @@ void MainWindow::createMenu(){
 }
 
 void MainWindow::createAction(){
-	//openpathActTB = new QAction(QIcon("./open.png"),tr("&打开路径"), this);
 	openpathActTB = new QAction(QIcon(string(RESOURCESPATH +"open.png").c_str()),tr("&打开路径"), this);
 	openpathAct = new QAction(tr("&打开路径"), this);
 	connect(openpathActTB, SIGNAL(triggered()), this, SLOT(playCameraPath()));
 	connect(openpathAct, SIGNAL(triggered()), this, SLOT(playCameraPath()));
-	//recordpathActTB = new QAction(QIcon("./recordpath.png"), tr("&开始记录路径"), this);
 	recordpathActTB = new QAction(QIcon(string(RESOURCESPATH +"recordpath.png").c_str()), tr("&开始记录路径"), this);
 	recordpathAct = new QAction(tr("&开始记录路径"), this);
 	connect(recordpathAct, SIGNAL(triggered()), this, SLOT(recordCameraPath()));
 	connect(recordpathActTB, SIGNAL(triggered()), this, SLOT(recordCameraPath()));
 	
-	//cameraSettingActTB = new QAction(QIcon("./camera_setting.png"),tr("&视点参数设置"), this);
 	cameraSettingActTB = new QAction(QIcon(string(RESOURCESPATH +"camera_setting.png").c_str()),tr("&视点参数设置"), this);
 	cameraSettingAct = new QAction(tr("&视点参数设置"), this);
 	connect(cameraSettingActTB, SIGNAL(triggered()), this, SLOT(showCameraSettingDialog()));
 	connect(cameraSettingAct, SIGNAL(triggered()), this, SLOT(showCameraSettingDialog()));
 
 	cameraLowModeAct = new QAction(tr("&贴地模式视点"), this);
-	//cameraLowModeActTB = new QAction(QIcon("./lowmode.png"),tr("&贴地模式视点"), this);
 	cameraLowModeActTB = new QAction(QIcon(string(RESOURCESPATH + "lowmode.png").c_str()),tr("&贴地模式视点"), this);
 	cameraLowModeAct->setCheckable(true);
 	cameraLowModeAct->setChecked(true);
@@ -133,7 +129,6 @@ void MainWindow::createAction(){
 	connect(cameraLowModeActTB, SIGNAL(triggered()), this, SLOT(setCameraLowMode()));
 
 	cameraFlyModeAct = new QAction(tr("&鸟瞰模式视点"), this);
-	/*cameraFlyModeActTB = new QAction(QIcon("./flymode.png"),tr("&鸟瞰模式视点"), this);*/
 	cameraFlyModeActTB = new QAction(QIcon(string(RESOURCESPATH + "flymode.png").c_str()),tr("&鸟瞰模式视点"), this);
 	cameraFlyModeAct->setCheckable(true);
 	cameraFlyModeAct->setChecked(false);
@@ -146,7 +141,6 @@ void MainWindow::createAction(){
     exitAct->setShortcut(tr("Ctrl+Q"));
     connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
 
-	/*interecActTB = new QAction(QIcon("./peng_closed.png"), tr("&碰撞检测"), this);*/
 	interecActTB = new QAction(QIcon(string(RESOURCESPATH + "peng_closed.png").c_str()), tr("&碰撞检测"), this);
 	interecAct = new QAction(tr("&碰撞检测"), this);
     interecAct->setShortcut(tr("Ctrl+I"));
@@ -219,7 +213,6 @@ void MainWindow::createDockWindow(){
      mapdock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 	 QGraphicsScene *scene = new QGraphicsScene(0, 0, 300, 400);
 
-	 //MapItem* mapitem1 = new MapItem(QPixmap("./kongzhilou.png").scaled(36.5,29));
 	 MapItem* mapitem1 = new MapItem(QPixmap(string(RESOURCESPATH + "kongzhilou.png").c_str()).scaled(36.5,29));
 	 mapitem1->setData(0, 0);
 	 mapitem1->setPos(83, 171);
@@ -567,6 +560,8 @@ void MainWindow::showPos(float x, float y, float radius){
 								"电机为TL2000—40/3250型2000 kW立式同步电动机。");
 				}else
 					return;
+			}else if(customerList->row(currentItem)==6){
+
 			}
 			QMessageBox msgBox;
 			msgBox.setWindowTitle(title);
