@@ -79,7 +79,24 @@ bool DBHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*
 	if(pConn != NULL){
 		try
 		{
-			if (index==1)
+			if(index==0)
+			{
+				
+				string cmd0="select * from V_T_RT_ZB_R";
+				pRs=pConn->Execute(cmd0.c_str(),0,adCmdText);
+				v_map->at(0)->at("高压侧电压")=_bstr_t(pRs->GetCollect("GDYAB"));
+			    v_map->at(0)->at("高压侧电流")=_bstr_t(pRs->GetCollect("GDLA"));
+				v_map->at(0)->at("高压侧有功功率")=_bstr_t(pRs->GetCollect("YGGL"));
+				v_map->at(0)->at("高压侧无功功率")=_bstr_t(pRs->GetCollect("WGGL"));
+				v_map->at(0)->at("主变频率")=_bstr_t(pRs->GetCollect("PL"));
+				v_map->at(0)->at("主变油温")=_bstr_t(pRs->GetCollect("ZBWD"));
+				v_map->at(0)->at("低压侧电压")=_bstr_t(pRs->GetCollect("DDYAB"));
+				v_map->at(0)->at("低压侧电流")=_bstr_t(pRs->GetCollect("DDLA"));
+				v_map->at(0)->at("低压侧有功功率")=_bstr_t(pRs->GetCollect("DYGGL"));
+				v_map->at(0)->at("低压侧无功功率")=_bstr_t(pRs->GetCollect("DWGGL"));
+
+			}
+			else if (index==1)
 			{
 				
 				string cmd1="select * from V_T_RT_SSZ_R";
@@ -136,6 +153,16 @@ bool DBHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*
 					pRs->MoveNext();
 				}
 
+			}
+			else if (index==3)
+			{
+				string cmd3="select * from V_T_RT_WS_R";
+				pRs=pConn->Execute(cmd3.c_str(),0,adCmdText);
+				v_map->at(0)->at("1#供水母管压力")=_bstr_t(pRs->GetCollect("GSMG1"))+"MPa";
+				v_map->at(0)->at("2#供水母管压力")=_bstr_t(pRs->GetCollect("GSMG2"))+"MPa";
+				v_map->at(0)->at("1#供泵状态")=type_Inference(pRs->GetCollect("GSB1"));
+				v_map->at(0)->at("2#供泵状态")=type_Inference(pRs->GetCollect("GSB2"));
+				v_map->at(0)->at("3#供泵状态")=type_Inference(pRs->GetCollect("GSB3"));
 			}
 			else if (index==4)//调度闸//retVec[map(kaigao1,kaigao2),map(kaigao3, kaigao4)]
 			{
@@ -209,3 +236,22 @@ bool DBHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*
 	}
 }
 
+string DBHandler::type_Inference( _variant_t infor)
+{
+	string backInfor="";
+
+	cout<<"infor++++"<<infor.intVal<<endl;
+	if (infor.intVal==0)
+	{
+		backInfor="关";
+	}
+	else if (infor.intVal==1)
+	{
+		backInfor="开";
+	}else
+	{
+		backInfor="未知";
+	}
+	return backInfor;
+
+}

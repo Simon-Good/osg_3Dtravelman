@@ -63,6 +63,7 @@ osg::Camera* ViewerWidget::createCamera( int x, int y, int w, int h )
 }
 
 void ViewerWidget::reloadModel(int index){
+	cout<<"reloadmodel==="<<endl;
 	osg::Switch::ValueList vl = swt->getValueList();
 	int vllen = vl.size(), mark = 0;
 	for(mark = 0; mark< vllen; mark++)
@@ -73,6 +74,8 @@ void ViewerWidget::reloadModel(int index){
 	GeneralEventHandler::Instance()->setDBMap(generateDBMap(index));
 	GeneralEventHandler::Instance()->setCurrentScene(swt->getChild(index)->asSwitch(), index);
 	TravelManipulator::Instance()->setCameraContext(&cameraContextList[index]);
+
+	cout<<"reloadmodle-----"<<endl;
 }
 
 void ViewerWidget::loadModels(int size){
@@ -103,9 +106,9 @@ void ViewerWidget::loadModels(int size){
 	cout<<"y="<<ypos<<endl;
     textnode11->setMatrix(osg::Matrix::rotate(osg::PI*5/6, osg::Vec3(0, 0, 1)) *osg::Matrix::translate(osg::Vec3(34553.4, -28840, 900.0)));
 	//osg::Matrix::rotate(osg::PI*3/4, osg::Vec3(0, 0, 1)) *
-	textnode11->addContent(800, 500, 10.0);
+	textnode11->addContent(1200, 500, 50.0);
 	textnode11->setName(namehead + to_string((long long)0));
-	swt->insertChild(1, textnode11, true);
+	underswt->insertChild(1, textnode11, true);
 
 
 
@@ -301,9 +304,18 @@ vector<RangeNode>* ViewerWidget::getKeepOutBorder(int modelindex){
 vector<map<string, string, MyCompRule>*>* ViewerWidget::generateDBMap(int index){
 	map<string, string, MyCompRule>* retMap;
 	vector<map<string, string, MyCompRule>*>* retVec = new vector<map<string, string, MyCompRule>*>();
-	if(index == 0){
+	if(index == 0){//
 		retMap = new map<string, string, MyCompRule>();
-		retMap->insert(pair<string, string>("电压","dianya0"));
+		retMap->insert(pair<string, string>("高压侧电压",""));
+		retMap->insert(pair<string, string>("高压侧电流",""));
+		retMap->insert(pair<string, string>("高压侧有功功率",""));
+		retMap->insert(pair<string, string>("高压侧无功功率",""));
+		retMap->insert(pair<string, string>("主变频率",""));
+		retMap->insert(pair<string, string>("主变油温",""));
+		retMap->insert(pair<string, string>("低压侧电压",""));
+		retMap->insert(pair<string, string>("低压侧电流",""));
+		retMap->insert(pair<string, string>("低压侧有功功率",""));
+		retMap->insert(pair<string, string>("低压侧无功功率",""));
 		retVec->push_back(retMap);
 	}else if(index == 1){//送水闸//retVec[map(kaigao1,kaigao2),map(kaigao3)]
 		retMap = new map<string, string, MyCompRule>();
@@ -354,7 +366,7 @@ vector<map<string, string, MyCompRule>*>* ViewerWidget::generateDBMap(int index)
 			}
 			retVec->push_back(retMap);
 		}
-	}else if(index == 3){//连轴层
+	}else if(index == 3){//连轴层辅机系统
 		retMap = new map<string, string, MyCompRule>();
 		retMap->insert(pair<string, string>("1#供水母管压力",""));//*
 		retMap->insert(pair<string, string>("2#供水母管压力",""));//*
