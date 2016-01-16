@@ -51,7 +51,7 @@ protected:
 	boost::thread thread;
 	vector<CameraContext> cameraContextList;
 	vector<vector<RangeNode>*> keepOutList;
--	vector<vector<RangeNode>*> keepInList;
+	vector<vector<RangeNode>*> keepInList;
 	QWidget* mparent;
 	bool loadFinished;
 	RenderThread *rThread;
