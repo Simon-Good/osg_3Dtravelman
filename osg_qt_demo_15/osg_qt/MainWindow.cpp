@@ -338,9 +338,9 @@ void MainWindow::changeModel(QListWidgetItem* item){
 		cameraLowModeActTB->setChecked(cc->lowmode);
 		
 		GeneralEventHandler::Instance()->infoEnable(true);
-		textInfoAct->setDisabled(true);
-		textInfoAct->setCheckable(false);
-		textInfoAct->setChecked(false);
+		textInfoAct->setDisabled(false);
+		textInfoAct->setCheckable(true);
+		textInfoAct->setChecked(true);
 
 		mapdock->toggleViewAction()->setDisabled(false);
 		mapdock->toggleViewAction()->setCheckable(true);

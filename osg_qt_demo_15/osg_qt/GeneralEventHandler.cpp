@@ -25,6 +25,7 @@ bool GeneralEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 				frameCount = 0x1;
 				if(curSwt!=NULL && curSwt->getValueList().size() > 1){
 					int numchildren = curSwt->getNumChildren();
+					cout<<"numchildren="<<numchildren<<endl;
 					TextPanel* tp;
 					if(DBHandler::Get_dbH_Instance()->get_dbMessage(curSwtIndex,dbMap)==true){
 						if(dbMap->size() > 0){

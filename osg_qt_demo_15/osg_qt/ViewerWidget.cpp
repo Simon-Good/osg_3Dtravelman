@@ -92,9 +92,25 @@ void ViewerWidget::loadModels(int size){
 	cc->min_height = 400;
 	cc->keepout  = getKeepOutBorder(0);
 	cc->keepin = getKeepInBorder(0);
-	//keypoint = cc->keepout->at(11).range;
+	/**********************************/
+	osg::Vec4  keypoint11 = cc->keepout->at(11).range;
+	TextPanel* textnode11=new TextPanel();
+	string namehead="BIANDIANSUO_#";
+	
+	float xpos = keypoint11.x();
+	float ypos = keypoint11.z();
+	cout<<"x="<<xpos<<endl;
+	cout<<"y="<<ypos<<endl;
+    textnode11->setMatrix(osg::Matrix::rotate(osg::PI*5/6, osg::Vec3(0, 0, 1)) *osg::Matrix::translate(osg::Vec3(34553.4, -28840, 900.0)));
+	//osg::Matrix::rotate(osg::PI*3/4, osg::Vec3(0, 0, 1)) *
+	textnode11->addContent(800, 500, 10.0);
+	textnode11->setName(namehead + to_string((long long)0));
+	swt->insertChild(1, textnode11, true);
 
 
+
+
+	/**********************************/
 	cc->flymode = false;
 	cc->lowmode = true;
 	cc->peng = false;
