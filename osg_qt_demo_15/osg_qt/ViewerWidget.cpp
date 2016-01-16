@@ -92,6 +92,9 @@ void ViewerWidget::loadModels(int size){
 	cc->min_height = 400;
 	cc->keepout  = getKeepOutBorder(0);
 	cc->keepin = getKeepInBorder(0);
+	//keypoint = cc->keepout->at(11).range;
+
+
 	cc->flymode = false;
 	cc->lowmode = true;
 	cc->peng = false;
@@ -103,9 +106,9 @@ void ViewerWidget::loadModels(int size){
 }
 void ViewerWidget::loadModleThread(int modelnum){
 	char num[10];
-	TextPanel* textnode;
-	string namehead;
-	osg::Vec4 keypoint;
+	TextPanel* textnode;//
+	string namehead;//
+	osg::Vec4 keypoint;//
 	for(int i = 1; i< modelnum; i++){
 		while(loadFinished == true)
 			boost::this_thread::sleep(boost::posix_time::millisec(50));
