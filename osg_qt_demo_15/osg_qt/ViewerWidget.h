@@ -50,7 +50,8 @@ protected:
 	osgQt::GraphicsWindowQt* qgw;
 	boost::thread thread;
 	vector<CameraContext> cameraContextList;
-
+	vector<vector<RangeNode>*> keepOutList;
+-	vector<vector<RangeNode>*> keepInList;
 	QWidget* mparent;
 	bool loadFinished;
 	RenderThread *rThread;
