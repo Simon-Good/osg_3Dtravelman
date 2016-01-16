@@ -473,7 +473,6 @@ void MainWindow::showPos(float x, float y, float radius){
 					break;
 			}
 		}
-		cout<<x<<" "<<y<<endl;
 		//if(index != -1 && doshow == true){
 		if(index != -1){
 			QString content;

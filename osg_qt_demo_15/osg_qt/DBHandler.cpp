@@ -236,22 +236,13 @@ bool DBHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*
 	}
 }
 
-string DBHandler::type_Inference( _variant_t infor)
-{
+string DBHandler::type_Inference( _variant_t infor){
 	string backInfor="";
-
-	cout<<"infor++++"<<infor.intVal<<endl;
 	if (infor.intVal==0)
-	{
 		backInfor="¹Ø";
-	}
 	else if (infor.intVal==1)
-	{
 		backInfor="¿ª";
-	}else
-	{
+	else
 		backInfor="Î´Öª";
-	}
 	return backInfor;
-
 }
