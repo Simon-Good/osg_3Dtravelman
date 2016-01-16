@@ -6,6 +6,7 @@ textpanel(MatrixTransform)-geode-geom
 
 in default draw textpanel on YZ plain
 */
+string TextPanel::standardWidth = "                              ";
 TextPanel::TextPanel(void):osg::MatrixTransform()
 {
 	content = new osgText::Text;
@@ -67,7 +68,8 @@ void TextPanel::updateContent(map<string,string, MyCompRule>* dbmap){
 		if(dbmap->size() < 6){
 			contentString += it->first + ":"+ it->second + "\n";
 		}else{
-			contentString += it->first + ":"+ it->second + "        ";
+			string temp = it->first + ":"+ it->second;
+			contentString +=temp + standardWidth.substr(temp.length(), standardWidth.length() - temp.length());
 			it++;
 			if(it == dbmap->end())
 				break;
