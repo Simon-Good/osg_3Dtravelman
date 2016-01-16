@@ -58,14 +58,14 @@ MainWindow::MainWindow(WelcomePage* wp, QWidget *parent)
 	createToolBar();
 	wp->setValue(35);
 	viewWidget = new ViewerWidget(this);
-	doshow = true;
+	//doshow = true;
 	wp->setValue(65);
 	viewWidget->loadModels(customerList->count());
 	wp->setValue(85);
 	setCentralWidget(viewWidget);
 	connect(viewWidget, SIGNAL(modelLoadFinished()), this, SLOT(enableItems()));
 	connect(GeneralEventHandler::Instance(), SIGNAL(selectedPosition(float, float, float)), this, SLOT(showPos(float, float, float)));
-	connect(GeneralEventHandler::Instance(), SIGNAL(resetDoshow()), this, SLOT(resetDoshowFlag()));
+	//connect(GeneralEventHandler::Instance(), SIGNAL(resetDoshow()), this, SLOT(resetDoshowFlag()));
 	wp->setValue(95);
 	currentItem = customerList->currentItem();
 }
@@ -365,16 +365,16 @@ void MainWindow::changeModel(QListWidgetItem* item){
 		if(customerList->row(item) == 2 ||customerList->row(item) == 1 
 			|| customerList->row(item) == 4 ||customerList->row(item) == 5
 			|| customerList->row(item) == 6){
-			GeneralEventHandler::Instance()->infoEnable(true);
 			textInfoAct->setDisabled(false);
 			textInfoAct->setCheckable(true);
 			textInfoAct->setChecked(true);
 		}else{
-			GeneralEventHandler::Instance()->infoEnable(false);
 			textInfoAct->setDisabled(true);
 			textInfoAct->setCheckable(false);
 			textInfoAct->setChecked(false);
 		}
+		GeneralEventHandler::Instance()->infoEnable(true);
+
 		mapdock->toggleViewAction()->setDisabled(true);
 		mapdock->toggleViewAction()->setCheckable(false);
 		mapdock->toggleViewAction()->setChecked(false);
@@ -473,7 +473,9 @@ void MainWindow::showPos(float x, float y, float radius){
 					break;
 			}
 		}
-		if(index != -1 && doshow == true){
+		cout<<x<<" "<<y<<endl;
+		//if(index != -1 && doshow == true){
+		if(index != -1){
 			QString content;
 			QString title;
 			if(customerList->row(currentItem) == 0){
@@ -489,7 +491,8 @@ void MainWindow::showPos(float x, float y, float radius){
 				case 1:
 					{
 						content = tr(
-									"共5孔，每孔净宽10米，配弧型钢闸门，设计流量440 m3/s");
+									"总净宽20米分5孔，，设计流量440 m3/s，每孔净宽10米。<br>"
+									"配弧型钢闸门，采用两台225kN卷扬式闸门启闭机，由3台电气控制柜控制。");
 						title = tr("节制闸");
 					}
 					break;
@@ -512,14 +515,16 @@ void MainWindow::showPos(float x, float y, float radius){
 				case 4:
 					{
 						content = tr(
-									"共4孔，总净宽20米，设计流量100 m3/s，配平面钢闸门。");
+									"总净宽20米分4孔，设计流量100 m3/s，每孔净宽5m。<br>"
+									"闸门为钢结构平面上下扉直升门，采用两台160kN卷扬式启闭机，分别由两台电气控制柜控制。");
 						title = tr("调度闸");
 					}
 					break;
 				case 5:
 					{
 						content = tr(
-									"共3孔，总净宽16.5米，设计流量100m3/s。");
+								    "总净宽16.5米分三孔，设计流量100m3/s，每孔净宽5.5m。<br>"
+								    "闸门为钢结构平面直升门，采用两台80kN卷扬式启闭机，分别由两台电气控制柜控制。");
 						title = tr("送水闸");
 					}
 					break;
@@ -560,23 +565,46 @@ void MainWindow::showPos(float x, float y, float radius){
 								"电机为TL2000—40/3250型2000 kW立式同步电动机。");
 				}else
 					return;
-			}else if(customerList->row(currentItem)==6){
-
+			}else if(customerList->row(currentItem) == 3){
+				if(index == 0){
+					title = tr("辅机系统");
+					content = tr(
+								"冷却水系统主要用于水导轴承、填料函、上下油缸、叶片调节系统等方面，<br>"
+								"三台供水泵通过一个400立方米的蓄水池提供水源。");
+				}
+			}else if(customerList->row(currentItem) == 6){
+				if(index == 2){
+					title = tr("所变");
+					content = tr(
+								"三相树脂绝缘干式电力变压器<br>"
+								"型号：SC9-800/10<br>"
+								"制造商：南通友邦变压器有限公司<br>"
+								"额定容量：800kVA<br>"
+								"额定电流：高压侧 46.2A、低压侧 1154.7A<br>");
+				}else if(index == 3){
+					title = tr("站变");
+					content = tr(
+								"三相树脂绝缘干式电力变压器<br>"
+								"型号：SC9-800/10<br>"
+								"制造商：南通友邦变压器有限公司<br>"
+								"额定容量：800kVA<br>"
+								"额定电流：高压侧 46.2A、低压侧 1154.7A<br>");
+				}
 			}
 			QMessageBox msgBox;
 			msgBox.setWindowTitle(title);
 			msgBox.setText(content);
 			msgBox.addButton(tr("确定"), QMessageBox::AcceptRole);
 			int ret = msgBox.exec();
-			doshow = false;
+			//doshow = false;
 		}
 	}
 
 }
 
-void MainWindow::resetDoshowFlag(){
-	doshow = true;
-}
+//void MainWindow::resetDoshowFlag(){
+//	doshow = true;
+//}
 
 float MainWindow::caculateRadius(osg::Vec4& points){
 	return sqrt(pow((double)(points.w() - points.z()), 2.0) + pow((double)(points.y() - points.x()), 2.0));

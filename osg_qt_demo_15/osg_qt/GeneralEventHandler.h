@@ -31,7 +31,7 @@ protected:
 	
 signals:
 	void selectedPosition(float x, float y, float radius);
-	void resetDoshow();
+	//void resetDoshow();
 private:
 	static GeneralEventHandler* instance;
 	static bool infoenable;

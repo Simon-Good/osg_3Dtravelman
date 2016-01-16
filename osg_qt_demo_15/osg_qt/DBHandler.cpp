@@ -89,12 +89,12 @@ bool DBHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*
 				pRs=pConn->Execute(bstring1,0,adCmdText);
 				pRs2=pConn->Execute(bstring2,0,adCmdText);
 
-				v_map->at(0)->at("开高1")=_bstr_t(pRs->GetCollect("KG1"))+"m";
-				v_map->at(0)->at("开高2")=_bstr_t(pRs->GetCollect("KG2"))+"m";
+				v_map->at(0)->at("1#闸门开高")=_bstr_t(pRs->GetCollect("KG1"))+"m";
+				v_map->at(0)->at("2#闸门开高")=_bstr_t(pRs->GetCollect("KG2"))+"m";
 				v_map->at(0)->at("送水河水位")=_bstr_t(pRs->GetCollect("SSHSW"))+"m";
 				v_map->at(0)->at("调度区水位")=_bstr_t(pRs2->GetCollect("DDQSW"))+"m";
 
-				v_map->at(1)->at("开高3")=_bstr_t(pRs->GetCollect("KG3"))+"m";
+				v_map->at(1)->at("3#闸门开高")=_bstr_t(pRs->GetCollect("KG3"))+"m";
 				v_map->at(1)->at("送水河水位")=_bstr_t(pRs->GetCollect("SSHSW"))+"m";
 				v_map->at(1)->at("调度区水位")=_bstr_t(pRs2->GetCollect("DDQSW"))+"m";		
 
@@ -120,7 +120,7 @@ bool DBHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*
 					v_map->at(i)->at("有功功率")=_bstr_t(pRs->GetCollect("YGGL"))+"KW";
 					v_map->at(i)->at("无功功率")=_bstr_t(pRs->GetCollect("WGGL"))+"KW";
 					v_map->at(i)->at("主机转速")=_bstr_t(pRs->GetCollect("ZS"))+"rpm";
-					v_map->at(i)->at("闸下水位")=_bstr_t(pRs->GetCollect("CJSW"))+"m";
+					//v_map->at(i)->at("闸下水位")=_bstr_t(pRs->GetCollect("CJSW"))+"m";
 					v_map->at(i)->at("闸上水位")=_bstr_t(pRs->GetCollect("DDQSW"))+"m";
 					v_map->at(i)->at("定子温度")=_bstr_t(pRs->GetCollect("DZWD1"))+"℃";
 					v_map->at(i)->at("上导温度")=_bstr_t(pRs->GetCollect("SDWD1"))+"℃";
@@ -130,7 +130,7 @@ bool DBHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*
 					v_map->at(i)->at("推力瓦温度")=_bstr_t(pRs->GetCollect("TLWWD1"))+"℃";
 					string KG="KG"+to_string((long long)(i+1));
 					_bstr_t kg=KG.c_str();
-					v_map->at(i+9)->at(("闸门高度"))=_bstr_t(pRs2->GetCollect(kg))+"m";
+					v_map->at(i+9)->at(("A门闸门高度"))=_bstr_t(pRs2->GetCollect(kg))+"m";
 
 					i++;
 					pRs->MoveNext();
@@ -143,13 +143,13 @@ bool DBHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*
 				_bstr_t bstring4=cmd4.c_str();//类型转换
 				pRs=pConn->Execute(bstring4,0,adCmdText);
 
-				v_map->at(0)->at("开高1")=_bstr_t(pRs->GetCollect("KG1"))+"m";
-				v_map->at(0)->at("开高2")=_bstr_t(pRs->GetCollect("KG2"))+"m";
+				v_map->at(0)->at("1#闸门开高")=_bstr_t(pRs->GetCollect("KG1"))+"m";
+				v_map->at(0)->at("2#闸门开高")=_bstr_t(pRs->GetCollect("KG2"))+"m";
 				v_map->at(0)->at("闸下水位")=_bstr_t(pRs->GetCollect("YJHSW"))+"m";
 				v_map->at(0)->at("调度区水位")=_bstr_t(pRs->GetCollect("DDQSW"))+"m";
 
-				v_map->at(1)->at("开高3")=_bstr_t(pRs->GetCollect("KG3"))+"m";
-				v_map->at(1)->at("开高4")=_bstr_t(pRs->GetCollect("KG4"))+"m";
+				v_map->at(1)->at("3#闸门开高")=_bstr_t(pRs->GetCollect("KG3"))+"m";
+				v_map->at(1)->at("4#闸门开高")=_bstr_t(pRs->GetCollect("KG4"))+"m";
 				v_map->at(1)->at("闸下水位")=_bstr_t(pRs->GetCollect("YJHSW"))+"m";
 				v_map->at(1)->at("调度区水位")=_bstr_t(pRs->GetCollect("DDQSW"))+"m";
 
@@ -160,19 +160,19 @@ bool DBHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*
 				_bstr_t bstring5=cmd5.c_str();
 				pRs=pConn->Execute(bstring5,0,adCmdText);
 
-				v_map->at(0)->at("开高1")=_bstr_t(pRs->GetCollect("KG1"))+"m";
-				v_map->at(0)->at("开高2")=_bstr_t(pRs->GetCollect("KG2"))+"m";
+				v_map->at(0)->at("1#闸门开高")=_bstr_t(pRs->GetCollect("KG1"))+"m";
+				v_map->at(0)->at("2#闸门开高")=_bstr_t(pRs->GetCollect("KG2"))+"m";
 				v_map->at(0)->at("内河侧水位")=_bstr_t(pRs->GetCollect("SYSW"))+"m";
 				v_map->at(0)->at("长江侧水位")=_bstr_t(pRs->GetCollect("XYSW"))+"m";
 				v_map->at(0)->at("实际流量")=_bstr_t(pRs->GetCollect("SJLL"))+"m";
 					
-				v_map->at(1)->at("开高3")=_bstr_t(pRs->GetCollect("KG3"))+"m";
-				v_map->at(1)->at("开高4")=_bstr_t(pRs->GetCollect("KG4"))+"m";
+				v_map->at(1)->at("3#闸门开高")=_bstr_t(pRs->GetCollect("KG3"))+"m";
+				v_map->at(1)->at("4#闸门开高")=_bstr_t(pRs->GetCollect("KG4"))+"m";
 				v_map->at(1)->at("内河侧水位")=_bstr_t(pRs->GetCollect("SYSW"))+"m";
 				v_map->at(1)->at("长江侧水位")=_bstr_t(pRs->GetCollect("XYSW"))+"m";
 				v_map->at(1)->at("实际流量")=_bstr_t(pRs->GetCollect("SJLL"))+"m";
 
-				v_map->at(2)->at("开高5")=_bstr_t(pRs->GetCollect("KG5"))+"m";
+				v_map->at(2)->at("5#闸门开高")=_bstr_t(pRs->GetCollect("KG5"))+"m";
 				v_map->at(2)->at("内河侧水位")=_bstr_t(pRs->GetCollect("SYSW"))+"m";
 				v_map->at(2)->at("长江侧水位")=_bstr_t(pRs->GetCollect("XYSW"))+"m";
 				v_map->at(2)->at("实际流量")=_bstr_t(pRs->GetCollect("SJLL"))+"m";

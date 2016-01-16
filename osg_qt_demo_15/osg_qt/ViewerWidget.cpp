@@ -307,19 +307,19 @@ vector<map<string, string, MyCompRule>*>* ViewerWidget::generateDBMap(int index)
 		retVec->push_back(retMap);
 	}else if(index == 1){//送水闸//retVec[map(kaigao1,kaigao2),map(kaigao3)]
 		retMap = new map<string, string, MyCompRule>();
-		retMap->insert(pair<string, string>("开高1",""));
-		retMap->insert(pair<string, string>("开高2",""));
+		retMap->insert(pair<string, string>("1#闸门开高",""));//*
+		retMap->insert(pair<string, string>("2#闸门开高",""));//*
 		retMap->insert(pair<string, string>("送水河水位",""));
 		retMap->insert(pair<string, string>("调度区水位", ""));
 		retVec->push_back(retMap);
 
 		retMap = new map<string, string, MyCompRule>();
-		retMap->insert(pair<string, string>("开高3",""));
+		retMap->insert(pair<string, string>("3#闸门开高",""));//*
 		retMap->insert(pair<string, string>("送水河水位",""));
 		retMap->insert(pair<string, string>("调度区水位", ""));
 		retVec->push_back(retMap);
 	}else if(index == 2){//泵站
-		for(int i = 0; i< 18; i++){//dianji1 juanyangji1 dianji2 juanyangji2... dianji9 juanyangji9 
+		for(int i = 0; i< 18; i++){
 			retMap = new map<string, string, MyCompRule>();
 			if(i>=0 && i< 9){
 				retMap->insert(pair<string, string>("电压",""));
@@ -337,32 +337,38 @@ vector<map<string, string, MyCompRule>*>* ViewerWidget::generateDBMap(int index)
 				retMap->insert(pair<string, string>("上油缸温度",""));
 				retMap->insert(pair<string, string>("下油缸温度",""));
 				retMap->insert(pair<string, string>("推力瓦温度",""));
-				retMap->insert(pair<string, string>("排涝", ""));
-				retMap->insert(pair<string, string>("灌溉", ""));
-
+				retMap->insert(pair<string, string>("瞬时流量", ""));//*
+				retMap->insert(pair<string, string>("实际流量", ""));//*
+				retMap->insert(pair<string, string>("瞬时流量类型", ""));//*
 				retMap->insert(pair<string, string>("叶片角度",""));
 				retMap->insert(pair<string, string>("闸上水位",""));
-				retMap->insert(pair<string, string>("调度区水位",""));
-				retMap->insert(pair<string, string>("闸下水位", ""));
+				if(i< 3)
+					retMap->insert(pair<string, string>("调度区水位",""));
+				else if(i > 2 && i< 9)
+					retMap->insert(pair<string, string>("闸下水位", ""));
 			}else if(i>=9 && i< 18){
-				retMap->insert(pair<string, string>("闸门高度", ""));
-				retMap->insert(pair<string, string>("电机电流", ""));
+				retMap->insert(pair<string, string>("A门闸门高度", ""));//*
+				retMap->insert(pair<string, string>("A门电机电流", ""));//*
+				retMap->insert(pair<string, string>("B门闸门高度", ""));//*
+				retMap->insert(pair<string, string>("B门电机电流", ""));//*
 			}
 			retVec->push_back(retMap);
 		}
 	}else if(index == 3){//连轴层
 		retMap = new map<string, string, MyCompRule>();
-		retMap->insert(pair<string, string>("1#供水母管压力",""));
-		retMap->insert(pair<string, string>("2#供水母管压力",""));
-		retMap->insert(pair<string, string>("1#供泵状态",""));
-		retMap->insert(pair<string, string>("2#供泵状态",""));
-		retMap->insert(pair<string, string>("3#供泵状态",""));
+		retMap->insert(pair<string, string>("1#供水母管压力",""));//*
+		retMap->insert(pair<string, string>("2#供水母管压力",""));//*
+		retMap->insert(pair<string, string>("1#供泵状态",""));//*
+		retMap->insert(pair<string, string>("2#供泵状态",""));//*
+		retMap->insert(pair<string, string>("3#供泵状态",""));//*
 		retVec->push_back(retMap);
 	}else if(index == 4){//调度闸//retVec[map(kaigao1,kaigao2),map(kaigao3, kaigao4)]
 		for(int i = 0; i< 2; i++){
 			retMap = new map<string, string, MyCompRule>();
-			retMap->insert(pair<string, string>("开高"+to_string((long long)(2*i + 1)),""));
-			retMap->insert(pair<string, string>("开高"+to_string((long long)(2*i + 2)),""));
+			retMap->insert(pair<string, string>(to_string((long long)(2*i + 1)) + "#闸门开高",""));//*
+			retMap->insert(pair<string, string>(to_string((long long)(2*i + 2)) + "#闸门开高",""));//*
+			retMap->insert(pair<string, string>(to_string((long long)(2*i + 1)) + "#闸门电机电流",""));//*
+			retMap->insert(pair<string, string>(to_string((long long)(2*i + 2)) + "#闸门电机电流",""));//*
 			retMap->insert(pair<string, string>("闸下水位",""));
 			retMap->insert(pair<string, string>("调度区水位",""));
 			retVec->push_back(retMap);
@@ -370,15 +376,18 @@ vector<map<string, string, MyCompRule>*>* ViewerWidget::generateDBMap(int index)
 	}else if(index == 5){//节制闸//retVec[map(kaigao1, kaigao2),map(kaigao3,kaigao4), map(kaigao5)]
 		for(int i = 0; i< 2; i++){
 			retMap = new map<string, string, MyCompRule>();
-			retMap->insert(pair<string, string>("开高"+to_string((long long)(2*i + 1)),""));
-			retMap->insert(pair<string, string>("开高"+to_string((long long)(2*i + 2)),""));
+			retMap->insert(pair<string, string>(to_string((long long)(2*i + 1)) + "#闸门开高",""));//*
+			retMap->insert(pair<string, string>(to_string((long long)(2*i + 2)) + "#闸门开高",""));//*
+			retMap->insert(pair<string, string>(to_string((long long)(2*i + 1)) + "#闸门电机电流",""));//*
+			retMap->insert(pair<string, string>(to_string((long long)(2*i + 2)) + "#闸门电机电流",""));//*
 			retMap->insert(pair<string, string>("内河侧水位",""));
 			retMap->insert(pair<string, string>("长江侧水位",""));
 			retMap->insert(pair<string, string>("实际流量",""));
 			retVec->push_back(retMap);
 		}
 		retMap = new map<string, string, MyCompRule>();
-		retMap->insert(pair<string, string>("开高5",""));
+		retMap->insert(pair<string, string>("5#闸门开高",""));//*
+		retMap->insert(pair<string, string>("5#闸门电机电流",""));//*
 		retMap->insert(pair<string, string>("内河侧水位",""));
 		retMap->insert(pair<string, string>("长江侧水位",""));
 		retMap->insert(pair<string, string>("实际流量",""));
@@ -414,11 +423,9 @@ void ViewerWidget::genRangeNodeList(int listSize){
 
 	vector<RangeNode>* in ;
 	vector<RangeNode>* out;
-	for (int i=0;i<listSize;i++)
-	{
-		if (i==0)
-		{
-			 in = new vector<RangeNode>();
+	for (int i=0;i<listSize;i++){
+		if (i==0){
+			in = new vector<RangeNode>();
 			in->push_back(RangeNode(0, osg::Vec4(-421529.25, 397938.25, -339227.56, 256748.81)));
 
 			out = new vector<RangeNode>();
@@ -434,22 +441,18 @@ void ViewerWidget::genRangeNodeList(int listSize){
 			out->push_back(RangeNode(9, osg::Vec4(18182.531, 22549.695, -73950.375, -64837.469)));
 			out->push_back(RangeNode(10, osg::Vec4(-37689.965, -29035.395, -68235.962, -64327.445)));
 			out->push_back(RangeNode(11, osg::Vec4(3338.7,42143.2 , -38250.4, -30315.8)));
-		} 
-		else if(i==1)
-		{
-			 in = new vector<RangeNode>();
+		}else if(i==1){
+			in = new vector<RangeNode>();
 			in->push_back(RangeNode(0, osg::Vec4(176.417, 394.14, -7278.08, -6160.67)));
 
-			 out = new vector<RangeNode>();
+			out = new vector<RangeNode>();
 			out->push_back(RangeNode(0, osg::Vec4(160.031, 198.88, -6878.99, -6834.36)));
 			out->push_back(RangeNode(1, osg::Vec4(160.031, 198.88, -6529.84, -6487.92)));
-		}
-		else if(i==2)
-		{
-			 in = new vector<RangeNode>();
+		}else if(i==2){
+			in = new vector<RangeNode>();
 			in->push_back(RangeNode(0, osg::Vec4(-1266.5, 306.5, -2485.69, 6885.69)));
 
-			 out = new vector<RangeNode>();
+			out = new vector<RangeNode>();
 			out->push_back(RangeNode(0, osg::Vec4(-256.911, 280.151, -272.057, 300.0)));//由门至远
 			out->push_back(RangeNode(1, osg::Vec4(-256.911, 280.151, 500.0, 1080.0)));
 			out->push_back(RangeNode(2, osg::Vec4(-256.911, 280.151, 1280.0, 1900.0)));
@@ -468,32 +471,24 @@ void ViewerWidget::genRangeNodeList(int listSize){
 			out->push_back(RangeNode(15, osg::Vec4(-1250.6, -750.6, 4480.5, 5250.5)));
 			out->push_back(RangeNode(16, osg::Vec4(-1250.6, -750.6, 5270.5, 6050.5)));
 			out->push_back(RangeNode(17, osg::Vec4(-1250.6, -750.6, 6060.5, 6850.5)));
-
-		}
-		else if (i==3)
-		{
-			 in = new vector<RangeNode>();
+		}else if (i==3){
+			in = new vector<RangeNode>();
 			in->push_back(RangeNode(0, osg::Vec4(-501.837, 306.5, -1247.69, 6885.69)));
 
-
-			 out = new vector<RangeNode>();
+			out = new vector<RangeNode>();
 			out->push_back(RangeNode(0, osg::Vec4(-136.528, 284.223, -1128, -930.987)));
-		}
-		else if (i==4)
-		{
-			 in = new vector<RangeNode>();
+		}else if (i==4){
+			in = new vector<RangeNode>();
 			in->push_back(RangeNode(0, osg::Vec4(36.8103, 76.6053, -561.673, 851.025)));
 
-			 out = new vector<RangeNode>();
+			out = new vector<RangeNode>();
 			out->push_back(RangeNode(0, osg::Vec4(-159.0, -121.0, -205.634, -154.634)));
 			out->push_back(RangeNode(1, osg::Vec4(-159.0, -121.0, 492.634, 536.634)));
-		}
-		else if (i==5)
-		{
-			 in = new vector<RangeNode>();
+		}else if (i==5){
+			in = new vector<RangeNode>();
 			in->push_back(RangeNode(0, osg::Vec4(-107.807, 121.029, -1842.43, 1801.22)));
 
-			 out = new vector<RangeNode>();
+			out = new vector<RangeNode>();
 			out->push_back(RangeNode(0, osg::Vec4(-120.0, -81.575, -972.88, -928.773)));
 			out->push_back(RangeNode(1, osg::Vec4(-120.0, -81.575, 406.407, 447.844)));
 			out->push_back(RangeNode(2, osg::Vec4(-120.0, -81.575, 1102.98, 1146.21)));
@@ -506,9 +501,7 @@ void ViewerWidget::genRangeNodeList(int listSize){
 			out->push_back(RangeNode(9, osg::Vec4(-107.802, -81.398, 1102.56, 1148.05)));
 			out->push_back(RangeNode(10, osg::Vec4(-67.3615, 71.5234, 1202.85, 1703.84)));
 
-		}
-		else if (i==6)
-		{
+		}else if (i==6){
 			in = new vector<RangeNode>();
 			in->push_back(RangeNode(0, osg::Vec4(-1628.09, 514.386, -2881.55, 3273.53)));
 
@@ -518,21 +511,14 @@ void ViewerWidget::genRangeNodeList(int listSize){
 			out->push_back(RangeNode(2, osg::Vec4(-1112.15, -21.4336, -24.3993,678.568)));
 			out->push_back(RangeNode(3, osg::Vec4(-1112.15, -21.4336, 1466.82, 2174.4)));
 
-		}
-		else{
+		}else{
 			in=NULL;
 			out=NULL;
 		}
-		if (in!=NULL)
-		{
-			keepInList.push_back(in);
-		}
-		if (out!=NULL)
-		{
-			keepOutList.push_back(out);
-		}
-		
-		
 
+		if (in!=NULL)
+			keepInList.push_back(in);
+		if (out!=NULL)
+			keepOutList.push_back(out);
 	}
 }
