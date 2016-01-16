@@ -395,11 +395,9 @@ void ViewerWidget::genRangeNodeList(int listSize){
 
 	vector<RangeNode>* in ;
 	vector<RangeNode>* out;
-	for (int i=0;i<listSize;i++)
-	{
-		if (i==0)
-		{
-			 in = new vector<RangeNode>();
+	for (int i=0;i<listSize;i++){
+		if (i==0){
+			in = new vector<RangeNode>();
 			in->push_back(RangeNode(0, osg::Vec4(-421529.25, 397938.25, -339227.56, 256748.81)));
 
 			out = new vector<RangeNode>();
@@ -415,22 +413,18 @@ void ViewerWidget::genRangeNodeList(int listSize){
 			out->push_back(RangeNode(9, osg::Vec4(18182.531, 22549.695, -73950.375, -64837.469)));
 			out->push_back(RangeNode(10, osg::Vec4(-37689.965, -29035.395, -68235.962, -64327.445)));
 			out->push_back(RangeNode(11, osg::Vec4(3338.7,42143.2 , -38250.4, -30315.8)));
-		} 
-		else if(i==1)
-		{
-			 in = new vector<RangeNode>();
+		}else if(i==1){
+			in = new vector<RangeNode>();
 			in->push_back(RangeNode(0, osg::Vec4(176.417, 394.14, -7278.08, -6160.67)));
 
-			 out = new vector<RangeNode>();
+			out = new vector<RangeNode>();
 			out->push_back(RangeNode(0, osg::Vec4(160.031, 198.88, -6878.99, -6834.36)));
 			out->push_back(RangeNode(1, osg::Vec4(160.031, 198.88, -6529.84, -6487.92)));
-		}
-		else if(i==2)
-		{
-			 in = new vector<RangeNode>();
+		}else if(i==2){
+			in = new vector<RangeNode>();
 			in->push_back(RangeNode(0, osg::Vec4(-1266.5, 306.5, -2485.69, 6885.69)));
 
-			 out = new vector<RangeNode>();
+			out = new vector<RangeNode>();
 			out->push_back(RangeNode(0, osg::Vec4(-256.911, 280.151, -272.057, 300.0)));//сицежат╤
 			out->push_back(RangeNode(1, osg::Vec4(-256.911, 280.151, 500.0, 1080.0)));
 			out->push_back(RangeNode(2, osg::Vec4(-256.911, 280.151, 1280.0, 1900.0)));
@@ -449,32 +443,24 @@ void ViewerWidget::genRangeNodeList(int listSize){
 			out->push_back(RangeNode(15, osg::Vec4(-1250.6, -750.6, 4480.5, 5250.5)));
 			out->push_back(RangeNode(16, osg::Vec4(-1250.6, -750.6, 5270.5, 6050.5)));
 			out->push_back(RangeNode(17, osg::Vec4(-1250.6, -750.6, 6060.5, 6850.5)));
-
-		}
-		else if (i==3)
-		{
-			 in = new vector<RangeNode>();
+		}else if (i==3){
+			in = new vector<RangeNode>();
 			in->push_back(RangeNode(0, osg::Vec4(-501.837, 306.5, -1247.69, 6885.69)));
 
-
-			 out = new vector<RangeNode>();
+			out = new vector<RangeNode>();
 			out->push_back(RangeNode(0, osg::Vec4(-136.528, 284.223, -1128, -930.987)));
-		}
-		else if (i==4)
-		{
-			 in = new vector<RangeNode>();
+		}else if (i==4){
+			in = new vector<RangeNode>();
 			in->push_back(RangeNode(0, osg::Vec4(36.8103, 76.6053, -561.673, 851.025)));
 
-			 out = new vector<RangeNode>();
+			out = new vector<RangeNode>();
 			out->push_back(RangeNode(0, osg::Vec4(-159.0, -121.0, -205.634, -154.634)));
 			out->push_back(RangeNode(1, osg::Vec4(-159.0, -121.0, 492.634, 536.634)));
-		}
-		else if (i==5)
-		{
-			 in = new vector<RangeNode>();
+		}else if (i==5){
+			in = new vector<RangeNode>();
 			in->push_back(RangeNode(0, osg::Vec4(-107.807, 121.029, -1842.43, 1801.22)));
 
-			 out = new vector<RangeNode>();
+			out = new vector<RangeNode>();
 			out->push_back(RangeNode(0, osg::Vec4(-120.0, -81.575, -972.88, -928.773)));
 			out->push_back(RangeNode(1, osg::Vec4(-120.0, -81.575, 406.407, 447.844)));
 			out->push_back(RangeNode(2, osg::Vec4(-120.0, -81.575, 1102.98, 1146.21)));
@@ -487,9 +473,7 @@ void ViewerWidget::genRangeNodeList(int listSize){
 			out->push_back(RangeNode(9, osg::Vec4(-107.802, -81.398, 1102.56, 1148.05)));
 			out->push_back(RangeNode(10, osg::Vec4(-67.3615, 71.5234, 1202.85, 1703.84)));
 
-		}
-		else if (i==6)
-		{
+		}else if (i==6){
 			in = new vector<RangeNode>();
 			in->push_back(RangeNode(0, osg::Vec4(-1628.09, 514.386, -2881.55, 3273.53)));
 
@@ -499,21 +483,14 @@ void ViewerWidget::genRangeNodeList(int listSize){
 			out->push_back(RangeNode(2, osg::Vec4(-1112.15, -21.4336, -24.3993,678.568)));
 			out->push_back(RangeNode(3, osg::Vec4(-1112.15, -21.4336, 1466.82, 2174.4)));
 
-		}
-		else{
+		}else{
 			in=NULL;
 			out=NULL;
 		}
-		if (in!=NULL)
-		{
-			keepInList.push_back(in);
-		}
-		if (out!=NULL)
-		{
-			keepOutList.push_back(out);
-		}
-		
-		
 
+		if (in!=NULL)
+			keepInList.push_back(in);
+		if (out!=NULL)
+			keepOutList.push_back(out);
 	}
 }

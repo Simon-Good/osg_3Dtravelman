@@ -58,7 +58,7 @@ bool GeneralEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 					if(node!= 0)
 						emit selectedPosition(node->getBound().center().x(), node->getBound().center().y(), node->getBound().radius());
 				}
-				emit resetDoshow();
+				//emit resetDoshow();
 			}
 		}
 		break;	

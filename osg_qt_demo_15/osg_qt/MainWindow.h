@@ -78,7 +78,7 @@ public slots:
 	void showPos(float x, float y, float radius);
 	void enableItems();
 	void toolbarSwitch();
-	void resetDoshowFlag();
+	//void resetDoshowFlag();
 	void playCameraPath();
 	void recordCameraPath();
 	void textInfoSwitch();
@@ -118,7 +118,7 @@ private:
 	ViewerWidget* viewWidget;
 	CameraSetting* cs;
 	QListWidgetItem * currentItem;
-	bool doshow;
+	//bool doshow;
 };
 
 #endif // MAINWINDOW_H
