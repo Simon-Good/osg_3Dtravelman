@@ -22,4 +22,5 @@ private:
 	osg::ref_ptr<osg::Geode> geode;
 	osg::ref_ptr<osgText::Text> content;
 	osg::ref_ptr<osgText::Font> font;
+	static string standardWidth;
 };
