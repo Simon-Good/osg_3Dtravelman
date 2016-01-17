@@ -63,7 +63,6 @@ osg::Camera* ViewerWidget::createCamera( int x, int y, int w, int h )
 }
 
 void ViewerWidget::reloadModel(int index){
-	cout<<"reloadmodel==="<<endl;
 	osg::Switch::ValueList vl = swt->getValueList();
 	int vllen = vl.size(), mark = 0;
 	for(mark = 0; mark< vllen; mark++)
@@ -74,8 +73,6 @@ void ViewerWidget::reloadModel(int index){
 	GeneralEventHandler::Instance()->setDBMap(generateDBMap(index));
 	GeneralEventHandler::Instance()->setCurrentScene(swt->getChild(index)->asSwitch(), index);
 	TravelManipulator::Instance()->setCameraContext(&cameraContextList[index]);
-
-	cout<<"reloadmodle-----"<<endl;
 }
 
 void ViewerWidget::loadModels(int size){
@@ -102,17 +99,10 @@ void ViewerWidget::loadModels(int size){
 	
 	float xpos = keypoint11.x();
 	float ypos = keypoint11.z();
-	cout<<"x="<<xpos<<endl;
-	cout<<"y="<<ypos<<endl;
     textnode11->setMatrix(osg::Matrix::rotate(osg::PI*5/6, osg::Vec3(0, 0, 1)) *osg::Matrix::translate(osg::Vec3(34553.4, -28840, 900.0)));
-	//osg::Matrix::rotate(osg::PI*3/4, osg::Vec3(0, 0, 1)) *
 	textnode11->addContent(1350, 350, 50.0);
 	textnode11->setName(namehead + to_string((long long)0));
 	underswt->insertChild(1, textnode11, true);
-
-
-
-
 	/**********************************/
 	cc->flymode = false;
 	cc->lowmode = true;
@@ -175,9 +165,9 @@ void ViewerWidget::loadModleThread(int modelnum){
 					textnode->setMatrix(osg::Matrix::rotate(osg::PI, osg::Vec3(0, 0, 1)) * osg::Matrix::translate(osg::Vec3(xpos, ypos, 300.0)));
 					textnode->addContent(300, 135, 12.0);
 				}else if(j >= 9 && j< 18){
-					float ypos = keypoint.z() - 100;
+					float ypos = keypoint.z() - 130;
 					textnode->setMatrix(osg::Matrix::translate(osg::Vec3(xpos, ypos, 210.0)));
-					textnode->addContent(90, 40, 12.0);
+					textnode->addContent(120, 60, 12.0);
 				}
 				textnode->setName(namehead + to_string((long long)j));
 				threadSwt->insertChild(j+1, textnode, true);
