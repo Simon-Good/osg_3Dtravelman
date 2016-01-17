@@ -118,6 +118,7 @@ private:
 	ViewerWidget* viewWidget;
 	CameraSetting* cs;
 	QListWidgetItem * currentItem;
+	QMessageBox msgBox;
 	//bool doshow;
 };
 

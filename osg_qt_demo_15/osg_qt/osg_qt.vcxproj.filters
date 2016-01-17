@@ -183,5 +183,16 @@
     <ClInclude Include="DBHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="osg_qt.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="icon1.ico" />
+    <None Include="appicon.png" />
+    <None Include="appicon_48.ico" />
   </ItemGroup>
 </Project>

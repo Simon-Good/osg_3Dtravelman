@@ -573,7 +573,7 @@ void MainWindow::showPos(float x, float y, float radius){
 				}
 			}else if(customerList->row(currentItem) == 6){
 				if(index == 2){
-					title = tr("所变");
+					title = tr("站变");
 					content = tr(
 								"三相树脂绝缘干式电力变压器<br>"
 								"型号：SC9-800/10<br>"
@@ -581,7 +581,7 @@ void MainWindow::showPos(float x, float y, float radius){
 								"额定容量：800kVA<br>"
 								"额定电流：高压侧 46.2A、低压侧 1154.7A<br>");
 				}else if(index == 3){
-					title = tr("站变");
+					title = tr("所变");
 					content = tr(
 								"三相树脂绝缘干式电力变压器<br>"
 								"型号：SC9-800/10<br>"
@@ -590,7 +590,7 @@ void MainWindow::showPos(float x, float y, float radius){
 								"额定电流：高压侧 46.2A、低压侧 1154.7A<br>");
 				}
 			}
-			QMessageBox msgBox;
+
 			msgBox.setWindowTitle(title);
 			msgBox.setText(content);
 			msgBox.addButton(tr("确定"), QMessageBox::AcceptRole);

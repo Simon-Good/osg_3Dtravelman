@@ -2,12 +2,15 @@
 #include <QTextCodec>
 #include <QWaitCondition>
 #include <locale.h>
+#include <string>
 #include "MainWindow.h"
 #include "CameraSetting.h"
 #include "WelcomePage.h"
+#include "Global.h"
 
 int main(int argc, char** argv){
 	QApplication app(argc, argv);
+	app.setWindowIcon(QIcon(std::string(RESOURCESPATH + "appicon").c_str()));
 	QString sPath = app.applicationDirPath();
 	sPath += QString("/plugins");
 	app.addLibraryPath(sPath);
