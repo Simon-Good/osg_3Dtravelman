@@ -106,7 +106,7 @@ void ViewerWidget::loadModels(int size){
 	cout<<"y="<<ypos<<endl;
     textnode11->setMatrix(osg::Matrix::rotate(osg::PI*5/6, osg::Vec3(0, 0, 1)) *osg::Matrix::translate(osg::Vec3(34553.4, -28840, 900.0)));
 	//osg::Matrix::rotate(osg::PI*3/4, osg::Vec3(0, 0, 1)) *
-	textnode11->addContent(1200, 500, 50.0);
+	textnode11->addContent(1350, 350, 50.0);
 	textnode11->setName(namehead + to_string((long long)0));
 	underswt->insertChild(1, textnode11, true);
 
@@ -211,9 +211,9 @@ void ViewerWidget::loadModleThread(int modelnum){
 				keypoint = cc->keepout->at(j).range;
 				textnode = new TextPanel();
 				float xpos = keypoint.x() + abs(keypoint.y()-keypoint.x())/2;
-				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2 -50;
+				float ypos = keypoint.z() + abs(keypoint.w()-keypoint.z())/2 -120;
 				textnode->setMatrix(osg::Matrix::translate(osg::Vec3(xpos, ypos, -5.0)));
-				textnode->addContent(25, 10, 2.0);
+				textnode->addContent(65, 10, 2.0);
 				textnode->setName(namehead + to_string((long long)j));
 				threadSwt->insertChild(j+1, textnode, true);
 			}
@@ -319,14 +319,14 @@ vector<map<string, string, MyCompRule>*>* ViewerWidget::generateDBMap(int index)
 		retVec->push_back(retMap);
 	}else if(index == 1){//送水闸//retVec[map(kaigao1,kaigao2),map(kaigao3)]
 		retMap = new map<string, string, MyCompRule>();
-		retMap->insert(pair<string, string>("1#闸门开高",""));//*
-		retMap->insert(pair<string, string>("2#闸门开高",""));//*
+		retMap->insert(pair<string, string>("1#闸门开高",""));
+		retMap->insert(pair<string, string>("2#闸门开高",""));
 		retMap->insert(pair<string, string>("送水河水位",""));
 		retMap->insert(pair<string, string>("调度区水位", ""));
 		retVec->push_back(retMap);
 
 		retMap = new map<string, string, MyCompRule>();
-		retMap->insert(pair<string, string>("3#闸门开高",""));//*
+		retMap->insert(pair<string, string>("3#闸门开高",""));
 		retMap->insert(pair<string, string>("送水河水位",""));
 		retMap->insert(pair<string, string>("调度区水位", ""));
 		retVec->push_back(retMap);
@@ -349,9 +349,9 @@ vector<map<string, string, MyCompRule>*>* ViewerWidget::generateDBMap(int index)
 				retMap->insert(pair<string, string>("上油缸温度",""));
 				retMap->insert(pair<string, string>("下油缸温度",""));
 				retMap->insert(pair<string, string>("推力瓦温度",""));
-				retMap->insert(pair<string, string>("瞬时流量", ""));//*
-				retMap->insert(pair<string, string>("实际流量", ""));//*
-				retMap->insert(pair<string, string>("瞬时流量类型", ""));//*
+				retMap->insert(pair<string, string>("瞬时流量", ""));
+				//retMap->insert(pair<string, string>("实际流量", ""));//*
+				retMap->insert(pair<string, string>("瞬时流量类型", ""));
 				retMap->insert(pair<string, string>("叶片角度",""));
 				retMap->insert(pair<string, string>("闸上水位",""));
 				if(i< 3)
@@ -368,19 +368,19 @@ vector<map<string, string, MyCompRule>*>* ViewerWidget::generateDBMap(int index)
 		}
 	}else if(index == 3){//连轴层辅机系统
 		retMap = new map<string, string, MyCompRule>();
-		retMap->insert(pair<string, string>("1#供水母管压力",""));//*
-		retMap->insert(pair<string, string>("2#供水母管压力",""));//*
-		retMap->insert(pair<string, string>("1#供泵状态",""));//*
-		retMap->insert(pair<string, string>("2#供泵状态",""));//*
-		retMap->insert(pair<string, string>("3#供泵状态",""));//*
+		retMap->insert(pair<string, string>("1#供水母管压力",""));
+		retMap->insert(pair<string, string>("2#供水母管压力",""));
+		retMap->insert(pair<string, string>("1#供泵状态",""));
+		retMap->insert(pair<string, string>("2#供泵状态",""));
+		retMap->insert(pair<string, string>("3#供泵状态",""));
 		retVec->push_back(retMap);
 	}else if(index == 4){//调度闸//retVec[map(kaigao1,kaigao2),map(kaigao3, kaigao4)]
 		for(int i = 0; i< 2; i++){
 			retMap = new map<string, string, MyCompRule>();
-			retMap->insert(pair<string, string>(to_string((long long)(2*i + 1)) + "#闸门开高",""));//*
-			retMap->insert(pair<string, string>(to_string((long long)(2*i + 2)) + "#闸门开高",""));//*
-			retMap->insert(pair<string, string>(to_string((long long)(2*i + 1)) + "#闸门电机电流",""));//*
-			retMap->insert(pair<string, string>(to_string((long long)(2*i + 2)) + "#闸门电机电流",""));//*
+			retMap->insert(pair<string, string>(to_string((long long)(2*i + 1)) + "#闸门开高",""));
+			retMap->insert(pair<string, string>(to_string((long long)(2*i + 2)) + "#闸门开高",""));
+			retMap->insert(pair<string, string>(to_string((long long)(2*i + 1)) + "#闸门电机电流",""));
+			retMap->insert(pair<string, string>(to_string((long long)(2*i + 2)) + "#闸门电机电流",""));
 			retMap->insert(pair<string, string>("闸下水位",""));
 			retMap->insert(pair<string, string>("调度区水位",""));
 			retVec->push_back(retMap);
@@ -388,18 +388,18 @@ vector<map<string, string, MyCompRule>*>* ViewerWidget::generateDBMap(int index)
 	}else if(index == 5){//节制闸//retVec[map(kaigao1, kaigao2),map(kaigao3,kaigao4), map(kaigao5)]
 		for(int i = 0; i< 2; i++){
 			retMap = new map<string, string, MyCompRule>();
-			retMap->insert(pair<string, string>(to_string((long long)(2*i + 1)) + "#闸门开高",""));//*
-			retMap->insert(pair<string, string>(to_string((long long)(2*i + 2)) + "#闸门开高",""));//*
-			retMap->insert(pair<string, string>(to_string((long long)(2*i + 1)) + "#闸门电机电流",""));//*
-			retMap->insert(pair<string, string>(to_string((long long)(2*i + 2)) + "#闸门电机电流",""));//*
+			retMap->insert(pair<string, string>(to_string((long long)(2*i + 1)) + "#闸门开高",""));
+			retMap->insert(pair<string, string>(to_string((long long)(2*i + 2)) + "#闸门开高",""));
+			retMap->insert(pair<string, string>(to_string((long long)(2*i + 1)) + "#闸门电机电流",""));
+			retMap->insert(pair<string, string>(to_string((long long)(2*i + 2)) + "#闸门电机电流",""));
 			retMap->insert(pair<string, string>("内河侧水位",""));
 			retMap->insert(pair<string, string>("长江侧水位",""));
 			retMap->insert(pair<string, string>("实际流量",""));
 			retVec->push_back(retMap);
 		}
 		retMap = new map<string, string, MyCompRule>();
-		retMap->insert(pair<string, string>("5#闸门开高",""));//*
-		retMap->insert(pair<string, string>("5#闸门电机电流",""));//*
+		retMap->insert(pair<string, string>("5#闸门开高",""));
+		retMap->insert(pair<string, string>("5#闸门电机电流",""));
 		retMap->insert(pair<string, string>("内河侧水位",""));
 		retMap->insert(pair<string, string>("长江侧水位",""));
 		retMap->insert(pair<string, string>("实际流量",""));
