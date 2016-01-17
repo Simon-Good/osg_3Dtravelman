@@ -84,16 +84,16 @@ bool DBHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*
 				
 				string cmd0="select * from V_T_RT_ZB_R";
 				pRs=pConn->Execute(cmd0.c_str(),0,adCmdText);
-				v_map->at(0)->at("高压侧电压")=_bstr_t(pRs->GetCollect("GDYAB"));
-			    v_map->at(0)->at("高压侧电流")=_bstr_t(pRs->GetCollect("GDLA"));
-				v_map->at(0)->at("高压侧有功功率")=_bstr_t(pRs->GetCollect("YGGL"));
-				v_map->at(0)->at("高压侧无功功率")=_bstr_t(pRs->GetCollect("WGGL"));
-				v_map->at(0)->at("主变频率")=_bstr_t(pRs->GetCollect("PL"));
-				v_map->at(0)->at("主变油温")=_bstr_t(pRs->GetCollect("ZBWD"));
-				v_map->at(0)->at("低压侧电压")=_bstr_t(pRs->GetCollect("DDYAB"));
-				v_map->at(0)->at("低压侧电流")=_bstr_t(pRs->GetCollect("DDLA"));
-				v_map->at(0)->at("低压侧有功功率")=_bstr_t(pRs->GetCollect("DYGGL"));
-				v_map->at(0)->at("低压侧无功功率")=_bstr_t(pRs->GetCollect("DWGGL"));
+				v_map->at(0)->at("高压侧电压")=_bstr_t(pRs->GetCollect("GDYAB"))+"KV";
+			    v_map->at(0)->at("高压侧电流")=_bstr_t(pRs->GetCollect("GDLA"))+"A";
+				v_map->at(0)->at("高压侧有功功率")=_bstr_t(pRs->GetCollect("YGGL"))+"KW";
+				v_map->at(0)->at("高压侧无功功率")=_bstr_t(pRs->GetCollect("WGGL"))+"KW";
+				v_map->at(0)->at("主变频率")=_bstr_t(pRs->GetCollect("PL"))+"HZ";
+				v_map->at(0)->at("主变油温")=_bstr_t(pRs->GetCollect("ZBWD"))+"℃";
+				v_map->at(0)->at("低压侧电压")=_bstr_t(pRs->GetCollect("DDYAB"))+"KV";
+				v_map->at(0)->at("低压侧电流")=_bstr_t(pRs->GetCollect("DDLA"))+"A";
+				v_map->at(0)->at("低压侧有功功率")=_bstr_t(pRs->GetCollect("DYGGL"))+"KW";
+				v_map->at(0)->at("低压侧无功功率")=_bstr_t(pRs->GetCollect("DWGGL"))+"KW";
 
 			}
 			else if (index==1)
@@ -122,11 +122,7 @@ bool DBHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*
 				int i=0;
 				string cmd="select * from V_T_RT_UNT_R";
 				_bstr_t bstring=cmd.c_str();//类型转换
-
-				string cmd2="select * from V_T_RT_YS_R";
-				_bstr_t bstring2=cmd2.c_str();
 				pRs=pConn->Execute(bstring,0,adCmdText);
-				pRs2=pConn->Execute(bstring2,0,adCmdText);
 
 				while(!pRs->EndOfFile)
 				{
@@ -137,7 +133,6 @@ bool DBHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*
 					v_map->at(i)->at("有功功率")=_bstr_t(pRs->GetCollect("YGGL"))+"KW";
 					v_map->at(i)->at("无功功率")=_bstr_t(pRs->GetCollect("WGGL"))+"KW";
 					v_map->at(i)->at("主机转速")=_bstr_t(pRs->GetCollect("ZS"))+"rpm";
-					//v_map->at(i)->at("闸下水位")=_bstr_t(pRs->GetCollect("CJSW"))+"m";
 					v_map->at(i)->at("闸上水位")=_bstr_t(pRs->GetCollect("DDQSW"))+"m";
 					v_map->at(i)->at("定子温度")=_bstr_t(pRs->GetCollect("DZWD1"))+"℃";
 					v_map->at(i)->at("上导温度")=_bstr_t(pRs->GetCollect("SDWD1"))+"℃";
@@ -145,9 +140,18 @@ bool DBHandler::get_dbMessage(int index,vector<map<string,string, MyCompRule>*>*
 					v_map->at(i)->at("上油缸温度")=_bstr_t(pRs->GetCollect("SYGWD"))+"℃";
 					v_map->at(i)->at("下油缸温度")=_bstr_t(pRs->GetCollect("XYGWD"))+"℃";
 					v_map->at(i)->at("推力瓦温度")=_bstr_t(pRs->GetCollect("TLWWD1"))+"℃";
-					string KG="KG"+to_string((long long)(i+1));
-					_bstr_t kg=KG.c_str();
-					v_map->at(i+9)->at(("A门闸门高度"))=_bstr_t(pRs2->GetCollect(kg))+"m";
+					v_map->at(i)->at("瞬时流量类型")=_bstr_t(pRs->GetCollect("YXGK"));
+					v_map->at(i)->at("瞬时流量")=_bstr_t(pRs->GetCollect("LL"))+"m3/s";
+					if (i<3)
+					{
+						v_map->at(i)->at("调度区水位")=_bstr_t(pRs->GetCollect("DDQSW"))+"m";
+					} 
+					else
+					{
+						v_map->at(i)->at("闸下水位")=_bstr_t(pRs->GetCollect("CJSW"))+"m";
+					}
+					v_map->at(i+9)->at(("A门闸门高度"))=_bstr_t(pRs->GetCollect("AZM"))+"m";
+					v_map->at(i+9)->at(("B门闸门高度"))=_bstr_t(pRs->GetCollect("BZM"))+"m";
 
 					i++;
 					pRs->MoveNext();
