@@ -10,7 +10,7 @@
 
 int main(int argc, char** argv){
 	QApplication app(argc, argv);
-	app.setWindowIcon(QIcon(std::string(RESOURCESPATH + "appicon").c_str()));
+	app.setWindowIcon(QIcon(std::string(RESOURCESPATH + "appicon_48.ico").c_str()));
 	QString sPath = app.applicationDirPath();
 	sPath += QString("/plugins");
 	app.addLibraryPath(sPath);

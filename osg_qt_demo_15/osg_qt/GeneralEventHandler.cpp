@@ -47,22 +47,16 @@ bool GeneralEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 					osgUtil::LineSegmentIntersector::Intersection intersection = *hits.begin();
 					osg::NodePath& nodepath = intersection.nodePath;
 					osg::ref_ptr<osg::Node> node=  (nodepath.size() >= 3)?dynamic_cast<osg::Node*>(nodepath[nodepath.size()-4]):0;
-					if(node!= 0){
-						cout<<"got click 1"<<endl;
+					if(node!= 0)
 						emit selectedPosition(node->getBound().center().x(), node->getBound().center().y(), node->getBound().radius());
-					}
 					
 					node=  (nodepath.size() >= 2)?dynamic_cast<osg::Node*>(nodepath[nodepath.size()-3]):0;
-					if(node!= 0){
-						cout<<"got click 2"<<endl;
+					if(node!= 0)
 						emit selectedPosition(node->getBound().center().x(), node->getBound().center().y(), node->getBound().radius());
-					}
 
 					node=  (nodepath.size() >= 1)?dynamic_cast<osg::Node*>(nodepath[nodepath.size()-2]):0;
-					if(node!= 0){
-						cout<<"got click 3"<<endl;
+					if(node!= 0)
 						emit selectedPosition(node->getBound().center().x(), node->getBound().center().y(), node->getBound().radius());
-					}
 				}
 				//emit resetDoshow();
 			}

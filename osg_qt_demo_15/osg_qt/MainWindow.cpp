@@ -51,6 +51,7 @@ MainWindow::MainWindow(WelcomePage* wp, QWidget *parent)
 	setGeometry(100, 100, 800, 600);
 	setWindowTitle(tr("高港闸站工程三维可视化综合管理与决策系统"));
 	DBHandler::Get_dbH_Instance();
+	msgBox.addButton(tr("确定"), QMessageBox::AcceptRole);
 	wp->setValue(15);
 	createAction();
 	createMenu();
@@ -338,9 +339,6 @@ void MainWindow::changeModel(QListWidgetItem* item){
 		cameraLowModeActTB->setChecked(cc->lowmode);
 		
 		GeneralEventHandler::Instance()->infoEnable(true);
-		textInfoAct->setDisabled(false);
-		textInfoAct->setCheckable(true);
-		textInfoAct->setChecked(true);
 
 		mapdock->toggleViewAction()->setDisabled(false);
 		mapdock->toggleViewAction()->setCheckable(true);
@@ -362,24 +360,22 @@ void MainWindow::changeModel(QListWidgetItem* item){
 		cameraLowModeActTB->setEnabled(true);
 		cameraLowModeActTB->setChecked(true);
 		cameraLowModeActTB->setCheckable(true);
-		if(customerList->row(item) == 2 ||customerList->row(item) == 1 
-			|| customerList->row(item) == 4 ||customerList->row(item) == 5
-			|| customerList->row(item) == 6){
-			textInfoAct->setDisabled(false);
-			textInfoAct->setCheckable(true);
-			textInfoAct->setChecked(true);
-		}else{
-			textInfoAct->setDisabled(true);
-			textInfoAct->setCheckable(false);
-			textInfoAct->setChecked(false);
-		}
-		GeneralEventHandler::Instance()->infoEnable(true);
+
+		if(customerList->row(item) == 2 ||customerList->row(item) == 3 || customerList->row(item) == 6)
+			GeneralEventHandler::Instance()->infoEnable(true);
+		else
+			GeneralEventHandler::Instance()->infoEnable(false);
 
 		mapdock->toggleViewAction()->setDisabled(true);
 		mapdock->toggleViewAction()->setCheckable(false);
 		mapdock->toggleViewAction()->setChecked(false);
 		mapdock->hide();
 	}
+
+	textInfoAct->setDisabled(false);
+	textInfoAct->setCheckable(true);
+	textInfoAct->setChecked(true);
+
 	if(cs->isVisible())
 		updateCameraSetting(cc);
 }
@@ -604,8 +600,7 @@ void MainWindow::showPos(float x, float y, float radius){
 
 			msgBox.setWindowTitle(title);
 			msgBox.setText(content);
-			msgBox.addButton(tr("确定"), QMessageBox::AcceptRole);
-			int ret = msgBox.exec();
+			msgBox.exec();
 			//doshow = false;
 		}
 	}

@@ -485,9 +485,7 @@
     <ResourceCompile Include="osg_qt.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="appicon.png" />
     <None Include="appicon_48.ico" />
-    <None Include="icon1.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

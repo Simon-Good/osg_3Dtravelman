@@ -191,8 +191,6 @@
     <ResourceCompile Include="osg_qt.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="icon1.ico" />
-    <None Include="appicon.png" />
     <None Include="appicon_48.ico" />
   </ItemGroup>
 </Project>
